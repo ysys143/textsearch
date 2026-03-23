@@ -114,24 +114,53 @@ client.create_collection(
 
 ## 출력
 
-- `results/phase5/phase5_system_comparison.json`
-- `results/phase5/phase5_system_comparison.md`
-- 최종 종합 리포트: `results/benchmark_report_v2.md`
+- `results/phase5/phase5_final_report.md` — Phase 1~4 전체 통합 결과표
+- `results/phase5/phase5_summary.json`
+
+> **비고**: Elasticsearch/Qdrant/Vespa Docker 이미지 pull 실패로 Phase 5 외부 시스템 비교는 미실시.
+> Phase 5는 Phase 1~4 PostgreSQL-only 결과 통합 리포트로 대체.
 
 ---
 
-## 최종 종합 리포트 구성
+## 실험 결과 요약
 
-```
-# Korean Text Search Benchmark — 종합 결과
+### MIRACL-ko 최종 순위 (상위 10)
 
-## 핵심 결론
-1. PostgreSQL로 Elasticsearch를 대체할 수 있는가?
-2. 어떤 시나리오에서 각 방법이 최선인가?
-3. Production 추천 세팅 (품질 우선 / 속도 우선 / 운영 단순성 우선)
+| Phase | 방법 | NDCG@10 | Latency p50 |
+|-------|------|---------|-------------|
+| phase4 | BGE-M3 dense (cosine) | **0.7915** | 253ms |
+| phase4 | BGE-M3 sparse (neural) | 0.7634 | 157ms |
+| phase4 | Hybrid BM25+BGE-M3 dense (RRF) | 0.7527 | 641ms |
+| phase4 | Bayesian BM25+BGE-M3 sparse | 0.7485 | 291ms |
+| phase4 | Bayesian BM25+BGE-M3 dense | 0.7476 | 379ms |
+| phase4 | Hybrid BM25+BGE-M3 sparse (RRF) | 0.7160 | 119ms |
+| phase4 | splade-ko (yjoonjang/splade-ko-v1) | 0.6962 | **104.67ms** |
+| phase2 | pl/pgsql BM25 + MeCab (public.korean) | 0.6412 | 10ms |
+| phase3 | pgvector-sparse BM25 (kiwi-cong) | 0.6326 | 4ms |
 
-## Phase별 결과 요약
-## 데이터셋별 방법론 비교 (MIRACL vs EZIS)
-## 시스템 스케일링 곡선
-## 최종 추천
-```
+### EZIS 최종 순위 (상위 5)
+
+| Phase | 방법 | NDCG@10 |
+|-------|------|---------|
+| phase4 | Bayesian BM25+BGE-M3 dense | **0.9493** |
+| phase1/3/4 | BM25 kiwi-cong | 0.9455 |
+| phase4 | Bayesian BM25+BGE-M3 sparse | 0.9394 |
+| phase2 | pl/pgsql BM25 + MeCab | 0.9290 |
+| phase4 | splade-ko | 0.8998 |
+
+### 핵심 발견
+
+1. **MIRACL**: BGE-M3 dense 단독 (NDCG=0.7915)이 어떤 hybrid도 능가
+2. **EZIS**: BM25 kiwi-cong (0.9455)이 dense (0.8060)를 크게 앞서는 도메인 특성 (전문 기술 용어)
+3. **splade-ko 재측정**: pgvector sparsevec DB-side scan → p50 555ms→**104.67ms** (5.3×), 병목은 MPS 모델 추론 (~100ms)
+4. **pl/pgsql 4-table BM25**: 인덱스 재설계(bm25idx+bm25df+bm25doclen+bm25stats)로 p50 45ms→10ms (4.3×)
+5. **PostgreSQL vs 전문 엔진**: BM25 품질 기준 pl/pgsql+MeCab (0.6412)이 pgvector-sparse (0.6326)를 능가; neural은 별도 GPU 추론 필요
+
+### Production 추천
+
+| 시나리오 | 추천 |
+|---------|------|
+| 품질 최우선 (GPU 있음) | BGE-M3 dense 단독 |
+| 품질+비용 균형 | Bayesian BM25+BGE-M3 dense |
+| PostgreSQL-only, 저지연 | pl/pgsql BM25 + MeCab (public.korean) |
+| 기술 도메인 문서 | BM25 kiwi-cong 단독 |
