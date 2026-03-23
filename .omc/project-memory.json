@@ -169,6 +169,12 @@
       "type": "file"
     },
     {
+      "path": "docs/plan/phase5_system_comparison.md",
+      "accessCount": 6,
+      "lastAccessed": 1774306623081,
+      "type": "file"
+    },
+    {
       "path": "neuron-dev.txt",
       "accessCount": 5,
       "lastAccessed": 1774211813749,
@@ -190,12 +196,6 @@
       "path": "docs/plan/phase3_native_bm25.md",
       "accessCount": 5,
       "lastAccessed": 1774273169353,
-      "type": "file"
-    },
-    {
-      "path": "docs/plan/phase5_system_comparison.md",
-      "accessCount": 5,
-      "lastAccessed": 1774281974442,
       "type": "file"
     },
     {
