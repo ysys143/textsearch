@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+*.egg-info/
+dist/
+build/
+
+# Caches
+.cache/
+*.cache
+
+# OS
+.DS_Store
+Thumbs.db
+
+# OMC internal state
+.omc/state/
+.omc/sessions/
+.omc/plans/
+.omc/progress.txt
+.omc/prd.json
+
+# CWF / session logs
+.cwf/sessions/
+
+# Large data files (keep structure, not binary)
+data/kiwi_models/
+
+# Vendor submodules (tracked as submodules, not files)
+vendor/textsearch_ko/
+vendor/pg_bigm/
+
+# Local scratch
+/archive/
+*.ipynb_checkpoints/
+
+# Temp
+/tmp/

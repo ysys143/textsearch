@@ -1,0 +1,110 @@
+{
+  "miracl": [
+    {
+      "method": "textsearch_ko baseline ts_rank_cd (2-A)",
+      "ndcg_at_10": 0.0194,
+      "recall_at_10": 0.027,
+      "mrr": 0.0172,
+      "zero_rate": 0.911,
+      "latency_p50_ms": 2.72,
+      "latency_p95_ms": 10.23,
+      "n_queries": 213,
+      "phase": "phase2",
+      "method_id": "2-A",
+      "ranking": "ts_rank_cd"
+    },
+    {
+      "method": "textsearch_ko enhanced ts_rank_cd (2-C)",
+      "ndcg_at_10": 0.1815,
+      "recall_at_10": 0.1752,
+      "mrr": 0.2432,
+      "zero_rate": 0.643,
+      "latency_p50_ms": 2.96,
+      "latency_p95_ms": 14.22,
+      "n_queries": 213,
+      "phase": "phase2",
+      "method_id": "2-C",
+      "ranking": "ts_rank_cd"
+    },
+    {
+      "method": "textsearch_ko baseline BM25 (2-A+BM25)",
+      "ndcg_at_10": 0.0202,
+      "recall_at_10": 0.0291,
+      "mrr": 0.0178,
+      "zero_rate": 0.897,
+      "latency_p50_ms": 0.93,
+      "latency_p95_ms": 2.73,
+      "n_queries": 213,
+      "phase": "phase2",
+      "method_id": "2-A+BM25",
+      "ranking": "BM25"
+    },
+    {
+      "method": "textsearch_ko enhanced BM25 (2-H-a)",
+      "ndcg_at_10": 0.3437,
+      "recall_at_10": 0.3915,
+      "mrr": 0.42,
+      "zero_rate": 0.005,
+      "latency_p50_ms": 1.26,
+      "latency_p95_ms": 4.22,
+      "n_queries": 213,
+      "phase": "phase2",
+      "method_id": "2-H-a",
+      "ranking": "BM25"
+    }
+  ],
+  "ezis": [
+    {
+      "method": "textsearch_ko baseline ts_rank_cd (2-A)",
+      "ndcg_at_10": 0.5353,
+      "recall_at_10": 0.6069,
+      "mrr": 0.5126,
+      "zero_rate": 0.198,
+      "latency_p50_ms": 0.74,
+      "latency_p95_ms": 1.31,
+      "n_queries": 131,
+      "phase": "phase2",
+      "method_id": "2-A",
+      "ranking": "ts_rank_cd"
+    },
+    {
+      "method": "textsearch_ko enhanced ts_rank_cd (2-C)",
+      "ndcg_at_10": 0.0076,
+      "recall_at_10": 0.0076,
+      "mrr": 0.0076,
+      "zero_rate": 0.992,
+      "latency_p50_ms": 0.87,
+      "latency_p95_ms": 1.24,
+      "n_queries": 131,
+      "phase": "phase2",
+      "method_id": "2-C",
+      "ranking": "ts_rank_cd"
+    },
+    {
+      "method": "textsearch_ko baseline BM25 (2-A+BM25)",
+      "ndcg_at_10": 0.7241,
+      "recall_at_10": 0.855,
+      "mrr": 0.6826,
+      "zero_rate": 0.023,
+      "latency_p50_ms": 0.67,
+      "latency_p95_ms": 1.42,
+      "n_queries": 131,
+      "phase": "phase2",
+      "method_id": "2-A+BM25",
+      "ranking": "BM25"
+    },
+    {
+      "method": "textsearch_ko enhanced BM25 (2-H-a)",
+      "ndcg_at_10": 0.9238,
+      "recall_at_10": 0.9924,
+      "mrr": 0.9013,
+      "zero_rate": 0.0,
+      "latency_p50_ms": 0.75,
+      "latency_p95_ms": 1.84,
+      "n_queries": 131,
+      "phase": "phase2",
+      "method_id": "2-H-a",
+      "ranking": "BM25"
+    }
+  ]
+}

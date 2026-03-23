@@ -1,0 +1,47 @@
+{
+  "results": {
+    "kiwi-cong": {
+      "ndcg_at_10": 1.0,
+      "tokenization_throughput_docs_per_sec": 323.2153462752359,
+      "vocab_size": 11829,
+      "latency_p50_ms": 0.3397499967832118
+    },
+    "kiwi-knlm": {
+      "ndcg_at_10": 0.0,
+      "tokenization_throughput_docs_per_sec": 0.0,
+      "vocab_size": 0,
+      "latency_p50_ms": 0.0,
+      "error": "Cannot open language model file 'sj.knlm'"
+    },
+    "mecab": {
+      "ndcg_at_10": 1.0,
+      "tokenization_throughput_docs_per_sec": 1438.5617259537482,
+      "vocab_size": 14854,
+      "latency_p50_ms": 0.12025001342408359
+    },
+    "okt": {
+      "ndcg_at_10": 1.0,
+      "tokenization_throughput_docs_per_sec": 211.92709812776357,
+      "vocab_size": 17050,
+      "latency_p50_ms": 0.4582089895848185
+    },
+    "whitespace": {
+      "ndcg_at_10": 0.9530516431924883,
+      "tokenization_throughput_docs_per_sec": 269300.0564546879,
+      "vocab_size": 32686,
+      "latency_p50_ms": 0.003249995643272996
+    },
+    "kkma": {
+      "ndcg_at_10": 1.0,
+      "tokenization_throughput_docs_per_sec": 6.215112582297457,
+      "vocab_size": 3156,
+      "latency_p50_ms": 95.19170417013811
+    }
+  },
+  "top_analyzers": [
+    "mecab",
+    "kiwi-cong",
+    "okt",
+    "kkma"
+  ]
+}

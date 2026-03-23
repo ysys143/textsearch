@@ -1,0 +1,681 @@
+[
+  {
+    "id": "ezis_0",
+    "text": "4 / 109\nEZIS User Manual v1.11.18.2769\n11.. EEZZIISS 소소개개\n EZIS DBMS Monitoring Solution 의 기능과 목적\n EZIS for DBMS 는 DBMS의 활동 정보를 실시간으로 분석할 수 있도록 지원합니다.\n EZIS DBMS Monitoring Solution은 DBMS활동 내역을 실시간으로 시각 화하고 분석합니다.\n EZIS DBMS Monitoring Solution은 On-Premise, Cloud환경에 모두 적합하도록 설계되었습니다.\n 설치 또한 간단하여 전문 엔지니어의 도움 없이 제품을 이용할 수 있습니다.\n EZIS 제품 설치와 관련된 지원\n Online: 고객 지원 팀에서 이메일 등으로 설치, Patch 파일 등을 보내드립니다.\n Offline: 외부 망 접속이 제한된 환경에서 EZIS 이용을 희망하시는 경우, CD등의 외부 저장 장치를\n이용하여 설치를 지원합니다.\n 문의는 위데이터랩 홈페이지>Contact를 이용해주시기 바랍니다.\n 유상 고객의 경우 제품에 대한 무상 유지 보수가 지원됩니다. (기간 협의)",
+    "section": "4",
+    "page_start": 4,
+    "page_end": 4
+  },
+  {
+    "id": "ezis_1",
+    "text": "2.1. Users > Users\n Single Sign-On (SSO) 로그인\n SSO 를 사용하기 위해서는 별도의 EZIS SSO 서버를 설치 하거나 EZIS 제품 하나를 EZIS SSO 인증\n서버로 지정하여 사용할 수 있습니다.\n EZIS 제품에서 SSO Client 기능이 필요 없는 경우, Manage Shell 에서 사용안함으로 설정하면 해당\n기능을 비활성화 하게 되며 각 개별 제품별로 로그인을 각각 수행합니다.\n만약 SSO 서버가 장애 시 또는 패치 시에 장시간 동안 SSO 서버를 운영할 수 없는 경우에도 SSO\nClient 기능을 중지할 수 있습니다. (EZIS 설치 문서에서 확인 가능)\n SSO 동기화\n SSO 인증 서버에 추가된 사용자 ID 는 EZIS 제품에 동일한 사용자 ID 로 추가되어야 합니\n다. 이를 이용하여, EZIS 제품 a, b, c 가 설치되어 있고 특정 사용자 ID를 제품 c에만 추\n가 하지 않는 경우 제품 c를 사용할 수 없게 할 수 있습니다.\n 특정 제품에서 로그인을 하게 되면 나머지 제품도 로그인 없이 제품간 자동으로 로그인\n됩니다. 단, 로그오프 시 바로 다른 EZIS 제품에 로그오프 하지 않고 설정 시간(SSO 서버\n- EZIS 제품 간 로그인 동기화) 후에 로그오프 시킵니다.",
+    "section": "2.1",
+    "page_start": 5,
+    "page_end": 5
+  },
+  {
+    "id": "ezis_2",
+    "text": "6 / 109\nEZIS User Manual v1.11.18.2769\n New user registration\n해당 메뉴에서 “add” 버튼을 클릭하면 새로운 행이 추가가 됩니다. 사용자의 정보를 입력하고 저\n장을 누르면 새로운 사용자가 등록이 됩니다.\n설치 후 처음 로그인 계정은 id / password는 admin / admin 입니다\n User ID: 로그인 할 때 사용할 아이디\n Password: 로그인 할 때 사용할 비밀번호로써, 입력한 내용은 저장 후, 암호화되어 보여집니다.\n비밀번호는 영문, 숫자, 특수 문자 조합으로 8 자 이상 입력합니다. 비밀번호 오류 등으로 로그인 5\n회 실패 하는 경우에는 계정이 잠깁니다.\n User Name: 로그인 한 사용자의 이름입니다.\n Group ID: 각 사용자마다 제품에서 사용할 서버들과, 알람 발생 시 수신할 정보 및 메뉴에 대한\n사용 권한을 가지는 그룹 아이디 입니다. 이 정보는 “UserGroup” 메뉴에서 구성하여 사용자 별로\n할당 할 수 있습니다. 초기에 사용자 권한 그룹(UserGroup) 설정이 없다면 “DEFAULT”로 표시 됩니\n다.\n Email: 사용자의 메일 주소입니다.\n Phone: 사용자의 휴대전화 연락처 입니다. 숫자 또는 – 문자열만 사용할 수 있습니다.\n Language: 제품을 어떤 언어로 사용할 것인지 선택을 할 수 있습니다. 현재는 영어만 제공하고\n있으나 향후 다른 여러 언어를 제공 할 예정입니다.\n Access Page After Login: Ezis 제품에 로그인한 후 원하는 화면에 바로 접속 할 수 있습니다. 예\n를 들어 Performance 화면을 바로 접속 하려면 “/app/performance”를 입력합니다. 사용자마다 경로\n를 별도로 지정할 수 있습니다.\n Admin Permissions: ‘Y’ 인 경우 Setting 메뉴의 설정 변경 권한을 가지며 ‘N’ 인 경우에는 권한이\n없습니다.\n Lock: 사용자가 로그인 제한을 받는 경우에 로그인 불가능한 사유가 표시 됩니다. 또는 관리자가\n특정 사용자에게 로그인 제한을 걸기 위하여 제한을 강제로 할 수 있으며 이때는 Lock 문자열을\n표시합니다. 비밀번호를 5회이상 틀렸을 경우에도 사용자 로그인 Lock 처리됩니다",
+    "section": "6",
+    "page_start": 6,
+    "page_end": 6
+  },
+  {
+    "id": "ezis_3",
+    "text": "2.2. Users > User Group\n사용자가 다음과 같은 다음의 정보에 대하여 사용 권한을 얻을 수 있도록, 각 기능 별 권한 그룹\n을 설정하는 화면입니다.\n화면 좌측 부분은 권한에 대한 그룹 명을 추가, 삭제 할 수 있습니다. 좌측 그룹 명 클릭 시 화면\n우측에 그룹 사용자에게 표시할 서버, 서버 별 알람 발생 수위, 임계 값이 없는 서버의 알람 메시\n지 수신 여부와, 설정할 수 있는 관리자 화면에 대한 내용을 등록 및 수정, 삭제할 수 있습니다,\n Server: 모니터링을 할 서버는 “Server” 메뉴에서 등록을 합니다. 등록된 서버 중에서 해당 사용자\n에게 모니터링 권한을 부여할 수 있습니다. 좌측 그룹 명에 원하는 서버를 등록하고, 해당 그룹을\n사용자에게 부여하면(Management ID) 해당 사용자는 이 화면에서 부여한 서버만 모니터링을 할 수\n있습니다.\n Send Event Message Threshold: 모니터링 할 서버의 지표에 대하여 사용자가 임계 값을 설정한\n서버는 이 화면에 자동으로 보여집니다. (서버 알람에 대하여 임계 값 설정은 “Server Group” 메뉴\n에서 할 수 있습니다.) 설정된 임계 값이 도달하는 경우 알람 수위에 대하여 수신할지 안할지를 설\n정합니다. 예를 들어 Warning 을 ‘Y’로 설정하고, Critical 을 ‘N’ 으로 설정하는 경우, 임계 값이\nWarning 범위에 들어 왔을 때만 알람으로 발생을 하여 사용자에게 통지 합니다.\n Send Event Message: 임계 값이 없이 발생하는 알람에 대하여 수신할 것인지 아닌지 선택할 수\n있습니다. 예를 들어 Oracle alertlog가 발생하면 알람이 발생하지만 임계 값 설정은 없습니다. 따라\n서 임계 값 설정이 없는 알람에 대하여 수신 여부를 각 서버, 이벤트 별 로 설정하세요.\n Product Event Message: EZIS 제품이 기동 또는 종료 또는 OOM 오류가 발생 하였을 때 사용자\n에게 통지합니다. UseYN 유무에 따라 수신하거나 수신 안 할 수 있습니다.\n Send Method: Setting> Event> SendMethod에서 등록한 plugin으로 이벤트 메시지를 전송하도록\n설정할 수 있습니다. Add버튼을 선택하고 Description 컬럼에서 등록한 plugin 을 선택합니다. (별도\n제공 plugin 설치 필요)\n Menu: 관리 화면의 메뉴에 대하여 기능을 부여할 수 있습니다. 제품의 “Setting” 의 여러 메뉴 중\n에 특정 메뉴만을 사용할 수 있도록 부여할 수도 있고, 전체 관리 메뉴에 대하여 사용할 수 있도록\n좌측 그룹에 기능을 부여 할 수 있습니다. 새로운 관리 권한 기능이 필요하면 “Add” 버튼을 클릭하\n여 메뉴를 추가하면 됩니다. 또한 불필요한 관리 기능은 체크 박스를 선택하고 “Delete” 버튼을 눌\n러 제거하면 제품에서 해당 메뉴가 나타나지 않습니다.\nMenu에 추가된 내용이 없으면 사용자는 로그인시 해당 메뉴가 보이지 않습니다.",
+    "section": "2.2",
+    "page_start": 7,
+    "page_end": 7
+  },
+  {
+    "id": "ezis_4",
+    "text": "2.3. Monitoring > Server\n 접근 권한. (on premise)\n 모니터링할 오라클 인스턴스에 EZIS 에 등록할 모니터링 용 계정을 생성하고 다음과 같은 권한을\n부여해야 합니다.\ngrant SELECT ANY DICTIONARY to ${userid};\n Oracle alertlog 및 Trace / AWR 기능을 위한 접근 권한. (on premise)\n-- ------------------------------------------------------------------\n-- alertlog directory setup\n-- ------------------------------------------------------------------",
+    "section": "2.3",
+    "page_start": 8,
+    "page_end": 7
+  },
+  {
+    "id": "ezis_5",
+    "text": "5. AWR Report Execute 권한\nGRANT EXECUTE ON SYS.DBMS_WORKLOAD_REPOSITORY TO {userid};\n V$diag_info 를 조회하여 모니터링 대상 서버의 경로를 찾아 ezis_dir 이름으로 Directory 를 생성하\n고 Read 및 Execute 권한을 부여하여야 합니다.\n 위 권한이 없는 경우 Oracle alertlog 를 수집 할 수 없으며 Trace 기능 또한 사용이 불가능합니다",
+    "section": "5",
+    "page_start": 8,
+    "page_end": 8
+  },
+  {
+    "id": "ezis_6",
+    "text": "9 / 109\nEZIS User Manual v1.11.18.2769\n 오라클이 AWS RDS인 경우\n-- ezis 모니터링 권한\nGRANT SELECT ANY DICTIONARY TO ${userid};\n-- Session Trace 권한\nGRANT EXECUTE ON dbms_monitor TO ${userid};\n-- 디렉토리 권한\nGRANT EXECUTE ON rdsadmin.rds_file_util TO ${userid};",
+    "section": "9",
+    "page_start": 9,
+    "page_end": 9
+  },
+  {
+    "id": "ezis_7",
+    "text": "10 / 109\nEZIS User Manual v1.11.18.2769\n Normal (Server)\n모니터링 할 서버를 관리하는 메뉴입니다. 대상 서버를 추가, 수정, 삭제 할 수 있습니다.\n No: 서버를 등록하면 제품이 자동으로 등록하는 서버의 고유 번호입니다. 입력 하거나 수정할 수\n없는 값입니다. 화면에는 표시하지 않습니다.\n Server ID: 모니터링 할 서버의 이름을 부여합니다. 시스템이 알람을 보낼 일이 발생하면, 여기에\n입력된 이름으로 보내어 집니다.\n Group ID: 공통적인 설정 정보를 그룹으로 지정할 수 있습니다. Monitoring > ServerGroup에서 서\n버 그룹을 관리할 수 있습니다. 기본값으로 DEFAULT 그룹이 설정 됩니다.\n Connection Type: 모니터링을 위하여 Oracle로 접속할 때 두가지 방법을 제공합니다. 하나는 SID\n를 지정하여 접속 할 수 있고, 또는 Service Name 으로 접속 할 수 있습니다\n IP Address: 모니터링 대상 서버의 IP 주소입니다. 제품과 모니터링 대상 서버와 방화벽이 Open\n되어 있어야 합니다. 방화벽은 IP / Port를 확인하여 주시고, 만약 연결이 불가능 할 경우 제품에서\n모니터링을 수행 하지 않습니다.\n Port: 모니터링 대상 서버의 Port입니다. 이 포트는 TNS 포트를 의미합니다.\n Login ID: Oracle Database에 접속할 User 를 입력하세요. 해당 유저는 권한을 가지고 있어야 합니\n다\n Login Password: 해당 User의 password를 입력하세요. Password는 저장된 후 암호화되어 화면에\n는 암호화된 값이 표시됩니다.\n Connection Name: Connection Type이 SID인 경우에는 Oracle의 SID를 입력하고, Service Name\n으로 지정한 경우에는 Service Name을 입력해 주세요.\n CharSet: Oracle 의 Charset 을 지정할 수 있습니다. CharSet 은 오라클로부터 오는 메시지의\nFormat 을 지정된 CharSet 으로 변환하여 제품에 표시하고 있으며, 이 값이 상이한 경우에는 Oracle\nDatabase로부터 오는 문자열이 일부 깨져서 보일 수 있습니다.\n Description: 필수 항목은 아니며 해당 서버에 대한 간략한 설명을 기입하고 관리할 수 있습니다.\n Use YN: 모니터링 대상 서버에 모니터링을 잠시 하고 싶지 않은 경우에 중지 시킬 수 있는 기능으\n로 사용 유무에 해당하는 기능입니다. ‘N’으로 설정 시 제품은 모니터링 대상 서버에 어떠한 성능\n지표도 수집하지 않습니다. 사용자가 인지하고 있는 모니터링 대상 서버의 정기점검 또는 임시로\n전원을 꺼놓는 행위에 대하여 유용하게 이 기능을 사용 할 수 있습니다.",
+    "section": "10",
+    "page_start": 10,
+    "page_end": 10
+  },
+  {
+    "id": "ezis_8",
+    "text": "11 / 109\nEZIS User Manual v1.11.18.2769\n Advanced\n모니터링 대상 Server의 기본 정보 외에 모니터링 시 필요한 항목의 값을 추가할 수 있습니다.\n AgentKey: 모니터링 대상 서버가 Agent 로부터 성능 데이터를 수신하는 경우 Agent 의 Key 를 선\n택할 수 있습니다.\n InstanceID: Cloud 환경에 위치한 Database의 경우 API연결을 위한 InstanceID를 입력합니다.\n JDBC Parameter: 제품이 모니터링 대상 Database 에 접속할 경우 JDBC Driver 를 사용합니다. 특\n정 Parameter를 추가하고자 하는 경우 입력합니다.\n Host: Server의 Host명을 입력할 수 있습니다. 필수 사항은 아닙니다.\n Server Test Connection\n Server 메뉴의 화면에서 리스트 우측 상단의 “Test Connection” 버튼을 이용하여 등록된 서버가 연\n결이 잘 되는지 확인 할 수 있습니다.\n 테스트 하고자 하는 서버를 선택하고 (복수 선택도 가능) 상단의 “Test Connection”을 클릭하면 연\n결이 잘 되는지 아니면 어떤 이유로 연결이 안되는지 확인 할 수 있습니다.",
+    "section": "11",
+    "page_start": 11,
+    "page_end": 11
+  },
+  {
+    "id": "ezis_9",
+    "text": "12 / 109\nEZIS User Manual v1.11.18.2769\n TNS Alias\nTNS Alias 방식으로 접속하는 Target 서버를 관리할 수 있습니다.\n Server ID: 모니터링 할 서버의 이름을 부여합니다. 시스템이 알람을 보낼 일이 발생하면, 여기에\n입력된 이름으로 보내어 집니다.\n Group ID: 공통적인 설정 정보를 그룹으로 지정할 수 있습니다. Monitoring > ServerGroup에서 서\n버 그룹을 관리할 수 있습니다. 기본값으로 DEFAULT 그룹이 설정 됩니다.\n TNS Group ID: 추가한 TNS Group을 선택합니다.\n 추가한 TNS Group이 없는 경우 상단 TNS Group 버튼을 클릭하여 추가 후 선택합니다.\n Name: 해당 그룹 명을 입력합니다.\n File: tnsnames.ora 또는 wallet.zip(압축된 전자지갑 파일) 파일을 선택합니다.\n TNS Alias: 선택한 TNS Group의 tnsnames.ora 파일의 Alias 중 하나를 입력합니다.\n Login ID: Oracle Database에 접속할 User 를 입력하세요. 해당 유저는 권한을 가지고 있어야 합니\n다\n Login Password: 해당 User의 password를 입력하세요. Password는 저장된 후 암호화되어 화면에\n는 암호화된 값이 표시됩니다.\n CharSet: Oracle 의 Charset 을 지정할 수 있습니다. CharSet 은 오라클로부터 오는 메시지의\nFormat 을 지정된 CharSet 으로 변환하여 제품에 표시하고 있으며, 이 값이 상이한 경우에는 Oracle\nDatabase으로부터 오는 문자열이 일부 깨져서 보일 수 있습니다.\n Description: 필수 항목은 아니며 해당 서버에 대한 간략한 설명을 기입하고 관리할 수 있습니다.\n Use YN: 모니터링 대상 서버에 모니터링을 잠시 하고 싶지 않은 경우에 중지 시킬 수 있는 기능으\n로 사용 유무에 해당하는 기능입니다. ‘N’ 으로 설정 시 제품은 모니터링 대상 서버에 어떠한 성능\n지표도 수집하지 않습니다. 사용자가 인지하고 있는 모니터링 대상 서버의 정기점검 또는 임시로\n전원을 꺼놓는 행위에 대하여 유용하게 이 기능을 사용 할 수 있습니다.\nAdvanced, Server Test Connection 기능은 Normal 탭과 동일합니다.",
+    "section": "12",
+    "page_start": 12,
+    "page_end": 12
+  },
+  {
+    "id": "ezis_10",
+    "text": "13 / 109\nEZIS User Manual v1.11.18.2769\n Bulk Registration\n추가할 서버가 많은 경우 제품 화면에서 입력하지 않고 Excel에서 내용을 입력하여 일괄 추가할\n수 있습니다.\n Template: Bulk Registration 버튼 클릭 후 표시되는 Dialog 에서 Template 버튼을 클릭하여 파일을\n다운로드 합니다.\n Excel: 제품 화면에서 입력하는 것과 동일하게 각 컬럼에 해당하는 값을 직접 입력합니다.\n Combo에 해당하는 값은 Reference 시트에 표시된 값만 입력할 수 있습니다.\n 비밀번호도 화면에서 입력하는 것처럼 일반 값으로 입력합니다.\n 편집한 파일은 브라우저에서만 파일 내용을 읽고, 별도로 삭제 및 저장하지 않습니다. 일\n괄 등록에 사용한 파일은 직접 관리하여 주시기 바랍니다.\n Choose File: Excel 파일 저장 후 Choose File 버튼을 클릭하여 위에서 편집한 파일을 선택하거나\nDrag & Drop 영역에 파일을 끌어서 적용할 수 있습니다.",
+    "section": "13",
+    "page_start": 13,
+    "page_end": 13
+  },
+  {
+    "id": "ezis_11",
+    "text": "2.4. Monitoring > Server Group\nUser와 마찬가지로 Server도 각 그룹별로 알람의 임계 값을 지정하거나, 임계 치 없는 지표에 대\n하여 Critical로 메시지를 받을 것인지 아니면 Warning로 받을 것인지 설정을 하여 그룹화 할 수\n있습니다.\n모니터링 대상이 Amazon의 RDS 서비스를 사용하거나 EC2에 설치된 경우 AWS 접속 정보를 지\n정하여 그룹화하여 각 모니터링 서버에 Group ID를 부여하여 쉽게 설정할 수 있습니다.\n Server Group\n 화면 좌측에 서버관리 그룹을 관리 할 수 있습니다.\n Machine Type: “NORMAL” 은 on-premise 에 설치된 Oracle을 모니터링 할 때 지정하는 Type 입니\n다. “AWS_RDS” 의 경우는 모니터링 대상 서버가 Amazon RDS 서비스를 사용 하는 경우 선택 하십\n시오. Cloud Watch 와 연계하여 OS 관련 성능지표를 수집 할 수 있습니다. “AWS_EC2”를 선택하는\n경우에는 Amazon EC2 에 Oracle이 설치 된 경우 선택하십시오. RDS 와 마찬가지로 OS 관련 성능\n지표를 수집합니다. 제품에서 RDS 와 EC2 로 나뉘어진 이유는 RDS 와 EC2 에서 Cloud Watch 로 수\n집하는 항목이 다르기 때문에 두가지 Type 을 지원 하고 있습니다. 그 외 \"AZURE RDS\" (Azure)를\n선택하여 Cloud API 연동을 통해 성능지표를 수집할 수 있습니다.\n Cloud ID: Monitoring > Cloud Group 메뉴에서 설정한 항목을 선택하여 Cloud API 연동 여부를 설정\n할 수 있습니다.\n Group ID: 해당 그룹 명을 입력 합니다. 최초 제품이 설치되면 “DEFAULT” 그룹은 자동으로 설정\n되어 있습니다.",
+    "section": "2.4",
+    "page_start": 15,
+    "page_end": 15
+  },
+  {
+    "id": "ezis_12",
+    "text": "16 / 109\nEZIS User Manual v1.11.18.2769\n ServerGroup Copy\n이미 설정된 Server Group의 정보를 복사할 수 있습니다. 이 기능은 이미 설정된 Server Group\n을 불러와 적용하면 동일하게 복사가 됩니다. 복사된 항목에서 필요한 내용만 삭제 또는 추가하여\n새 Server Group에 적용할 때 유용하게 사용할 수 있습니다.\n Server Event Threshold\n이 메뉴 설정은 성능 지표가 수치화 되어 임계 값을 설정 할 수 있는 지표인 경우 사용하는 메뉴\n입니다. 예를 들어 “ActiveSession Count”와 같이 해당 지표가 수치화 될 수 있는 지표를 말합니\n다.\n Add 버튼을 클릭하여 좌측에 선택된 그룹에 지표를 추가하여 임계 값 정보를 입력합니다. 해당 지\n표 값이 설정한 임계 값에 도달하면 제품은 사용자에게 알람을 보냅니다.\n StatName: 지표 이름을 나타냅니다. 알람이 발생하면 이 이름으로 알람이 발송 됩니다\n Filter: 필터를 만들어 임계치에 도달한 알람을 지정된 시간 동안 화면에 표시하는 시간을 조정할\n수 있습니다. 이 기능을 사용하기 위해서는 “Event > Event Filter Management”에서 설정할 수 있습\n니다.\n Condition: 설정된 임계 값보다 클 때 알람으로 발생할 것인지 같을 때만 발생할 것인지에 대한\n사용자 수식입니다.\n Warning: 여기에 지정된 값에 도달하면 Warning 이라는 이름으로 알람이 발생 됩니다.\n Critical: 여기에 지정된 값에 도달하면 Critical 이라는 이름으로 알람이 발생됩니다.\n UseYN: 임계 값을 설정하고 사용하더라도 필요시 해당 기능을 OFF 할 수 있는 기능입니다. 시스\n템 점검 또는 관리 시에 사용자가 인지하고 있는 알람이라면 해당 지표의 알람을 수동으로 OFF 할\n수 있습니다.",
+    "section": "16",
+    "page_start": 16,
+    "page_end": 16
+  },
+  {
+    "id": "ezis_13",
+    "text": "17 / 109\nEZIS User Manual v1.11.18.2769\n Server Event\n 임계 값 설정이 존재하지 않는 알람의 경우, 이 항목에서 설정할 수 있습니다. 예를 들어\n“Database Not Running”과 같이 상태 체크만 하는 알람이 해당 됩니다.\n Statname: 지표 이름을 나타냅니다. 알람이 발생하면 이 이름으로 알람이 발송 됩니다.\n Event Level: 알람이 발생 할 경우, 여기에 지정된 알람 수위의 명칭이 발송 됩니다.\n Use YN: 알람이 지속되거나 사용자가 인지하고 있는 알람이라면 잠시 알람 기능을 사용하지 않을\n수 있습니다.",
+    "section": "17",
+    "page_start": 17,
+    "page_end": 17
+  },
+  {
+    "id": "ezis_14",
+    "text": "2.5. Monitoring > Cloud Group\nCloud 서비스 API 연동 정보를 설정할 수 있습니다.\n Cloud Group\n 화면 좌측의 Cloud Group탭에서 그룹을 생성, 수정, 삭제 할 수 있습니다.\n Machine Type: Monitoring > Server Group에서 지정한 Machine Type과 동일한 Type입니다.\n Cloud ID: 그룹 명을 입력합니다.\n Details - AWS EC2, AWS RDS\n Type: 두가지 Type으로 AWS를 연결할 수 있습니다. Type이 IAM_ROLE인 경우에는 Amazon에서\nIAM Role 권한을 지정하여 주어야 합니다. “IAM ROLE”을 지정하여 AWS 모니터링 하는 경우에는\naccess key와 secret key 값이 주기적으로 변경되기 때문에 보다 보안상 권장합니다. Type을 “KEY”\n로 지정하는 경우에는 AWS 의 access key 와 secret key 를 사용하기 때문에 보안상 주의를 요합니\n다. 필요한 경우에 선택하여 사용 할 수 있습니다.\n Region: API에 사용할 Region을 선택해 주세요. (AWS 에서 확인하세요)\n AccessKey: AccessKey를 입력해 주세요. (AWS 에서 확인하세요)\n SecreKey: SecreKey를 입력해 주세요. (AWS 에서 확인하세요)\n Details - Azure\n Directory: Microsoft Entra 애플리케이션이 위치한 디렉터리 ID를 입력해 주세요.\n Application ID: Microsoft Entra 애플리케이션 ID를 입력해 주세요.\n Secret ID: Microsoft Entra 애플리케이션의 클라이언트 비밀 ID를 입력해 주세요.\n Secret Value: Microsoft Entra 애플리케이션의 클라이언트 비밀 값을 입력해 주세요.",
+    "section": "2.5",
+    "page_start": 18,
+    "page_end": 18
+  },
+  {
+    "id": "ezis_15",
+    "text": "2.6. Monitoring > Server Management\n Session Filter\nSession filter에 등록한 내용은 Session 을 수집할 때 제외하고 수집합니다.\n Column: Session 컬럼 명\n Value: 필터 내용\n Capacity OS Disk\n모니터링 대상 서버의 OS 자원 중 Disk 용량 알람을 설정할 수 있는 화면입니다.\n Type: “Capacity OS Disk”로 선택하는 경우, 등록된 File System 항목(sum) 기준으로 계산하여 용량\n정보 알람에 사용됩니다. “Capacity OS Disk – Mount” 로 설정된 경우 Mount 항목 기준으로 용량을\n계산합니다\n Active: 설정 활성화 유무, 활성화 시 알람으로 발생합니다.",
+    "section": "2.6",
+    "page_start": 19,
+    "page_end": 19
+  },
+  {
+    "id": "ezis_16",
+    "text": "20 / 109\nEZIS User Manual v1.11.18.2769\n Threshold: 전체 대비 사용률을 입력합니다. 단위는 %입니다.\n Exclusion List: 여기에 표시된 경로는 임계 치 알람 계산시 제외 됩니다. 알람을 받고 싶지 않는\n경우 추가하세요\n Individual List: Type 선택에 따른 항목 중 개별적으로 임계 치 설정이 필요한 경우 사용할 수 있\n습니다.\n예시",
+    "section": "20",
+    "page_start": 20,
+    "page_end": 19
+  },
+  {
+    "id": "ezis_17",
+    "text": "21 / 109\nEZIS User Manual v1.11.18.2769\n 발생 Event\n /mnt/docker_hdd: 22.86%로 Warning Event 발생\n /mnt/docker_shared: 22.86%로 Warning Event 발생\n /var/log/docker: 2.36%로 Event 없음\n /: 64.62%로 Critical Event 발생",
+    "section": "21",
+    "page_start": 21,
+    "page_end": 20
+  },
+  {
+    "id": "ezis_18",
+    "text": "2.8. Monitoring > Logging Info\n제품이 모니터링 대상 서버와 Query 기반으로 통신을 하고 있습니다. 각각의 기능 별로 Query를\n보내어 결과를 받아는 주기를 관리 할 수 있습니다.\n성능 데이터의 수집 주기가 짧을수록 수집하는 데이터 량이 증가합니다. 반대로 수집 주기가 길어\n지면 수집하는 데이터 량이 감소합니다.\n이 정보는 제품이 업그레이드 될 때 마다 내용이 추가될 수도 있습니다\nObject ID Cycle Unit UseYN Description\nACTIVESESSION 5 Second DEFAULT “Y” Agent 설치 시 DMA로 수집\nALERTLOG 1 Minute DEFAULT “Y” Oracle Directory Read\nARCHIVE_LOG_SIZE 1 Hour DEFAULT “N”\nASH 1 Minute DEFAULT “N”\nASM_SIZE_INFO 24 Hour DEFAULT “N”\nAWS_STAT 1 Minute DEFAULT “Y”\nBINDCAPTURE 1 Minute DEFAULT “Y”\nCHECK_DB_CONNECTION 1 Second DEFAULT “Y”\nDBAUSERS 1 Hour DEFAULT “Y”\nIOSTATFUNCTION 1 Minute DEFAULT “Y”\nLOCK 5 Second DEFAULT “Y” Agent 설치 시 DMA로 수집\nOS_DISKSPACE 1 Hour DEFAULT “Y” Agent Only\nOS_PROCESS 1 Minute DEFAULT “Y” Agent Only\nPARAMETER 24 Hour DEFAULT “Y”\nPX_SESSION 5 Second DEFAULT “Y”\nRBS 1 Minute DEFAULT “Y”\nSEGMENTS 23 Hour DEFAULT “Y”\nSESSION_CONNECT_INFO 5 Second DEFAULT “N”\nSESSION_LONGOPS 1 Minute DEFAULT “Y”\nSQLPLAN 1 Minute DEFAULT “Y”\nSQLTEXT 30 Second DEFAULT “Y” Agent Only\nSTAT 5 Second DEFAULT “Y” Agent Only\nSYSMETRIC 50 Second DEFAULT “Y”\nTABLESPACE 1 Hour DEFAULT “Y”\nUSER_OBJECT 1 Hour DEFAULT “Y”\nUSER_STAT 5 Second DEFAULT “N”",
+    "section": "2.8",
+    "page_start": 22,
+    "page_end": 22
+  },
+  {
+    "id": "ezis_19",
+    "text": "23 / 109\nEZIS User Manual v1.11.18.2769\n ACTIVESESSION: 세션 정보를 수집합니다. Agent를 설치한 경우 DMA방식으로 수집합니다.\n ALERTLOG: 오라클 alert 로그를 수집합니다. Settings > Advanced > Logging Info > Alert Log 탭에\n서 Event Filter에 등록된 키워드 만을 수집합니다.\n AWS환경의 경우 Query 방식으로 수집합니다.\n Agent 를 설치한 경우에는 Agent에서 물리적 log 파일을 읽어서 수집합니다.\n 만약 Agent가 설치가 불가능 한 경우에는 해당 매뉴얼의 Monitoring > Server를 확인하여\n접근 권한을 부여해야 합니다.\n ARCHIVE_LOG_SIZE: 설정한 시간 단위 동안 쌓인 아카이브 로그 량에 도달하면 알람을 발생합\n니다. 알람을 위해서 이 기능을 켜고 끌 수 있습니다.\n ASH: 오라클의 Active Session History 를 수집하여 볼 수 있는 기능입니다. ASH 의 수집 용량이 과\n다하여 설정한 시간만 저장합니다. 이 설정을 확인하려면 Settings > Advanced > General >\nRepository DB 화면의 Storage - ASH에서 확인 할 수 있습니다.\n 수집되는 정보량이 많아 Repository DB 에서 처리하는데 부하가 발생하는 경우 Memory\nDB 를 별도 설치하여 빠른 결과를 볼 수 있습니다. Memory DB 설치 관련하여 담당 엔지\n니어에게 요청하십시오.\n ASM_SIZE_INFO: ASM 구성인 경우 해당 정보를 수집합니다.\n AWS_STAT: AWS상의 지표를 수집합니다. AWS는 기본적으로 1분에 한번 지표가 갱신됩니다. OS\n지표를 수집할 수 있으나 AWS 호출시 비용이 발생할 수 있으니 유의해주십시오.\n BINDCAPTURE: Query 의 Bind 값을 수집합니다. 기본적으로 오라클에서는 15 분 주기로 내용이\n갱신됩니다.\n CHECK_DB_CONNECTION: 오라클이 구동되고 있는지 상태를 확인할 수 있는 기능으로 특정\nQuery를 보내 응답시간을 확인하여 DB의 활성 상태를 모니터링 할 수 있습니다.\n DBAUSERS: dba users 정보를 수집하여 User의 상태를 시간대별로 모니터링을 할 수 있습니다.\n IOSTATFUNCTION: 오라클의 IO 상태를 수집하여 보여줍니다.\n LOCK: 오라클 Lock 정보를 수집하여 표시합니다. Agent 를 사용하는 경우 Agent 에서 DMA 방식으\n로 해당 정보를 수집하며 Agent가 설치가 안되어 있는 경우, Query 방식으로 수집합니다.\n OS_DISKSPACE: OS 에 설치된 Disk 사용량 및 정보를 수집합니다. 이 기능은 Agent 가 설치된 경\n우에만 수집합니다.\n OS_PROCESS: 모니터링 서버의 Process 목록을 수집합니다. 내용이 많은 경우 CPU 사용 율이 특\n정 값 이상만 수집할 수 있습니다. 해당 설정은 Settings > Logging Info > Agent 탭에서 OS Process\nCPU Filter에서 설정할 수 있습니다. 단위는 % 입니다.\n PARAMETER: 모니터링 대상 서버의 Parameter 값을 수집합니다.\n PX_SESSION: Oracle의 PQ(parallel query, 병렬 쿼리)를 수집합니다.\n RBS: rollback segment 정보를 수집합니다\n SEGMENTS: 모니터링 대상 서버의 Segments를 수집합니다.",
+    "section": "23",
+    "page_start": 23,
+    "page_end": 23
+  },
+  {
+    "id": "ezis_20",
+    "text": "24 / 109\nEZIS User Manual v1.11.18.2769\n SESSION_CONNECT_INFO: Session 수행 시 관련된 Connection 정보를 수집합니다.\n SESSION_LONGOPS: Session Longops 정보를 수집하여 보여줍니다.\n SQLPLAN: SQL 의 실행계획을 수집합니다. 제품이 기동 된 시간 이후에 발생한 Plan 를 수집합니\n다. 다만 수집된 Plan 을 찾을 수 없는 경우 실시간으로 Plan 존재 유무를 확인하여 Direct 로 수집\n하는 기능이 있습니다.\n SQLTEXT: SQL 구문과 관련 통계 정보를 수집합니다. Agent 를 설치한 서버의 경우 DMA 방식으로\n수집합니다. Plan과 마찬가지로 수집된 SQL 정보를 찾을 수 없는 경우에는 실시간으로 SQL 정보를\n확인하여 Direct로 수집하여 볼 수 있는 기능이 있습니다.\n STAT: 오라클의 Stat 정보를 주기적으로 수집합니다. Agent 가 설치된 서버의 경우에는 DMA 방식\n으로 성능 지표를 수집하고 있습니다.\n SYSMETRIC: sysmetric 정보를 수집하여 metric_name 별로 성능 지표를 볼 수 있습니다.\n TABLESPACE: 테이블 용량 정보를 수집하여 모니터링 할 수 있습니다.\n USER_OBJECT: 변경이 발생한 DBA_OBJECTS 만을 수집하여 언제 변경 이력이 발생했는지 확인\n할 수 있습니다.\n USER_STAT: 모니터링을 위한 별도의 Query를 등록하여 지표화 할 수 있습니다.\n Exclude Server\n성능 데이터 수집 시, 특정 서버는 성능 데이터 수집을 하지 않을 수 있습니다.\n“Exclude Server” 버튼을 클릭하여 제외할 서버를 추가 또는 삭제할 수 있습니다\n Server ID: 모니터링 대상 서버\n Object ID: 제외하고자하는 성능 데이터 기능",
+    "section": "24",
+    "page_start": 24,
+    "page_end": 24
+  },
+  {
+    "id": "ezis_21",
+    "text": "2.9. Monitoring > Stat Name\n제품에서 사용하는 모든 지표를 관리 할 수 있습니다. 지표 종류는 다음과 같습니다\nStatType Description\nOracle Database 기본 지표\nOracle Custom Database Custom 지표\nServer Event 임계 치 지정 지표\nServer Event(without threshold) 이벤트 수준 지정 지표\nServer Event(force) 강제 발생 이벤트 지표\nServerOS OS 지표 (Agent연동)\nProduct Indicators 제품 이벤트\nAWS EC2 AWS EC2 API 연동 지표\nAWS RDS AWS RDS API 연동 지표\nAZURE RDS Azure API 연동 지표\n Oracle Custom\nOracle 성능 지표를 기준으로 제품에서 별도로 생성한 지표입니다. 계산식은 아래와 같습니다\nstat_id Stat Name Description\n-1010000001 Library Cache Get Hit % 라이브러리 캐시에 이미 적재된 SQL커서를 실행\n하거나 오브젝트정보를 읽으려 할 때 커서 또는\n오브젝트정보가 Heap영역에서 찾아지는 비율\n-1010000002 Library Cache Pin Hit % 라이브러리 캐시에 이미 적재된 SQL커서를 실행\n하거나 오브젝트정보를 읽으려 할 때 커서 또는\n오브젝트정보가 Heap영역에서 찾아지는 비율\n-1010000003 Memory Usage %\n-1010000004 Latch Hit % Latch 경합없이 첫번째 시도에서 곧바로 래치를\n획득한 비율\n-1010000005 Buffer Nowait % 버퍼 블록을 읽으려 할 때, buffer busy waits대기\n없이 곧바로 읽기에 성공한 비율\n-1010000006 Redo Nowait % Redo로그를 기록할 공간을 요청하지 않고 곧바로\nRedo 엔트리를 기록한 비율\n-1010000007 Buffer Hit % 디스크 읽기를 수반하지 않고 버퍼캐시에서 블록\n찾기에 성공한 비율\n-1010000008 Soft Parse % 실행계획이 라이브러리 캐시에서 찾아져 하드",
+    "section": "2.9",
+    "page_start": 25,
+    "page_end": 25
+  },
+  {
+    "id": "ezis_22",
+    "text": "26 / 109\nEZIS User Manual v1.11.18.2769\nParsing을 일으키지 않고 SQL을 수행한 비율\n-1010000009 Execute to Parse % Parse Call없이 곧바로 SQL을 수행한 비율. 즉,\n커서를 애플리케이션에서 캐싱 한 채 반복 수행한\n비율\n-1010000010 Parse CPU to Parse Elapsed % Parsing 총 소요 시간 중 CPU time이 차지한 비\n율. Parsing에 소요된 시간 중 실제 일을 수행한\n시간 비율\n-1010000011 Non-Parse CPU % SQL을 수행하면서 사용한 전체 CPU time중\nParsing 이외의 작업이 차지한 비율\n-1010000012 In-memory Sort % 전체 소트 수행횟수에서 In-Memory방식으로 정\n렬한 비율\n-1010000013 Data Dictionary Hit Ratio 메모리에 이미 있는 사전 데이터 에 대한 요청의\n백분율로 측정 된 사전 캐시 효율성\n-1010000014 Active Sessions 활성 세션 은 데이터베이스가 무언가를 하기를 기\n다리는 세션\n-1010000015 Total Wait Session의 wait의 합계를 지표 화함\n-1010000016 SessionEvent/db file scattered V$session의 event 컬럼 중에 ‘db file scattered\nread read’의 문자열이 포함된 row수\n-1010000017 SessionEvent/log file sync V$session의 event 컬럼 중에 ‘log file sync’의\n문자열이 포함된 row수\n-1010000018 SessionEvent/library cache pin V$session의 event 컬럼 중에 ‘library cache pin’\n의 문자열이 포함된 row수\n-1010000019 SessionEvent/Enq V$session의 event 컬럼 중에 ‘Enq’의 문자열이\n포함된 row수\n-1010000020 Lock Count Lock이 걸린 개수\n-1010000021 Block Changes Session 수집 시 Block Changes가 걸려 있는\nsession의 수\n-1010000022 gc cr request gc cr request\n-1010000023 gc cr multi block request gc cr multi block request\n-1010000024 enqueue:TX enqueue:TX\n-1010000025 library cache pin library cache pin\n-1010000026 library cache lock library cache lock\n-1010000027 Inactive Session Count Inactive Session 수\n-1010000028 ElapsedTime(Max) sec 쿼리 중에 지연시간이 긴 SQL 알람\n-1010000029 RMAN Process RMAN Process 진행 경과 시간",
+    "section": "26",
+    "page_start": 26,
+    "page_end": 26
+  },
+  {
+    "id": "ezis_23",
+    "text": "27 / 109\nEZIS User Manual v1.11.18.2769\nElapsedTime(minute)\n-1010000030 Archive Log Size for duration 지정된 주기 동안의 Archive Log 량 알람\n(Mbyte)\n-1010000031 Literal SQL Count Bind 없이 유입되는 쿼리\n-1010001001 Elapsed Time/Job/Session 제품 내부에서 session 수집하는데 걸린 시간으로\n제품이 원활히 동작하는지 확인 할 수 있음\n-1010001002 Elapsed Time/Queue/Session 제품 내부에서 Session 을 수집하여 내부 Queue\n에 저장하는데 걸린 시간\n-1010001003 Elapsed Time/Queue/SqlDetail 제품 내부에서 SQL을 수집하여 내부 Queue에 저\n장하는데 걸린 시간\n-1010001004 Elapsed Time/Queue/SesStat 제품 내부에서 SesStat 을 수집하여 내부 Queue\n에 저장하는데 걸린 시간\n-1020000001 Large Transactions In Progress Transactions이 끝나지 않고 대기 중인 Session\n의 수를 지표화\n-1020000002 alertlog Oracle의 alertlog 을 지표화 함\n Product Event Stat\n제품에서 발생하는 이벤트 성 지표를 별도의 지표로 관리합니다.\nstat_id Stat Name Description\n-1040000001 Process Start 제품의 Process가 구동 상태\n-1040000002 Process Stop 제품의 Process가 정지 상태\n-1040000003 Process Dead 제품의 Process가 Dead 상태\n-1040000004 Process OutOfMemory 제품의 Process에서 OOM 발생\n EZIS 제품은 Java 기반으로 구동됩니다. 따라서 Java 에서 사용하는 memory 를 할당하여 사용하는\n데, 운용 중에 자체 memory 가 부족하여 “Out of Memory” 오류가 발생하는 경우, 스스로 할당\nmemory 를 증가시키며 제품을 재 기동 시킵니다. 이런 경우 Process Start, Process Stop 메시지가\n발생합니다.\n 모니터링 대상 서버의 임계 치를 수정하거나 서버 정보를 수정하는 경우에도 내부적으로 관리하는\nProcess가 재시동 되며 해당 메시지를 발생하게 됩니다.\n Process Start: 제품이 관리하는 Process가 기동 되는 경우 알람 발생합니다.\n Process Stop: 제품이 관리하는 Process가 중지 되는 경우 알람 발생합니다.\n Process Dead: 제품이 관리하는 Process가 Dead된 경우 알람 발생합니다.\n Process OutOfMemory: 제품 구동을 위한 Memory가 부족하면 OOM 알람 발생합니다.",
+    "section": "27",
+    "page_start": 27,
+    "page_end": 27
+  },
+  {
+    "id": "ezis_24",
+    "text": "28 / 109\nEZIS User Manual v1.11.18.2769\n StatName\n Statid: Oracle 의 stat_id 입니다. 오라클의 v$statname의 stat_id와 동일합니다. 다만 Stat_type이\n제품에서 만든 성능 지표인 경우에는 음수가 붙어 있습니다.\n Stat Name: 지표의 이름을 표시합니다. 이름은 변경할 수 없으며 제품내 어떤 화면에서도 보여지\n지 않습니다. 다만 제품내 화면에서는 Display Name을 사용하되 Display Name이 없는 경우에 한해\n서 Stat Name을 보여주고 있습니다\n Stat Type: 지표의 특성 및 용도 별 로 제품에서 구분하고 있습니다. (Statname 표 참조)\n Display Name: 제품에서는 모든 화면에 지표의 이름을 Display Name 으로 표시하고 있습니다. 다\n만 Display Name이 없는 경우에 한해서 Stat Name을 사용합니다.\n Procession Type: 성능 지표를 수집한 이후에 어떻게 처리되는지에 관련한 설정입니다.\n OFF: 해당 지표의 성능 데이터 수집 하지 않음\n ON: 해당 지표이 성능 데이터를 수집하여 실시간 화면과 분석 화면에서 사용함\n ON(Exclude Activity): 해당 지표를 수집하여 실시간에서 사용하지 않으며 오로지 분석 화\n면에서만 사용함\n Display: 해당 지표를 화면에서 Sigma 또는 Delta 값으로 표시할 것인지 선택합니다. 대부분의 백\n분율 지표를 제외하고는 DELTA 값을 많이 사용합니다.\n Stat Name Event\n임계 값이 없는 이벤트 성 동작과 관련된 지표를 관리합니다.\n Statid: 제품에서 관리하는 지표 아이디 값입니다.\n Stat Name: 지표의 이름을 표시합니다. 이름은 변경할 수 없으며 제품내 어떤 화면에서도 보여지\n지 않습니다. 다만 제품내 화면에서는 Display Name을 사용하되 Display Name이 없는 경우에 한해\n서 Stat Name을 보여주고 있습니다.\n Stat type: 지표의 특성 및 용도 별로 제품에서 별도로 구분하고 있습니다. (Statname 표 참조)\n Display Name: 제품에서는 모든 화면에 지표의 이름을 Display Name 으로 표시하고 있습니다. 다\n만 Display Name이 없는 경우에 한해서 Stat Name을 사용합니다.",
+    "section": "28",
+    "page_start": 28,
+    "page_end": 28
+  },
+  {
+    "id": "ezis_25",
+    "text": "29 / 109\nEZIS User Manual v1.11.18.2769\n Stat Name User\n 제품을 사용하는 사용자가 모니터링 쿼리를 등록하여 지표 화할 수 있는 메뉴입니다.\n 등록이 필요한 경우, 화면 상단의 SQL 버튼을 클릭하여 모니터링 쿼리를 작성하고 저장하면 결과\n값 row의 이름으로 지표 값이 추가 됩니다.\n 쿼리의 형식은 name과 value 형태로 쿼리를 작성해 주세요\nQuery 예시 결과값 비고\nSELECT ‘UTL_A1’, Price Column | price UTL_A1이 지표 명이 되며\nFROM {TableName} UTL_A1 | 122.98 유동적인 값인 122.98이\nWHERE A=1 value가 됨\nSELECT UTL_A2, Unit Column | Unit 여러 행이 출력되는 경우\nFROM {TableName} A1 | BX 각각 A1, A2가 지표 명이\nWHERE C=11 A2 | CR 되며 Value는 유동적으로\nBX. CR등이 됨\n “SQL” 버튼을 클릭하면 아래와 같이 편집할 수 있습니다\n 다수의 Query를 등록 할 수 있기 때문에, 필요한 경우 Query의 탭을 추가하여 등록이 가능합니다.\n 내부적인 동작은 각 탭에 등록된 Query를 UNION ALL 하게 됩니다",
+    "section": "29",
+    "page_start": 29,
+    "page_end": 29
+  },
+  {
+    "id": "ezis_26",
+    "text": "2.10. Event > Event Filter Management\n 임계 치를 설정해서 알람이 발생하는 경우, 많은 알람이 짧은 시간 동안 화면에 표시하는 것을 조\n정 할 수 있는 기능입니다.\n Description 에 이름을 만들고 주기 간격(Time)을 설정하고, 임계 치를 설정할 때 적용하면 해당 주\n기에 알람이 화면에 표시가 됩니다.\n 이 기능을 사용하면 알람을 수신하는 경우 (SMS 또는 메일 또는 다른 방법)에도 같은 주기로 동기\n화 됩니다.",
+    "section": "2.10",
+    "page_start": 30,
+    "page_end": 29
+  },
+  {
+    "id": "ezis_27",
+    "text": "2.11. Event > Product Event\n 제품에서 발생하는 알람에 대하여 관리할 수 있습니다. 제품이 예기치 않은 오류를 수반할 때 발생\n합니다.\n 해당 발생하는 지표에 대하여 사용자는 중요도에 따라서 Critical 또는 Warning 과 같은 Event Level\n을 지정하여 메시지를 수신 할 수 있습니다.\n 만약 임시로 메시지를 받고 싶지 않는 경우에는 UseYN 값을 “N”으로 설정해 놓으면 알람을 받지\n않고 중지 상태가 됩니다.",
+    "section": "2.11",
+    "page_start": 30,
+    "page_end": 30
+  },
+  {
+    "id": "ezis_28",
+    "text": "2.12. Appearance > Server Group\n제품 상단 서버 선택 컴포넌트에 그룹 별 서버를 표시할 수 있습니다. 등록한 서버가 많은 경우\n유용하게 사용할 수 있습니다.\n 전체 표시\n 그룹 선택 시\n Server Group\n 화면 좌측에서 그룹을 관리할 수 있습니다.\n Group ID: 해당 그룹 명을 입력합니다.\n Server\n Add, Delete 버튼을 클릭하여 해당 그룹에 서버를 추가, 삭제합니다.\n 그룹 미 지정 서버들은 서버 선택 컴포넌트에서 Not Assigned를 클릭하여 표시할 수 있습니다.",
+    "section": "2.12",
+    "page_start": 31,
+    "page_end": 31
+  },
+  {
+    "id": "ezis_29",
+    "text": "2.13. Advanced > General\n Repository DB\n Day(s) of Repository Storage: 제품이 자체적으로 성능지표를 수집하는 데이터 량을 조절할 수\n있는 메뉴입니다.\n기본은 7일간 데이터를 보관합니다. (Day(s) of Repository Storage)\nRecommend 버튼을 클릭하면 날짜 별로 수집한 데이터 량이 표시됩니다. 이 내용을 참고하여 수집\n주기 보관 일 수를 지정할 수 있습니다.\n Disk Size: 성능 데이터가 저장되는 디스크 파티션 크기를 입력하여 Disk Full 상황을 대비하여\nPartition 주기에서 하루 또는 이틀 치 등 성능 데이터를 삭제하는 기능입니다. Active 에 체크된 경\n우 해당 기능이 동작합니다.\n Hour(s) of Repository Storage: Repository에서 Ultra Session Snapshot 처리 시 사용하는 파티션\n에서 데이터를 보유하는 시간입니다. 단위는 시간입니다.\n Hour(s) of Repository Storage - In-Memory: In-Memory Repository에서 Ultra Session Snapshot",
+    "section": "2.13",
+    "page_start": 32,
+    "page_end": 32
+  },
+  {
+    "id": "ezis_30",
+    "text": "33 / 109\nEZIS User Manual v1.11.18.2769\n처리 시 사용하는 파티션에서 데이터를 보유하는 시간입니다. 단위는 시간입니다\n Process\n Port List: Queue process가 사용할 포트번호 범위를 설정할 수 있습니다.\n Process-Queue: Queue process가 이용할 특정한 1 개의 포트 번호를 설정할 수 있습니다.\n Memory: 제품에서 프로세스가 사용하는 메모리를 관리할 수 있습니다. 예를 들어 특정 Instance\n를 모니터링 하는 프로세스에 메모리를 증가시키거나 감소시켜 제품 성능을 조정할 수 있습니다.\n해당 메모리 사용량 수정은 고객 사별로 다를 수 있으며, 모니터링을 수일간 운영해보고 당사 엔지\n니어에게 문의하여 수정하는 것을 권고합니다.",
+    "section": "33",
+    "page_start": 33,
+    "page_end": 33
+  },
+  {
+    "id": "ezis_31",
+    "text": "34 / 109\nEZIS User Manual v1.11.18.2769\n Process-WAS\n Max Cache Count – Stat: 실시간 화면에 데이터를 빠르게 표시하기 위해서 stat 지표와 값은 지\n정한 개수(count)만큼 Memory 에 가지고 있습니다. 이 개수를 조정하여 더 필요하거나 불필요한\nCache Data를 관리 할 수 있습니다.\n Connect Timeout(sec): 실시간 데이터 모니터링을 위해서 브라우저에서 제품에 연결되는 시간을\n설정 할 수 있습니다. 특정 환경에서 연결이 지연이 발생하는 경우, 이 시간을 늘리거나 줄일 수\n있습니다. 단위는 초입니다.\n Write Timeout(sec): 실시간 데이터 모니터링을 위해서 브라우저에서 제품에 연결되어 데이터를\nWrite 하는 시간입니다. 마찬가지로 특정 환경에서 브라우저에 데이터가 표시 되지 않는 시간을 조\n정 할 수 있습니다. 단위는 초입니다.\n Idle Timeout(sec): 실시간 데이터 모니터링을 위해서 브라우저가 제품에 연결되어 데이터 처리를\n기다리는 시간입니다. 단위는 초입니다.\n Max Binary Message Size: 실시간 데이터 모니터링을 위해서 브라우저에 데이터를 1 회에 보낼\n수 있는 byte 를 지정할 수 있습니다. 예를 들어 session 이 많은 경우 값을 늘려서 사용할 수 있습\n니다.\n Max Text Message Size: 실시간 데이터 모니터링을 위해서 브라우저에 데이터를 1 회에 보낼 수\n있는 byte를 지정할 수 있습니다. 예를 들어 session이 많은 경우 값을 늘려서 사용할 수 있습니다.",
+    "section": "34",
+    "page_start": 34,
+    "page_end": 34
+  },
+  {
+    "id": "ezis_32",
+    "text": "35 / 109\nEZIS User Manual v1.11.18.2769\n Minimum Count: 실시간 데이터를 처리할 때 Pool 을 사용합니다. 사용자가 많은 경우 값을 조정\n할 수 있습니다.\n Maximum Count: 실시간 데이터를 처리할 때 Pool 을 사용합니다. 사용자가 많은 경우 값을 조정\n할 수 있습니다.\n Ping(sec): 실시간 통신 유지를 위한 Ping 메시지 처리 주기를 설정할 수 있습니다. 단위는 초입니\n다.\n Idle Timeout(sec): 실시간 통신 유휴 상태가 설정된 시간에 도달하는 경우 접속을 종료합니다.\n단위는 초입니다.\n Servlet: 서블릿 통신 시 패킷 압축을 할 수 있습니다.\n WebSocket: 웹 소켓 통신 시 패킷 압축을 할 수 있습니다.\n Compression criteria length: 패킷 압축 시 기준 크기를 지정합니다. 평문의 길이가 설정한 길이\n보다 작은 경우 압축하지 않습니다.",
+    "section": "35",
+    "page_start": 35,
+    "page_end": 35
+  },
+  {
+    "id": "ezis_33",
+    "text": "36 / 109\nEZIS User Manual v1.11.18.2769\n Login\n PBKDF2: 로그인 대입 공격 방어 알고리즘 설정을 할 수 있습니다.\nExecution Time(ms): 로그인 시 입력한 시간 동안 지연이 발생합니다. 값 입력 후 Calculate를 클릭\n합니다. 단위는 밀리 초입니다.\n User Password Change Cycle(day): 주기적으로 사용자 비밀번호 변경을 알리는 Dialog 를 표시\n합니다. 해당 기능이 필요 없는 경우 시간을 늘려서 사용할 수 있습니다. 단위는 일입니다.\n Use Special Characters rules in User Passwords: 사용자 비밀번호를 대소문자, 특수문자, 숫자\n조합으로 8자 이상으로 제한할 수 있습니다.\n Access Page After Login: Ezis 제품에 로그인한 후 원하는 화면에 바로 접속 할 수 있습니다. 예\n를 들어 Performance 화면을 바로 접속 하려면 “/app/performance”를 입력합니다. Users 메뉴에서는\n사용자마다 경로를 별도로 지정할 수 있습니다.",
+    "section": "36",
+    "page_start": 36,
+    "page_end": 36
+  },
+  {
+    "id": "ezis_34",
+    "text": "37 / 109\nEZIS User Manual v1.11.18.2769\n Event\n Auto event clear time(min): 임계 치를 설정하여 알람이 발생하는 경우, 해당 알람을 자동으로\n해소하는 기능입니다. 지정된 분(min) 이후에는 알람을 인지한 것으로 보고 Recovery 를 자동으로\n합니다. 이 기능을 사용하더라도 알람 발생시 문자 또는 SMS 등으로 수신하는 경우에는 영향이 없\n습니다.\n Send Method Filter: 문자 또는 SMS등으로 동일 알람이 너무 많이 오는 경우 특정 분 동안 N개\n만 수신할 수 있는 필터 기능입니다. 20min / 3 count 로 설정되어 있으면 20분동안 동일 알람은 3\n회만 수신하게 됩니다.",
+    "section": "37",
+    "page_start": 37,
+    "page_end": 37
+  },
+  {
+    "id": "ezis_35",
+    "text": "2.14. Advanced > Logging Info\n Target\n 모니터링 대상 서버에 제품이 연결되어 성능 데이터를 수집합니다. 연결에 관련된 설정을 지정 할\n수 있습니다. 현재는 서버 별로 설정 할 수 없으며, 일괄 적용 됩니다.\n Connect Timeout(sec): 제품이 모니터링 대상 서버에 연결될 때 Timeout 시간을 지정할 수 있습\n니다. 단위는 초입니다.\n Read Timeout (sec): 제품이 모니터링 대상 서버와 연결 된 후, 쿼리 후 ResultSet을 읽는 시간을\n설정 할 수 있습니다. 단위는 초입니다.\n Min Connections: 제품이 모니터링 대상 서버에 접속할 때 DB Pool 방식을 사용합니다. 연결할 최\n소 개수를 지정할 수 있습니다. 단위는 EA입니다.\n Max Connections: 제품이 모니터링 대상 서버에 접속할 때 DB Pool 방식을 사용합니다. 연결할\n최대 개수를 지정할 수 있습니다. 단위는 EA입니다.\n Min Connections for Check: 제품이 모니터링 대상 서버에 Connection 확인 기능과 관련하여 접\n속할 때 DB Pool 방식을 사용합니다. 연결할 최소 개수를 지정할 수 있습니다. 단위는 EA입니다.\n Max Connections for Check: 제품이 모니터링 대상 서버에 Connection 확인 기능과 관련하여 접\n속할 때 DB Pool 방식을 사용합니다. 연결할 최대 개수를 지정할 수 있습니다. 단위는 EA입니다.\n 제품 구동 시 서버 부하가 높은 경우, 모니터링 대상 서버 접속이 원활하지 않아 Connection 확인\n기능 오작동 소지가 있습니다.\n설정 시간 동안 설정 횟수만큼 연속으로 정상 접속되는 않는 경우 Connection 확인 기능을 보류합\n니다.",
+    "section": "2.14",
+    "page_start": 38,
+    "page_end": 38
+  },
+  {
+    "id": "ezis_36",
+    "text": "39 / 109\nEZIS User Manual v1.11.18.2769\n연속으로 정상 접속되지 않더라도 설정 시간을 초과하는 시점부터 Connection 확인 기능은 활성화\n됩니다.\n Check DB Connection Count: 연속으로 정상 접속 여부를 확인할 횟수를 설정합니다. (0으로 설\n정 시 기능 미사용)\n Check DB Connection Limit(sec): 연속 접속 여부를 확인할 시간을 설정합니다. 단위는 초입니다.\n Failure Duration(sec) for full suspension: 설정된 시간 동안 연속하여 Logging Info 기능 중\nTHREADS, STAT 두 기능의 수집 오류가 발생하는 서버에 대한 모든 Logging Info 기능이 중지됩니\n다. 단위는 초입니다. (0으로 설정 시 기능 미사용)\n모든 Logging Info 기능 중지 시 알림 영역에 해당 서버 명이 표시됩니다.\nLogging Status Dialog 에서 Full Suspended 아이콘을 클릭하여 중지 시간을 확인할 수 있으며\nResume 을 클릭하여 모니터링 재개 할 수 있습니다. 모니터링 가능 여부는 대상 서버에 직접 접속\n하여 확인이 필요합니다.\n Automatic Resume(sec): 모니터링 재개를 사용자가 직접 수행하지 않고 자동화 필요 시 설정합\n니다. 모든 Logging Info 기능 중지 시점 이후 설정된 시간 이후 자동 모니터링 재개합니다. 단위는\n초입니다.\n Number of Connection Attempts: 위 자동 모니터링 재개 시 설정한 횟수만큼 연속하여 정상 접\n속 시 모니터링을 재개합니다. 그렇지 않은 경우 자동 재개 설정한 시간 이후 재시도합니다.\n Read timeout count for logging suspension: 각 Logging Info 기능별 쿼리 시 Read Timeout 오\n류가 연속하여 설정한 횟수만큼 발생 하는 경우 해당 기능은 중지됩니다.\n이와 관련하여 Thread 수집 기능 수행 시 실행 중인 ezis 세션들의 쿼리를 분석하여 중지된 기능이\n실행한 쿼리가 존재하지 않는 경우 해당 기능은 재개됩니다.\n Delay(sec) for logging suspension: Logging Info 기능 별 수집 오류 발생 시 마다 오류 Count를",
+    "section": "39",
+    "page_start": 39,
+    "page_end": 38
+  },
+  {
+    "id": "ezis_37",
+    "text": "40 / 109\nEZIS User Manual v1.11.18.2769\n Session\n Inactive: 오라클 Session 수집 시 Inactive 도 수집할 것인지 선택할 수 있습니다. 해당 기능이\nOFF 되어 있더라도 Transaction이 걸린 Session은 수집합니다.\n System User: 오라클 Session 수집 시 user 가 SYS 또는 SYSTEM 인 경우 수집할 것인 것 선택할\n수 있습니다. 해당 기능이 OFF 되어 있으면 SYSTEM user의 Session은 수집하지 않습니다.\n Activity\n Value Decimal Scale Length: 성능 지표의 값이 소수점 이하 수 자리가 나오는 경우 설정된 값\n이하로 잘라내기 하는 설정입니다. 예를 들어 값이 123.123456 으로 표시가 되는 값이 있다고 가정\n하고 설정이 2로 되어 있으면 수집된 값은 123.12로 수집을 합니다.\n Filter - Elapsed Time: 실시간 화면에 표시하는 Threads 중 Elapsed Time 이 설정 값 미만인\nThread는 표시하지 않습니다. 단위는 밀리 초입니다.\n Substring Length – Session: Activity 화면 (Session)에서 보여지는 SQL Text의 길이를 설정할 수\n있습니다. 너무 긴 구문인 경우, 화면에 표현 시 브라우저의 성능 저하 문제로 길이를 제한하고 있\n습니다\n Substring Length – Lock: Activity 화면 (Lock)에서 보여지는 SQL Text의 길이를 설정할 수 있습니\n다. 너무 긴 구문인 경우, 화면에 표현 시 브라우저의 성능 저하 문제로 길이를 제한하고 있습니다.\n Substring Ellipsis: SQL Text 구문을 특정 길이만큼 잘라서 보여주는 경우, 설정된 문자열을 구문\n뒤에 붙여서 표현합니다.",
+    "section": "40",
+    "page_start": 40,
+    "page_end": 40
+  },
+  {
+    "id": "ezis_38",
+    "text": "41 / 109\nEZIS User Manual v1.11.18.2769\n Agent\n Failover: Agent 통신 종료 시 Query방식으로 성능 데이터 수집을 할 수 있습니다.\n OS Process CPU Filter: Agent에서 수집하는 OS 프로세스 중 CPU 사용률이 설정 값 이하인 프로\n세스는 저장되지 않습니다.\n Plan Changed\nOracle 에서 발생하는 sql_id에 대하여 Plan 변경을 추적할 수 있습니다.\n Days: 수집된 sql_id 에 대하여 지정된 날짜 내에서 변경이 일어난 plan 을 찾습니다. 예를 들어\nsql_id 의 plan 정보가 지정된 날짜에 유입된 적이 있으면 변경 이력을 확인하고 알람을 발생 시킵\n니다.\n SQLText Substring Length: Plan 변경 알람을 발송할 때 SQL 구문을 일부 보여줍니다. 원래 SQL\n구문이 길기 때문에 앞 부분 자리 수를 잘라서 보여줍니다.\n SQLText Substring Ellipsis: SQLText 를 알람으로 발송할 때 앞 부분을 잘라서 보여주게 되며 나\n머지 구문은 설정된 문자열이 들어가게 됩니다.\n Plan 변경 이력은 “SYS” 계정에서 변경된 SQL의 Plan 정보는 알람으로 발송하지 않습니다.",
+    "section": "41",
+    "page_start": 41,
+    "page_end": 41
+  },
+  {
+    "id": "ezis_39",
+    "text": "42 / 109\nEZIS User Manual v1.11.18.2769\n Alert Log\nAlert Log 수집에 대한 세부 설정을 할 수 있습니다.\n Read Timeout(sec): 쿼리 후 ResultSet을 읽는 시간을 설정 할 수 있습니다. 단위는 초입니다.\n Max Read Line Count: 쿼리 실행 시 마다 읽을 수 있는 최대 줄 수를 설정할 수 있습니다.\n Move First Position When Truncated: Log파일이 비워진 것으로 판단되는 경우 처음부터 내용을\n읽을 수 있도록 설정할 수 있습니다.\nAlert Log 내용 중 설정한 Keyword가 포함된 경우 alertlog(Staid:-1020000002) 이벤트를 발생\n시킬 수 있습니다.\n Ignore Case: Log 내용 확인 시 대소문자 구분 여부를 설정할 수 있습니다.\n Keyword: Add, Delete를 선택하여 Keyword를 추가, 삭제할 수 있습니다.\n SQL Text\nSQLText 수집 시 SQL 전체 내용 수집 여부를 설정할 수 있습니다.",
+    "section": "42",
+    "page_start": 42,
+    "page_end": 42
+  },
+  {
+    "id": "ezis_40",
+    "text": "2.15. Advanced > License\n 제품의 라이선스 파일을 등록할 수 있는 메뉴입니다.\n ‘파일 선택’에서 라이선스 파일을 선택하여 등록할 수 있습니다.\n ‘Verify’을 선택하여 라이선스 파일을 인증할 수 있습니다.\n ‘Apply’를 선택하여 인증이 완료된 라이선스 파일을 등록할 수 있습니다.\n ‘Go to Login’을 선택하여 로그인 페이지 또는 모니터링 화면으로 이동할 수 있습니다.",
+    "section": "2.15",
+    "page_start": 43,
+    "page_end": 42
+  },
+  {
+    "id": "ezis_41",
+    "text": "2.16. Plugin > Send Method\n이벤트를 전달할 방법을 선택할 수 있습니다. (별도의 Plugin을 설치하는 형태로 제공합니다.)\nEzis는 이벤트가 발생하는 경우 여러 방법으로 사용자에게 통지할 수 있습니다.\n제품을 사용하는 고객 사 마다 이벤트 통지 API가 다르므로, 이 기능을 사용하려면 협의가 필요\n합니다.\nEmail 또는 Slack, SMS등의 발송이 필요한 경우 사전 협의가 필요한 사항입니다.",
+    "section": "2.16",
+    "page_start": 43,
+    "page_end": 43
+  },
+  {
+    "id": "ezis_42",
+    "text": "44 / 109\nEZIS User Manual v1.11.18.2769\n33.. AAccttiivviittyy\n오라클 성능 지표를 실기간으로 모니터링 할 수 있는 화면입니다. 실시간은 크게 두가지 화면으로\n구성되어 지는데, Activity, Sessions 입니다.\n<3-1 Realtime screen shot>\n 기본 정보 표시\n 화면 상단에는 로그인한 사용자 정보가 표시 됩니다.\n EZIS 제품의 설정 정보 등이 변경되어 서버에 반영하거나 프로세스를 재시작 하거나 화면을 새로\n고침 해야 할 필요가 있는 경우에 알람을 표시 하고 있습니다. (종 모양)\n 아이콘 클릭하면 로그아웃, 전체화면 보기, QueryTool (쿼리 실행기), Logging Status 기능 등을\n제공합니다.",
+    "section": "44",
+    "page_start": 44,
+    "page_end": 44
+  },
+  {
+    "id": "ezis_43",
+    "text": "45 / 109\nEZIS User Manual v1.11.18.2769\n Logging Stats 기능\n 화면 상단의 버튼을 클릭하면 수집되는 성능 데이터 항목별 상태를 볼 수 있습니다.\n<서버별 수집 항목별 상태 표시>\n 성능 데이터 수집시 방식이 Query 로 수집의 경우, 성능데이터의 수집 대상이 아닌 경우에는 빈란\n또는 NA로 표시되며 상태표시 방법은 아래와 같습니다.\n 정상 수집 상태\n 대기 또는 중지 상태\n 성능 데이터 수집시 지연 발생\n Agent가 설치 된 경우 상태는 아래와 같습니다. Agent가 설정이 안되어 있다면 빈란으로 표시합니\n다.\n 연결중\n 연결 끊김\n 접속 이력 없음\n 상세 내역을 보기 위해서 해당 아이콘을 클릭 합니다. 좀더 자세한 내역을 볼 수 있습니다.",
+    "section": "45",
+    "page_start": 45,
+    "page_end": 45
+  },
+  {
+    "id": "ezis_44",
+    "text": "46 / 109\nEZIS User Manual v1.11.18.2769\n 모니터링 서버 선택\n화면 상단의 모니터링 대상 서버를 선택하면 선택된 대상 서버만을 모니터링 합니다.\n복수로 선택을 하면 선택된 모니터링 대상 서버만 실시간 화면에 그래프 등으로 표시를 합니다.\n만약 선택을 하지 않은 경우에는 화면 상단에 표시된 모든 대상 모니터링 서버를 모두 표시하고\n있습니다. 특정 서버가 부하요인으로 그래프가 상승하는 경우에는 모니터링 대상 서버 하나만 선\n택하여 집중 모니터링을 할 수 있으며, 이 기능은 상당히 유용합니다.\n 화면 저장 및 도킹 기능\n 화면 우측 상단에 총 5개의 화면을 구성하여 저장 할 수 있습니다.\n “Shared”버튼을 클릭하여 화면을 저장하는 경우, 해당 제품을 사용하는 모든 사용자에게 화면 저장\n이 공유됩니다.\n 각 그래프 요소의 제목을 드래그하여 원하는 위치로 이동하면 안내선이 나옵니다. 원하는 위치에\n옮겨 놓습니다\n예) Lock 화면탭을 이동하여 도킹\n예) 도킹 후 Lock 화면이 Session 목록과 분할 된 모습",
+    "section": "46",
+    "page_start": 46,
+    "page_end": 46
+  },
+  {
+    "id": "ezis_45",
+    "text": "47 / 109\nEZIS User Manual v1.11.18.2769\n 화면 상단의 “Save” 버튼을 클릭하여 현재 보고 있는 화면 번호에 저장을 합니다.\n 다시 로그인하여 해당 화면 번호를 클릭하면 미리 구성해 놓은 화면이 자동으로 정렬합니다\n 실시간 Transation 뷰\n 오라클 지표중에 Execute Count 값을 시각화하여 현재 실행되고 있는 개수를 표시합니다.\n 화면 중간에 Active Session (sec) 는 5 초 이하 구간, 5 초이상 10 초 이하 구간, 10 초 이상 구간의\nActive Session 의 개수를 표시합니다. (클릭 시 상세 목록 표시)\n 지표 변경\n 보고 있는 지표를 변경하여 모니터링 할 수 있습니다. 지표 이름을 클릭하면 변경 가능한 지표 목\n록이 표시되며, 마우스로 선택하면 해당 지표로 변경이 가능합니다.\n 검색 탭에서 지표를 검색하여 선택할 수 있습니다.\n 실시간으로 선택 가능한 지표 종류는 Setting 에서 설정한 지표중에 ProcessionType 이 “ON” 인 지\n표만 변경이 가능합니다. 해당 설정을 가시려면 “Setting > Monitoring > StatName”에서 설정하시면\n됩니다.",
+    "section": "47",
+    "page_start": 47,
+    "page_end": 47
+  },
+  {
+    "id": "ezis_46",
+    "text": "48 / 109\nEZIS User Manual v1.11.18.2769\n Active Session Elapsed Time view\n 모니터링 대상 서버로부터 발생하는 Active Sessions에 대하여 session 별로 Elapsed time을 시각화\n한 그래프입니다. 이 그래프를 통하여 평균 Session 의 수행 시간을 한눈에 볼 수 있습니다. 그래프\n영역에 점들이 높은 경우 Session 에 지연 요소가 발생 하고 있다는 것을 직관적으로 판단 할 수\n있습니다. 반대로 점들이 그래프 하단에 위치하고 있다면 평균 수행시간이 짧아서 문제 없이\nSession이 잘 소통 되어지고 있다고 판단할 수 있습니다.\n 지표 영역을 마우스로 드래그하면 상세 정보를 볼 수 있습니다.\n 24H 비교 그래프\n 어제와 오늘의 10분단위 구간의 데이터를 보여주는 지표입니다.\n 데이터는 1분간 MAX 값을 기반으로 10분간의 합계값입니다.\n 흐린색은 어제 구간 데이터이며 진한 색은 오늘 데이터 값을 표시합니다.\n 최근 10분 구간은 갱신중이므로 그래프가 하향하는 형태로 보일 수 있습니다",
+    "section": "48",
+    "page_start": 48,
+    "page_end": 48
+  },
+  {
+    "id": "ezis_47",
+    "text": "51 / 109\nEZIS User Manual v1.11.18.2769\n Active Sessions List\n 실시간으로 들어오는 Active Session list를 정렬 또는 필터하여 볼 수 있습니다. P/Reads나 L/Reads\n등 중요한 지표에 대하여 필터하거나 정렬하여 문제가 되는 Session 을 쉽게 찾아 원인을 제거 할\n수 있습니다.\n 해당 Session의 SID를 클릭하면 Detail 화면으로 이동합니다\n 기본값으로 Backbround Session을 자동 필터 되어 있습니다. Background Session을 보고 싶으면 체\n크 박스를 un-check 하시기 바랍니다.\n 만약 동시에 여러 Session 을 Kill 하고자 하는 경우 “Pause” 버튼을 활성화 하여 화면을 멈춘 후\nKill 하고자 하는 Session 을 선택 후 Kill 버튼을 클릭하면 다수의 Session 을 동시에 Kill 할 수 있습\n니다\n Lock\n 실시간으로 들어오는 Lock 정보를 보여줍니다.\n 동시에 여러 Lock 정보를 Kill 하려는 경우, Pause 버튼으로 화면을 멈추고 원한는 Row 를 복수로\n선택하여 동시에 Kill 할 수 있습니다.\n 만약 RAC로 구성된 Instance의 경우. Ezis에 등록된 서버만 Kill을 할 수 있습니다.",
+    "section": "51",
+    "page_start": 51,
+    "page_end": 51
+  },
+  {
+    "id": "ezis_48",
+    "text": "53 / 109\nEZIS User Manual v1.11.18.2769\n Session Detail\n Session 목록에서 선택한 Session에 대하여 상세 정보를 보여줍니다.\n SQL Text 뿐만 아니라 Plan 정보, Bind value를 볼수 있으며, 최근 5분동안의 각종 성능 지표를 볼\n수 있습니다.\n SQL Text 영역에서 SQL 구문을 정렬해서 볼 수 있으며 bind 탭에서는 해당 SQL 구문에 자동으로\nbind 변수를 삽입하였으며 복사하여 사용 할 수 있는 기능을 제공합니다\n Session Tracking :\n CPU : 이전 분단위 증감된 Delta 값을 1분 단위로 표시 합니다.\n Execute_Count : 이전 분단위 증감된 Delta 값을 1분 단위로 표시 합니다.\n Enqueue_waits : 이전 분단위 증감된 Delta 값을 1분 단위로 표시 합니다.\n Long ops: 이전 분단위 증감된 Delta 값을 1분 단위로 표시 합니다.\n Physical_Reads : 이전 분단위 증감된 Delta 값을 1분 단위로 표시 합니다.\n Session_logical_Reads : 이전 분단위 증감된 Delta 값을 1분 단위로 표시 합니다.\n Redo_size : 이전 분단위 증감된 Delta 값을 1분 단위로 표시 합니다.\n Session 텝을 클릭하면 해당 시간대의 자료를 볼 수 있습니다\n Wait : session 의 wait 지표 값 (해당 시점의 current)\n Value : 해당 session 이 수행한 v$sesstat 값 ((해당 시점의 current)\n Session : session 의 wait 지표 값 (해당 시점의 current)\n Sqlinfo : sqlarea에서 수집한 sql 정보 (해당 시점의 current)\n SQL History\n sql_id가 수행된 해당 session을 찾아서 이력을 보여줍니다\n sql_id 어떤 session 에서 수행되었는지 파악하는데 유용합니다",
+    "section": "53",
+    "page_start": 53,
+    "page_end": 53
+  },
+  {
+    "id": "ezis_49",
+    "text": "54 / 109\nEZIS User Manual v1.11.18.2769\n Open Cursor : V$OPEN_CURSOR에 해당하는 내용입니다 (실시간 정보입니다)\n Process : v$process 에서 가져온 정보를 보여줍니다 (실시간 정보입니다)\n IO : V$SESS_IO 의 정보입니다 (실시간 정보입니다)\n Lock : Lock 정보를 Tree 형태로 보여줍니다\n PQ : PQ(parallel query,병렬쿼리) Session 정보입니다 (실시간 정보입니다)\n Access : v$access 를 보여줍니다 (단 실시간으로만 제공합니다)\n Transaction : 세션에서 수행한 Transaction 정보를 보여줍니다\n Session LongOps (Long Operations) : v$session_longops 의 내용입니다. 장시간 진행되는 작업에\n대한 정보를 표시합니다. (실시간 정보입니다)\n RBS (Roll Back Segments) : 세션이 사용한 롤백 세그먼트 (언두 세그먼트)에 대한 정보를 표시\n합니다.\n Connection Info : session 의 connection Info 정보입니다. 이 기능은 Settings > Mornitoring >\nLogging Info의 SESSION_CONNECT_INFO가 활성화 되는 경우 표시됩니다.\n SQL Text : 쿼리 본몬을 볼 수 있습니다.\n SQL Info : 해당 SQL이 수행한 시점의 여러 지표를 표시합니다.\n Plan 탭은 Session Tracking 에서 선택한 시간대의 해당 sql_id 가 발생한 PLAN 정보를 보여줍니다.\n단 child_number가 여러 개인 경우 선택하여 볼 수 있습니다.\n Bind 탭은 sql_id 에 대하여 가장 가까운 시간대의 bind capture 정보를 보여줍니다. 실제로 15 분\n간격으로 수집하고 있으므로 최소 15분내의 데이터입니다\n 화면 가운데의 Kill Session 버튼을 이용하여 세션을 중지할 수 있습니다. (실시간 화면에서 사용\n가능)",
+    "section": "54",
+    "page_start": 54,
+    "page_end": 54
+  },
+  {
+    "id": "ezis_50",
+    "text": "4.1. Performance\nPerformance는 대상 모니터링 서버로부터 성능 데이터를 수집하여 일정기간 동안 저장을 하고 있\n습니다. 시간이 지났더라도 과거 시점의 성능 데이터를 확인하고 원인 분석 및 조치를 취할 수 있\n도록 제공하고 있습니다.\n수집 데이터는 기본값을 7일간 저장하고 있으며, 사용자의 물리적 disk 크기에 따라서 저장되는\n날짜를 조정 할 수 있습니다.\n 모니터링 대상 서버 선택\n 서버는 단일 서버로만 선택할 수 있으며, 복수로 선택 할 수 없습니다. 하나의 모니터링 대상 서버\n를 선택하고 상세하게 분석 할 수 있도록 구성 되어 있습니다.\n 특정 날짜의 성능 데이터 확인하기\n 특정 날짜의 성능 데이터를 확인하기 위하여 화면의 달력을 선택하여 날짜를 지정합니다. 자주 이\n용하는 오늘과 어제 날짜의 경우 “Today”, “Yesterday” 버튼을 통해 손쉽고 빠른 전환이 가능합니다.",
+    "section": "4.1",
+    "page_start": 56,
+    "page_end": 56
+  },
+  {
+    "id": "ezis_51",
+    "text": "57 / 109\nEZIS User Manual v1.11.18.2769\n 날짜 선택 영역 좌측에 시간대 선택 영역을 열고 닫을 수 있는 버튼이 있습니다. 기본값은 시간대\n선택 영역이 열린 상태입니다.\n 모니터링 시간대 설정하기\n 서버와 날짜 선택 영역 하단의 Timeline bar 는 현재 시간 기준으로 최근 3 시간의 데이터를 보여줍\n니다. Time line bar의 시간을 클릭하여 원하는 시간대의 데이터를 쉽게 볼 수 있습니다.\n Time-Sync 기능을 사용하면 화면 전환 시에도 현재 보고 있는 시점을 공유 합니다. 공유되는 영역\n은 달력으로 선택한 날짜와 Timeline bar로 선택한 시간대 입니다.\n 1 분 단위로 모니터링 가능한 화면에서는 차트를 드래그하여 분 단위 시간 선택이 가능합니다.\nTime-Sync 우측에 분 단위로 선택한 시간이 표시됩니다.\n Wait Class (sec)\n 수집된 Session 의 wait class 의 종류 별 수행 빈도를 시각화 한 그래프입니다. 이 그래프를 이용하\n면 Wait Class 별 발생 빈도를 확인할 수 있습니다.\n v$session의 seconds_in_wait 컬럼을 참고하여 표시합니다\n 10분 단위의 그래프입니다.\n SQL ElapsedTime / Wait_time (sec)\n 선택한 조회 시간대를 10 분 단위로 나누어 elapsed time 과 wait time 을 바 차트로, 당시 활동중이\n던 유저 세션 개수 (active user session count)는 선 그래프로 표시합니다.\n wait_time = elapsed_time – cpu_time\n parsing_schema_name이 'SYS','MDSYS','DBSNMP'인 것은 그래프 계산시 제외됩니다.\n V$sqlarea의 정보를 기반으로 계산하기 때문에 Session 항목으로 유입되지 않더라도 표시됩니다.",
+    "section": "57",
+    "page_start": 57,
+    "page_end": 57
+  },
+  {
+    "id": "ezis_52",
+    "text": "58 / 109\nEZIS User Manual v1.11.18.2769\n 하나의 바 차트에 마우스 커서를 오버하면 해당 10분 구간의 총 elapse time, wait time을 표시합니\n다.\n SQL(All)\n 해당 서버의 구간 별 시간대의 SQL summary 를 표시 합니다. 이 정보는 v$sqlarea 을 수집하여 수\n행한 SQL을 정확하게 표시합니다.\n Time : 조회 구간의 시간입니다.\n Module : SQL을 실행한 Module 이름입니다\n Schema : SQL을 실행한 Schema 이름입니다\n SQL ID : sql_id 값을 표시합니다. Sql_id 값을 클릭하면 SQL Detail 화면 팝업을 제공합니\n다. Sql Filder 아이콘을 클릭하면 해당 SQL이 일자별 시간대별 수행한 이력을 볼 수 있습\n니다.\n SQL Text : SQL 구문을 보여줍니다. SQL 구문이 너무 길면 조회시 부하를 유발 할 수 있\n으므로 약 200자 정도만 간단히 보여주고 있습니다.\n Elapsed_time(AVG: Sec) : 해당 SQL의 조회구간 수행 평균시간입니다.\n Execution(count) : 각 sql_id 당 조회 구간의 Delta 값입니다. 조회 기간이 10 분이라면 10\n분간의 변화량입니다\n CPU Time(AVG: Sec) : 해당 SQL 이 수행시 사용한 CPU 시간입니다. 단위는 sec 입니다.\n조회구간대의 평균값을 보여줍니다\n Wiat_time : (Elapsed_time – cpu_time) 값입니다. 해당 조회수간의 평균값입니다.",
+    "section": "58",
+    "page_start": 58,
+    "page_end": 58
+  },
+  {
+    "id": "ezis_53",
+    "text": "59 / 109\nEZIS User Manual v1.11.18.2769\n 해당 sql_id를 클릭하게 되면 SQL Detail 화면이 표시 됩니다.\n SQL Detail\n 선택한 SQL 의 각종 성능 지표를 확인 할 수 있는 2nd depth 화면입니다. SQL Text 뿐만 아니라\nPlan 정보, Bind value를 볼수 있습니다.\n 상단에 해당 서버와 SQL 아이디를 확인 할 수 있는 영역이 제공되며 날짜 선택기능을 통해 원하는\n시점의 SQL 정보를 손쉽게 확인 가능합니다.\n SQL Text 영역과 Plan 영역은 각 영역 헤더 부분의 우측 확장 버튼을 이용해 크게 보실 수 있습니\n다.\n SQL Text 영역에서 SQL 구문을 볼 수 있으며 원본 텍스트 보기, 정렬 텍스트 보기, 전문 복사 기능\n을 제공합니다. Sql text(bind) 탭에는 해당 SQL 구문에 자동으로 bind 변수를 삽입하여 제공합니다.\nSQL 구문 수정, 실시간 plan 가져오기 기능을 추가로 제공합니다.\n Sql Tracking 영역에 분 단위 tracking이 가능한 차트를 제공합니다. 차트 영역 클릭시 1분 단위 이\n동 버튼이 활성화 됩니다. 모니터링 대상은 다음과 같습니다\n disk_reads : 이전 분단위 값의 DELTA 값 입니다\n buffer_gets : 이전 분단위 값의 DELTA 값입니다\n user_io_wait_time : 이전 분단위 값의 DELTA 값으로 단위는 sec입니다\n wait_time : (Elapsed_time – cpu_time) 의 값이며 이전 분단위 값의 DELTA으로 단\n위는 sec입니다.\n elapsed_time : elapsed_time 을 executions 로 나눈 값으로 이전 분단위 값의\nDELTA값입니다 단위는 sec 입니다.",
+    "section": "59",
+    "page_start": 59,
+    "page_end": 59
+  },
+  {
+    "id": "ezis_54",
+    "text": "60 / 109\nEZIS User Manual v1.11.18.2769\n Executions : 이전 분단위 값의 DELTA 값입니다.\n Sql info 영역은 SQL Tracking에서 선택한 시간대의 sql 정보를 자세하게 보여줍니다.\n표시되는 값은 누적값이 보여집니다.\nElapsedTime 값은 elapsed_time / executions으로 계산된 값입니다\n Plan 탭은 SQL Tracking 에서 선택한 시간대의 해당 sql_id 가 발생한 PLAN 정보를 보여줍니다.\nchild_number가 여러 개인 경우 선택하여 볼 수 있습니다.\n Bind 탭은 sql_id에 대하여 가장 가까운 시간대의 bind capture 정보를 보여줍니다. 실제로 15분 간\n격으로 수집하고 있으므로 최소 15분내의 데이터입니다.\n 실시간으로 Plan을 확인 하는 기능\n SQL Detail 화면에서 “SQL text (bind)” 에서 해당 SQL의 실시간 Plan 정보를 확인 할 수 있습니다.\n “Real Time Plan” 버튼을 클릭 하면 Plan을 실시간으로 가져오게 됩니다.\n 실시간으로 다음과 같은 구문을 서버에 실행합니다. EXPLAIN PLAN FOR {SQL구문}\n Bind 가 있는 쿼리의 경우 “bind” 탭에서 자동으로 bind 하거나 SQL Text 편집을 이용해서 구문을\n수정할 수 있습니다.\n 단, 주의 할 점은. 해당 모니터링 서버에 접근한 user 의 plan 만을 실시간으로 볼 수 있으며 다른\nuser로의 접근 및 실시간 plan은 지원하지 않습니다",
+    "section": "60",
+    "page_start": 60,
+    "page_end": 60
+  },
+  {
+    "id": "ezis_55",
+    "text": "61 / 109\nEZIS User Manual v1.11.18.2769\n SQL Finder\n SQL 목록에서 각 SQL ID 우측의SQL Finder 버튼을 클릭하면, 해당 SQL ID 에 대한 SQL Finder 화\n면이 팝업으로 표시됩니다.\n SQL Finder 화면에서 특정 SQL 의 장기간 활동 내역을 추적할 수 있습니다.\n SQL Finder 화면은 특정 SQL의 문제 사실 또는 개선 사항을 추적하는데 용이합니다.",
+    "section": "61",
+    "page_start": 61,
+    "page_end": 61
+  },
+  {
+    "id": "ezis_56",
+    "text": "62 / 109\nEZIS User Manual v1.11.18.2769\n Session\n 해당 서버 구간 별 시간대의 Top Session을 표시 합니다. sid, serial, sql_id 기준으로 제일 높은 top\n구간을 비율로 표시 합니다.\n Elapsed Time(sec) : session을 수집할 때 Ezis 제품에서 계산한 Session의 Elapsed Time 값입니다\n P/Reads(Delta) : Physical Reads 를 수집주기의 Delta 값으로 환산하여 높은 값을 보여줍니다.\n P/Reads(/sec) : Physical Reads 의 초당 변화량을 계산하여 보여줍니다.\n L/Reads(Delta) : Session Logical Reads를 수집 주기의 Delta 값으로 환산하여 높은 값을 표시합니\n다.\n L/Reads(/sec) : Session Logical Reads의 초당 변화량을 표시합니다.\n DB Block Changes(Delta) : 수집 구간의 Delta 변화량을 표시합니다\n DB Block Changes(/sec) : 수집 구간의 초당 변화량을 표시합니다\n CPU Used(Delta) : Session 별 로 발생하는 “CPU Used by this session” 값을 수집 주기 별 로 delta\n값을 환산하여 표시 합니다.\n CPU Used(/sec) : Session 별 로 발생하는 “CPU Used by this session” 값을 초당 변화량을 표시합\n니다.\n Execute Count(Delta) : Session 의 Execute Count 가 높은 순서대로 비율로 표시 합니다. 수집\n주기의 Delata값입니다.\n Execute Count(/sec) : Execute Count를 초당 증가량으로 표시합니다.\n Redo(Delta) : Session 의 redosize 값을 수집 주기의 Delta 값으로 환산하여 표시합니다..\n Redo(/sec) : Session 의 redosize 값을 초당 변화량을 표시합니다.",
+    "section": "62",
+    "page_start": 62,
+    "page_end": 62
+  },
+  {
+    "id": "ezis_57",
+    "text": "63 / 109\nEZIS User Manual v1.11.18.2769\n Process (OS)\nAgent를 설치한 경우 모니터링 대상 서버의OS에서 구동되고 있는 Process 정보를 시간대 별로\n확인 할 수 있습니다.\n IO : Oracle 의 IOSTAT_FUNCTION을 지표화 하여 보여줍니다. 이 방식에는 두가지 형태를 선택할 수\n있습니다\n I/O Type\nWrite_reqs는 (Large_Write_reqs + Small_Write_reqs) 식으로 보여줍니다\nRead_reqs는 (Large_Read_reqs + Small_Read_reqs) 식으로 보여줍니다\n영역 확대시 Write MB, Read MB 차트가 추가됩니다.\n I/O Function\nRequests = (small_read_reqs + small_write_reqs + large_read_reqs + large_write_reqs)",
+    "section": "63",
+    "page_start": 63,
+    "page_end": 63
+  },
+  {
+    "id": "ezis_58",
+    "text": "64 / 109\nEZIS User Manual v1.11.18.2769\n Parallel Execution : sysmetric 정보를 아래와 같은 metric_name으로 그래프 영역을 분할하여 per\nSecond로 환산하여 보여줍니다.\n Active Session\n Active Serial Sessions\n Active Parallel Sessions\n PQ\n PQ QC Session Count\n PQ Slave Session Count\n DDL\n DDL statements parallelized Per Sec\n DML statements parallelized Per Sec\n Queries parallelized Per Sec\n Services : sysmetric 정보를 아래와 같은 metric_name으로 그래프 영역을 분할하여 per Second로 환\n산하여 보여줍니다.\n Background Checkpoints Per Sec\n Background CPU Usage Per Sec\n Background Time Per Sec",
+    "section": "64",
+    "page_start": 64,
+    "page_end": 64
+  },
+  {
+    "id": "ezis_59",
+    "text": "65 / 109\nEZIS User Manual v1.11.18.2769\n Throughput\n Sysmetric 지표를 이용하여 per second와 Transactions 을 구분하여 다음과 같은 항목을 보여줍니다.\n per second : sysmetric 데이터\n Logons Per Sec\n User Transaction Per Sec\n Physical Reads Per Sec\n Redo Writes Per Sec\n Transactions : sysmetric 데이터\n Logons Per Txn\n User Transaction Per Sec\n Physical Reads Per Txn\n Redo Writes Per Txn\n Sysstat\n Stat chart 는 각 지표 특성 별 로 구분하여 tab 으로 구성 되어 있습니다. 그래프를 크게 보고 싶\n으면 확대 아이콘을 눌러서 크게 볼 수 있습니다.",
+    "section": "65",
+    "page_start": 65,
+    "page_end": 65
+  },
+  {
+    "id": "ezis_60",
+    "text": "66 / 109\nEZIS User Manual v1.11.18.2769\n Sysstat : Oracle의 stat 을 분 단위로 확인 할 수 있습니다. Oracle 제공 지표 또는 EZIS에서 계산\n에 의하여 가공한 지표가 표시됩니다.\n Sysstat Analysis\n 각 그래프 화면을 드래그하여 더 자세하게 조회할 구간을 선택할 수 있으며, 이에 따라 화면 하단\n의 Top SQL의 목록이 갱신됩니다. SQL ID를 클릭하면 SQL Detail 화면이 팝업으로 표시됩니다.",
+    "section": "66",
+    "page_start": 66,
+    "page_end": 66
+  },
+  {
+    "id": "ezis_61",
+    "text": "67 / 109\nEZIS User Manual v1.11.18.2769\n Latency\n Sysmetric의 “Average Synchronous Single-Block Read Latency” 값을 지표화 하여 보여줍니다.\n 동기식 단일 블록 읽기의 평균 대기 시간 (밀리 초)입니다. 동기식 단일 블록 읽기는 스토리지 서브\n시스템의 성능을 평가하는 상당히 정확한 방법입니다. 높은 대기 시간은 일반적으로 높은 I/O 요청\n로드로 인해 발생합니다. CPU로드가 지나치게 높으면 지연 시간이 증가 할 수도 있습니다.",
+    "section": "67",
+    "page_start": 67,
+    "page_end": 67
+  },
+  {
+    "id": "ezis_62",
+    "text": "4.2. Ultra Session Snapshot\nOracle의 Session 정보를 시각화 하여 시간대별 성능 정보를 확인 할 수 있습니다.\n성능 데이터 보관 주기는 Setting > Advanced > General > Repository에서 설정 할 수 있습니다.\n데이터량이 많기 때문에 시간단위로 지정합니다.\nMemory DB를 사용하는 경우와 기존 Repo DB를 사용하는 두가지 방법이 있으며, 고객사 환경에\n따라 Memory DB를 사용할 수도 있습니다.",
+    "section": "4.2",
+    "page_start": 68,
+    "page_end": 68
+  },
+  {
+    "id": "ezis_63",
+    "text": "69 / 109\nEZIS User Manual v1.11.18.2769\n Ultra Session Snapshot (Chart)\n 분 단위로 wait_class 의 개수를 시각화하였으며 특정 구간을 드래그 하면 아래 표에서 해당 정보를\n확인 할 수 있습니다.\n Use in memory (checkbox) : 해당 채크박스가 보이는 경우, ASH 데이터를 메모리 데이터베이스에 저\n장하여 화면에 출력합니다. 고객사 장비에 메모리가 충분한 경우 이 기능을 사용할 수 있습니다.\n채크가 되어 있다면 Memory DB 에서 쿼리하여 화면에 표시하므로 매우 빠른 조회결과를 볼 수 있\n습니다.\n Top SQL\n 그래프에서 드래그한 시간대의 발생 비율이 많은 SQL을 목록화 하여 결과를 보여줍니다.\n Sql_id : sql id 값입니다. 클릭하면 세부 쿼리 정보를 확인 할 수 있습니다.\n SQL CMD : SQL의 CMD값입니다.\n Activity : wait_class 별 비중을 시각화 하였습니다. 마우스를 가져다 대면 세부 값을 확인 할 수 있\n습니다.\n User ID : 쿼리를 수행한 사용자 아이디입니다.\n Plan Hash value : 해당 쿼리의 plan 값입니다. 클릭하면 plan 내용을 볼 수 있습니다.",
+    "section": "69",
+    "page_start": 69,
+    "page_end": 69
+  },
+  {
+    "id": "ezis_64",
+    "text": "70 / 109\nEZIS User Manual v1.11.18.2769\n Top Event\n Event별 wait_calss의 비율을 표시합니다.\n Event : event 내용입니다.\n Wait Class : 해당 event중에 제일 많은 비중을 차지하는 wait_class 하나를 표시합니다.\n Activity : Event별 wait_class를 모두 표시합니다. 마우스를 가져다 대면 상세 비율을 확인 할 수 있\n습니다.\n Top Session\n Session의 sid,와 Serial, User ID, Program 별로 wait_class 비중을 보여줍니다.\n Sid : sid 값입니다.",
+    "section": "70",
+    "page_start": 70,
+    "page_end": 70
+  },
+  {
+    "id": "ezis_65",
+    "text": "71 / 109\nEZIS User Manual v1.11.18.2769\n Serial : sid의 Serial 값입니다.\n User ID : Session을 발생시킨 User의 ID 값입니다.\n Program : 프로그램 명입니다.\n Session별 wait_class를 모두 표시합니다. 마우스를 가져다 대면 상세 비율을 확인 할 수 있습니다.\n Ultra Session Snapshot\n 조회 구간의 active session의 상세 정보를 표시합니다.",
+    "section": "71",
+    "page_start": 71,
+    "page_end": 71
+  },
+  {
+    "id": "ezis_66",
+    "text": "72 / 109\nEZIS User Manual v1.11.18.2769\n55.. WWaaiitt AAnnaallyyssiiss\nWait Analysis 는 Oracle의 Wait Event와 관련한 정보를 표시합니다.\n Wait Class\n Session으로 유입된 wait_class를 지표화 하여 시각화한 그래프입니다.\n Wait_class에 대하여 Count, seconds_in_wait, db_ time 별로 성능 데이터를 볼 수 있습니다.\n 화면 상단의 wait_class를 클릭하면 해당 지표만 활성화 되어 볼 수 있습니다.\n 그래프의 기본 구간은 10분이며 마우스로 확대를 하면 1분 간격으로 볼 수 있습니다.",
+    "section": "72",
+    "page_start": 72,
+    "page_end": 72
+  },
+  {
+    "id": "ezis_67",
+    "text": "73 / 109\nEZIS User Manual v1.11.18.2769\n Wait Event\n Session으로 유입된 wait_event 별로 지표화하여 시각화한 그래프입니다.\n 시간대별로 어떤 이벤트가 많이 발생하였는지 한눈에 확인 할 수 있습니다.\n Wait_event에 대하여 Count, seconds_in_wait, db_ time 별로 성능 데이터를 볼 수 있습니다.\n 그래프의 기본 구간은 10분이며 마우스로 확대를 하면 1분 간격으로 볼 수 있습니다\n Active Session Trend\n Active Session Elpased Time(sec), Active Session I/O (block) 2개의 차트를 표시합니다..\n 차트를 드래그하면 1분 단위로 데이터를 볼 수가 있습니다 .\n Active Session Elapsed Time(sec) : 세션에서 수행한 작업의 Elapsed Time, Wait Time을 바 차트\n로 표시하며, 시간대별 lock의 개수(Lock Count)를 선 그래프로 표시합니다.\n Active Session I/O : 세션에서 수행한 작업에서 발생한 I/O의 양을 바 차트로 표시합니다.",
+    "section": "73",
+    "page_start": 73,
+    "page_end": 73
+  },
+  {
+    "id": "ezis_68",
+    "text": "74 / 109\nEZIS User Manual v1.11.18.2769\n SQL\n시간대별로 Session으로 수집된 SQL 정보를 표시합니다. 상단 차트의 시간 구간을 클릭하면 해\n당 구간대의 SQL 정보를 표시 합니다.\n Time : SQL이 Session으로 유입된 시간\n Module : Modile 을 표시합니다\n Schema : schema 정보를 표시합니다\n SQL_ID : SQL의 고유한 id를 표시하며 “sql_id”를 클릭하면 SQL Detail을 볼 수 있고, “SQL Finder”\n아이콘을 클릭하면 해당 SQL을 일자별로 추적할 수 있습니다.\n SQL Text : 해당 sql 구문을 간략하게 보여주며 전체 SQL을 확인하고자 하는 경우 “SQL ID”를 클릭\n하여 “SQL Detail” 창을 확인하세요\n Elapsed Time(Max:sec) : 구문 분석, 실행 및 가져오기를 위해 이 커서에서 사용되는 경과 시간(sec)\n입니다. 조회 구간의 최대값을 표시합니다.\n Execution (Count) : 모든 하위 커서에 대한 총 실행 수입니다. 조회 구간의 변화량을 표시합니다.\n Elapsed Time(AVG:sec) : 구문 분석, 실행 및 가져오기를 위해 이 커서에서 사용되는 경과 시간(sec)\n입니다. 조회 구간의 평균값을 표시합니다.\n CPU Time(AVG:sec) : 커서가 구문 분석, 실행 및 가져오기에 사용하는 CPU 시간을 sec로 변환한시\n간이며 조회 구간의 평균값입니다\n Wait Time (AVG:sec) : ElapsedTime 에서 Cpu Time을 빼서 지표화하였습니다. SQL이 CPU를 사용하\n지 않았다면 이 값이 크게 표시됩니다\n L/Reads : Session으로 발생한 logicalreads 값이며 조회 구간의 변화량을 표시합니다\n P/Reads : Session으로 발생한 physicalreads 값이며 조회 구간의 변화량을 표시합니다",
+    "section": "74",
+    "page_start": 74,
+    "page_end": 74
+  },
+  {
+    "id": "ezis_69",
+    "text": "75 / 109\nEZIS User Manual v1.11.18.2769\n SQL (All)\n V$sqlarea에 해당하는 전체 SQL에 대하여 선택한 시간 구간의 정보를 표시합니다.\n 앞서 SQL 텝은 Session으로 수집한 SQL만을 보여주지만 해당 화면은 해당 시간대 변경 이력이 있\n는 모은 SQL을 보여주는 주고 있습니다.\n 컬럼 설명은 SQL 화면과 동일합니다.\n Session\n 해당 서버 구간 별 시간대의 Top Session을 표시 합니다. sid, serial, sql_id 기준으로 제일 높은 top\n구간을 비율로 표시 합니다.\n Elapsed Time(sec) : session을 수집할 때 Ezis 제품에서 계산한 Session의 Elapsed Time 값입니다\n P/Reads(Delta) : Physical Reads 를 수집주기의 Delta 값으로 환산하여 높은 값을 보여줍니다.\n P/Reads(/sec) : Physical Reads 의 초당 변화량을 계산하여 보여줍니다.\n L/Reads(Delta) : Session Logical Reads를 수집 주기의 Delta 값으로 환산하여 높은 값을 표시합니\n다.\n L/Reads(/sec) : Session Logical Reads의 초당 변화량을 표시합니다.\n DB Block Changes(Delta) : 수집 구간의 Delta 변화량을 표시합니다\n DB Block Changes(/sec) : 수집 구간의 초당 변화량을 표시합니다\n CPU Used(Delta) : Session 별 로 발생하는 “CPU Used by this session” 값을 수집 주기 별 로 delta\n값을 환산하여 표시 합니다.",
+    "section": "75",
+    "page_start": 75,
+    "page_end": 75
+  },
+  {
+    "id": "ezis_70",
+    "text": "76 / 109\nEZIS User Manual v1.11.18.2769\n CPU Used(/sec) : Session 별 로 발생하는 “CPU Used by this session” 값을 초당 변화량을 표시합\n니다.\n Execute Count(Delta) : Session 의 Execute Count 가 높은 순서대로 비율로 표시 합니다. 수집\n주기의 Delata값입니다.\n Execute Count(/sec) : Execute Count를 초당 증가량으로 표시합니다.\n Redo(Delta) : Session 의 redosize 값을 수집 주기의 Delta 값으로 환산하여 표시합니다..\n Redo(/sec) : Session 의 redosize 값을 초당 변화량을 표시합니다.",
+    "section": "76",
+    "page_start": 76,
+    "page_end": 76
+  },
+  {
+    "id": "ezis_71",
+    "text": "77 / 109\nEZIS User Manual v1.11.18.2769\n Transaction\nSession이 서로 경합하거나 여러 이유로 Transation이 발생하는 경우 확인 할 수 있습니다.\nTransation이 발생하면 Transation의 발생시간을 확인하여 모두 표시합니다\n Time : Transation이 발생하여 제품이 인지한 시간.\n Sid : Session의 sid\n Serial : Session의 serial 값\n SQL ID : Transation 발생한 경우 sql_id 값이며 해당 sql_id를 클릭하면 “SQL Detail”을 볼 수 있습니\n다. SQL Fimder를 클릭하면 sql_id에 대한 이력을 추적할 수 있습니다.\n Used Ublk : 사용된 실행 취소 블록 수를 표시합니다.\n Start Date : Transation 시작 시간\n Age (minute) : Transation이 시작되어 경과한 시간 (분)을 표시합니다\n Status : 해당 Transation이 발생하였을 때의 ststus\n Session longops\n Start Time : 시작시간\n Sid : session 식별자\n Serial : 세션 일련번호\n SQL ID : 작업과 연관된 SQL 문의 SQL 식별자\n Context : Context\n Elapsed Second : 작업 시작부터 경과된 시간(초)\n Percent : sofar/i.totalwork 로 계산한 값이며 “총 작업 단위” 를 “지금까지 수행된 작업 단위”로 나\n눈 값을 백분율로 나타냅니다.\n Time Remaining : 작업이 완료될 때까지 남은 예상 시간(초)\n Message : 통계 요약 메시지",
+    "section": "77",
+    "page_start": 77,
+    "page_end": 77
+  },
+  {
+    "id": "ezis_72",
+    "text": "78 / 109\nEZIS User Manual v1.11.18.2769\n Lock\nLock Tree를 확인할 수 있으며 RAC로 구성된 경우에도 확인이 가능합니다.\n Tree : Lock 관계를 Tree로 표시합니다.\n Instance ID : Rac로 구성된 경우 Instance ID를 확인할 수 있습니다\n Sid : Session의 식별자\n Serial : Session의 일련번호\n Blocking Session : 차단 세션의 세션 식별자\n SQL ID : 현재 실행 중인 SQL 문의 SQL 식별자\n Prev SQL ID : 마지막으로 실행된 SQL 문의 SQL 식별자\n Status : Session 상태\n ACTIVE- 현재 SQL을 실행 중인 세션\n INACTIVE\n KILLED- 세션이 종료된 것으로 표시됨\n CACHED- Oracle*XA에서 사용하기 위해 임시로 캐시된 세션\n SNIPED- 세션이 비활성 상태이며 클라이언트를 기다리고 있습니다.\n CTime : 현재 모드가 부여된 이후의 시간\n Blocking Session Status : 차단 세션 상태\n VALID\n NO HOLDER\n GLOBAL\n UNIMPLEMENTED\n UNKNOWN\n Event : 세션이 대기 중인 리소스 또는 이벤트\n Wait Class : 대기 클래스 이름\n Type : 사용자 또는 시스템 잠금 유형\n Hash Value : 실행 중인 SQL 문을 식별하는 데 사용됩니다.\n Block : 문제의 잠금이 다른 프로세스를 차단하고 있는지 여부\n 0- 잠금이 다른 프로세스를 차단하지 않습니다.\n 1- 잠금이 다른 프로세스를 차단하고 있습니다.\n 2- 잠금은 로컬 노드에서 차단된 프로세스를 차단하지 않지만 원격 노드에서는 프로세스\n를 차단할 수도 있고 차단하지 않을 수도 있습니다. 이 값은 Oracle RAC(Oracle Real",
+    "section": "78",
+    "page_start": 78,
+    "page_end": 78
+  },
+  {
+    "id": "ezis_73",
+    "text": "79 / 109\nEZIS User Manual v1.11.18.2769\nApplication Clusters) 구성에서만 사용됩니다(단일 인스턴스 구성에서는 사용되지 않음)\n Object ID : 지정된 행을 포함하는 테이블의 개체 ID\n Locked Object : Lock 의 Object 이름.\n User Name : 오라클 사용자 이름\n Machine : 운영 체제 컴퓨터 이름\n Termial : 운영 체제 터미널 이름\n Program : 운영 체제 프로그램 이름\n Process : 운영 체제 클라이언트 프로세스 ID\n Mode Held : 세션이 잠금을 유지하는 잠금 모드\n Mode Requested : 프로세스가 잠금을 요청하는 잠금 모드\n OS User Name : 운영 체제 클라이언트 사용자 이름\n PQ Tree\n병렬 DML 관련 정보를 확인할 수 있습니다.\n Sid : Session의 식별자\n Serial : Session의 일련번호\n Type : 사용자 또는 시스템 잠금 유형\n SQL ID : 현재 실행 중인 SQL 문의 SQL 식별자\n Used Ublk : 사용된 실행 취소 블록 수를 표시합니다\n Trn Start Date : Transation 시작 시간\n Temp Size : blocks Temp 크기\n User Name : 오라클 사용자 이름\n Wait Class : 대기 클래스 이름\n Event : 세션이 대기 중인 리소스 또는 이벤트\n Wiat Time : 0이 아닌 값은 세션의 마지막 대기 시간입니다. 값이 0이면 세션이 현재 대기 중임을\n의미합니다\n Blocking Session : 차단 세션의 세션 식별자\n Blocking Session Status : 차단 세션 상태\n VALID\n NO HOLDER",
+    "section": "79",
+    "page_start": 79,
+    "page_end": 79
+  },
+  {
+    "id": "ezis_74",
+    "text": "80 / 109\nEZIS User Manual v1.11.18.2769\n GLOBAL\n UNIMPLEMENTED\n UNKNOWN\n Program : 운영 체제 프로그램 이름\n Machine : 운영 체제 컴퓨터 이름\n Port : 클라이언트 포트 번호\n OS User Name : 운영 체제 클라이언트 사용자 이름\n Elapsed Time : 수행시간 (ms)\n Termial : 운영 체제 터미널 이름\n Ecid : 실행 컨텍스트 식별자\n Status : Session 상태\n ACTIVE- 현재 SQL을 실행 중인 세션\n INACTIVE\n KILLED- 세션이 종료된 것으로 표시됨\n CACHED- Oracle*XA에서 사용하기 위해 임시로 캐시된 세션\n SNIPED- 세션이 비활성 상태이며 클라이언트를 기다리고 있습니다.\n CPU Used : 이 세션 Oracle 지표 에서 사용하는 CPU 는 사용자 호출이 시작되고 종료되는 시점 사\n이에 세션에서 사용되는 CPU 시간\n DB Block Changed : 업데이트 또는 삭제 작업의 일부인 SGA의 모든 블록에 적용된 총 변경 수\n Enqueue Waits : 인큐를 즉시 부여할 수 없기 때문에 인큐 변환 또는 가져오기 중에 발생한 총 대\n기 횟수입니다\n Execute Count : sql_id의 유입을 기준으로 수행횟수를 합산한 값입니다\n Logons Current : 현재 로그온의 총 수입니다\n P/Reads : PhysicalReads 의 Delta 값입니다\n L/Reads : LogicalReads 의 Delta 값입니다\n Redosize : Redo 총량이며 Delta값입니다\n Undo Change Vector size : Session에 사용된 Undo 크기\n Consistent Changes : 블록에 대한 일관된 읽기를 수행하기 위해 롤백 항목을 적용한 횟수",
+    "section": "80",
+    "page_start": 80,
+    "page_end": 80
+  },
+  {
+    "id": "ezis_75",
+    "text": "81 / 109\nEZIS User Manual v1.11.18.2769\n RBS\n주기적으로 롤백 세그먼트의 정보를 시간대별로 확인 할 수 있습니다.\n Time : 성능 데이터를 수집한 시간입니다.\n CR Get : transaction에서 발생한 Consistent gets 값입니다.\n ElapsedTime(ms) : 수행 시간을 표시합니다.\n No Undo : 실행 취소 트랜잭션이 없는 경우 YES로 표시됩니다.\n Physical I/O : Physical I/O 값을 표시합니다.\n Program : program 명을 표시합니다.\n Sql_id : sql_id 값을 표시합니다.\n RBS : 롤백 세그먼트 이름을 표시합니다.\n Sid : Session의 sid 입니다.\n Serial : session 의 Serial 값을 표십합니다.\n SQL Exec Start : 해당 SQL이 시작된 시간입니다.\n State : Session의 state 값입니다.\n Status : 해당 Transation이 발생하였을 때의 ststus입니다.\n Used Ublk : 사용된 실행 취소 블록 수를 표시합니다.\n User Name : 오라클 사용자 이름\n Wait Class : 대기 클래스 이름\n Wiat Time : 0이 아닌 값은 세션의 마지막 대기 시간입니다. 값이 0이면 세션이 현재 대기 중임을\n의미합니다",
+    "section": "81",
+    "page_start": 81,
+    "page_end": 81
+  },
+  {
+    "id": "ezis_76",
+    "text": "6.1. SQL Alanysis\nSQL Analysis는 Top-Down 방식으로 Schema 별 Program / Module / Machine 별로 sql의 성\n능을 쉽게 볼 수 있도록 구현되어 있습니다.\n Category\n유입된 sql_id가 어떠한 Schema/Program/Module/Machine 별 로 비중을 차지하는지 확인 할 수\n있습니다.",
+    "section": "6.1",
+    "page_start": 82,
+    "page_end": 82
+  },
+  {
+    "id": "ezis_77",
+    "text": "83 / 109\nEZIS User Manual v1.11.18.2769\n SQL\n session 수집으로 발생된 SQL만을 대상으로 합니다.\n SQL ID를 클릭하면 SQL Detail 화면을 확인할 수 있습니다.\n Time : SQL이 Session으로 유입된 시간\n Module : Modile 을 표시합니다\n SchemaName : schema 정보를 표시합니다\n SQL_ID : SQL의 고유한 id를 표시하며 “sql_id”를 클릭하면 SQL Detail을 볼 수 있고, “SQL Finder”\n아이콘을 클릭하면 해당 SQL을 일자별로 추적할 수 있습니다.\n SQL Text : 해당 sql 구문을 간략하게 보여주며 전체 SQL을 확인하고자 하는 경우 “SQL ID”를 클릭\n하여 “SQL Detail” 창을 확인하세요\n Elapsed Time(Max:Sec) : 구문 분석, 실행 및 가져오기를 위해 이 커서에서 사용되는 경과 시간\n(sec)입니다. 조회 구간의 최대값을 표시합니다.\n Execution (Count) : 모든 하위 커서에 대한 총 실행 수입니다. 조회 구간의 변화량을 표시합니다.\n Elapsed Time(AVG:Sec) : 구문 분석, 실행 및 가져오기를 위해 이 커서에서 사용되는 경과 시간\n(sec)입니다. 조회 구간의 평균값을 표시합니다.\n CPU Time(AVG:Sec) : 커서가 구문 분석, 실행 및 가져오기에 사용하는 CPU 시간을 sec로 변환한시\n간이며 조회 구간의 평균값입니다\n Wait Time (AVG:Sec) : ElapsedTime 에서 Cpu Time을 빼서 지표화하였습니다. SQL이 CPU를 사용\n하지 않았다면 이 값이 크게 표시됩니다\n L/Reads : Session으로 발생한 logicalreads 값이며 조회 구간의 변화량을 표시합니다\n P/Reads : Session으로 발생한 physicalreads 값이며 조회 구간의 변화량을 표시합니다",
+    "section": "83",
+    "page_start": 83,
+    "page_end": 83
+  },
+  {
+    "id": "ezis_78",
+    "text": "84 / 109\nEZIS User Manual v1.11.18.2769\n Session\n 해당 서버 구간 별 시간대의 Top Session을 표시 합니다. sid, serial, sql_id 기준으로 제일 높은 top\n구간을 비율로 표시 합니다.\n Elapsed Time(sec) : session을 수집할 때 Ezis 제품에서 계산한 Session의 Elapsed Time 값입니다\n P/Reads(Delta) : Physical Reads 를 수집주기의 Delta 값으로 환산하여 높은 값을 보여줍니다.\n P/Reads(/sec) : Physical Reads 의 초당 변화량을 계산하여 보여줍니다.\n L/Reads(Delta) : Session Logical Reads를 수집 주기의 Delta 값으로 환산하여 높은 값을 표시합니\n다.\n L/Reads(/sec) : Session Logical Reads의 초당 변화량을 표시합니다.\n DB Block Changes(Delta) : 수집 구간의 Delta 변화량을 표시합니다\n DB Block Changes(/sec) : 수집 구간의 초당 변화량을 표시합니다\n CPU Used(Delta) : Session 별 로 발생하는 “CPU Used by this session” 값을 수집 주기 별 로 delta\n값을 환산하여 표시 합니다.\n CPU Used(/sec) : Session 별 로 발생하는 “CPU Used by this session” 값을 초당 변화량을 표시합\n니다.\n Execute Count(Delta) : Session 의 Execute Count 가 높은 순서대로 비율로 표시 합니다. 수집\n주기의 Delata값입니다.\n Execute Count(/sec) : Execute Count를 초당 증가량으로 표시합니다.\n Redo(Delta) : Session 의 redosize 값을 수집 주기의 Delta 값으로 환산하여 표시합니다..\n Redo(/sec) : Session 의 redosize 값을 초당 변화량을 표시합니다.",
+    "section": "84",
+    "page_start": 84,
+    "page_end": 84
+  },
+  {
+    "id": "ezis_79",
+    "text": "85 / 109\nEZIS User Manual v1.11.18.2769\n Literal SQL\n 조회 구간의 모니터링 대상 서버에서 수행되는 SQL 중에서 bind 없이 반복적으로 수행되어 부하를\n주는 요인을 찾는데 유용할 수 있습니다.\n Sql_id를 클릭하면 SQL Detail 화면을 볼 수 있습니다\n Time : 발생 시간입니다.\n Sql_id : Literal SQL로 의심이 되는 sql_id입니다.\n Parsing Schema Name : SQL이 실행된 schema name입니다.\n Module : Modile 을 표시합니다\n Literal SQL Cnt : bind 없이 수행되는 literal SQL의 개수입니다.\n Buffer Avg : buffer_gets의 평균값입니다\n Elapsed Avg : 평균 수행시간입니다. (단위는 초입니다)\n Rows Processed : 평균 처리 건수입니다.\n Executions : 수행회수를 표시합니다.\n Ratio Cpu : 평균 CPU 사용시간의 비율입니다.\n Ratio ElapsedTime : 평균 Elapsed Time의 비율입니다.",
+    "section": "85",
+    "page_start": 85,
+    "page_end": 85
+  },
+  {
+    "id": "ezis_80",
+    "text": "6.2. SQL Square Map\n SQL Performance Map은 모니터링 대상별 하루 1분 단위를 1440개로 쪼개어 성능 빈도를 시각화였습\n니다.\n 각각의 셀은 1분이며 색깔은 발생한 지표의 비율대비 크기를 의미합니다. 색깔이 진할수록 그 빈도가\n높다고 할 수 있습니다.\n 셀의 세로행은 0시 ~ 23시까지 시간을 나타내며, 가로행은 1분 간격으로 0분 ~ 59분까지 나타냅니다.\n 표시 방식은 조회기간 동안 1분동안 제일 높은 값을 100으로 보고 비율을 계산합니다.\n단, 비율 0% 미만인 경우 색상은 동일하며 회색의 경우에는 데이터가 존재하지 않는 구간입니다.\n Elapsed time : sql_id를 기준으로 해당 1분동안 elapsed time의 Delta값을 구하고 executions 의로 나\n눈 값으로 해당 1분 구간에 각각의 sql_id의 평균 값을 모두 더해서 계산합니다. (단위 sec) 단, sql_id\n가 parsing_schema_name이 'SYS','SYSTEM','MDSYS'인 경우에는 제외 됩니다.\n Execute Count : 1분 동안에 sql_id의 유입을 기준으로 수행횟수를 합산한 값입니다. 단, sql_id가\nparsing_schema_name이 'SYS','SYSTEM','MDSYS'인 경우에는 제외 됩니다.\n Wait_Time : sql_id를 기준으로 해당 1분동안 cpu_time의 Delta값을 구하고 executions 의로 나눈 값\n으로 해당 1분 구간에 각각의 sql_id의 평균 값을 모두 더해서 계산합니다. (단위 sec) 단, sql_id가\nparsing_schema_name이 'SYS','SYSTEM','MDSYS'인 경우에는 제외 됩니다.\n Disk reads : sql_id를 기준으로 해당 1분동안 disk_reads의 Delta값을 구하고 executions 의로 나눈 값\n으로 해당 1분 구간에 각각의 sql_id의 평균 값을 모두 더해서 계산합니다. 단, sql_id가",
+    "section": "6.2",
+    "page_start": 86,
+    "page_end": 86
+  },
+  {
+    "id": "ezis_81",
+    "text": "87 / 109\nEZIS User Manual v1.11.18.2769\nparsing_schema_name이 'SYS','SYSTEM','MDSYS'인 경우에는 제외 됩니다.\n Buffer gets : sql_id를 기준으로 해당 1분동안 buffer_gets의 Delta값을 구하고 executions 의로 나눈\n값으로 해당 1분 구간에 각각의 sql_id의 평균 값을 모두 더해서 계산합니다. 단, sql_id가\nparsing_schema_name이 'SYS','SYSTEM','MDSYS'인 경우에는 제외 됩니다.\n Elapsed time : sql_id를 기준으로 해당 1분동안 user_io_wait_time의 Delta값을 구하고 executions 의\n로 나눈 값으로 해당 1분 구간에 각각의 sql_id의 평균 값을 모두 더해서 계산합니다. (단위 sec) 단,\nsql_id가 parsing_schema_name이 'SYS','SYSTEM','MDSYS'인 경우에는 제외 됩니다.\n 셀의 값 표시\n 각 셀에 마우스를 가져다 대면 해당 셀의 총 합계값을 볼 수 있습니다. 예를들어 보고 있는 항목이\nElapsed time이라고 가정하면 해당 1분동안 sql_id가 수행한 Elapsedtime 의 합계값입니다. 따라서\n해당 분에 총 Elapsedtime이 얼마인지 하루를 기준으로 전체 내용을 파악 할 수 있습니다.\n SQL Summary 연계\n SQL Performance Map의 셀을 클릭하면 화면 우측의 SQL Summary에 셀의 시간대에 발생한 sql_id\n와 수치가 표시가 됩니다.\n SQL Summary 의 sql_id의 체크박스를 클릭하면 클릭한 sql_id가 포함된 시간대의 Cell만을 표시합",
+    "section": "87",
+    "page_start": 87,
+    "page_end": 87
+  },
+  {
+    "id": "ezis_82",
+    "text": "88 / 109\nEZIS User Manual v1.11.18.2769\n니다. 따라서 특정 sql_id가 언제 수행되었는지 이력을 찾는데 유용합니다.\n Sql_id를 클릭하면 “SQL Detail” 팝업으로 연계가 됩니다.\n 단, 화면 진입 초기에 표시되는 SQL Summary 의 데이터는 조회일자 1 일간의 유입된 sql_id 의 총\n변화량의 평균을 합산한 값입니다.",
+    "section": "88",
+    "page_start": 88,
+    "page_end": 88
+  },
+  {
+    "id": "ezis_83",
+    "text": "6.3. Session Square Map\n SQL Performance Map은 모니터링 대상별 하루 1분 단위를 1440개로 쪼개어 성능 빈도를 시각화였습\n니다.\n 각각의 셀은 1분이며 색깔은 발생한 지표의 비율대비 크기를 의미합니다. 색깔이 진할수록 그 빈도가\n높다고 할 수 있습니다.\n 셀의 세로행은 0시 ~ 23시까지 시간을 나타내며, 가로행은 1분 간격으로 0분 ~ 59분까지 나타냅니다.\n 표시 방식은 조회기간 동안 1분동안 제일 높은 값을 100으로 보고 비율을 계산합니다.\n단, 비율 0% 미만인 경우 색상은 동일하며 회색의 경우에는 데이터가 존재하지 않는 구간입니다.\n 성능 데이터 표시 : 1분 단위로 Session 으로 유입되는 sql_id별로 각 성능 지표의 최대값을 구하여 합\n계치를 표시합니다.",
+    "section": "6.3",
+    "page_start": 89,
+    "page_end": 89
+  },
+  {
+    "id": "ezis_84",
+    "text": "90 / 109\nEZIS User Manual v1.11.18.2769\n SQL Summary 연계\n SQL Performance Map의 셀을 클릭하면 화면 우측의 SQL Summary에 셀의 시간대에 발생한 sql_id\n와 수치가 표시가 됩니다.\n SQL Summary 의 sql_id의 체크박스를 클릭하면 클릭한 sql_id가 포함된 시간대의 Cell만을 표시합\n니다. 따라서 특정 sql_id가 언제 수행되었는지 이력을 찾는데 유용합니다.\n Sql_id를 클릭하면 “SQL Detail” 팝업으로 연계가 됩니다.\n 단, 화면 진입 초기에 표시되는 SQL Summary 의 데이터는 조회일자 1 일간의 유입된 sql_id 의 총\n변화량의 평균을 합산한 값입니다.",
+    "section": "90",
+    "page_start": 90,
+    "page_end": 89
+  },
+  {
+    "id": "ezis_85",
+    "text": "6.5. Top SQL Map\nTop SQL Map은 일자별(시간구간 선택 가능)로 Top SQL을 시각화하여 보여줍니다.\n면적이 넓을수록 해당 지표의 값이 큰경우에 해당하며 비슷한 색감으로 SQL의 Module을 그룹화\n하였습니다.\n Elapsed Time : 조회 구간의 ElapsedTime이 긴 시간을 기준으로 표기.\n Executions : 조회 구간의 실행 회수가 많은 기준으로 표기.\n WaitTime : ElapsedTime에서 CPU Time을 뺀 값으로 CPU를 사용하지 않고 수행한 SQL의 시간 기\n준으로 표기.\n DiskReads : 조회 구간의 Disk Read가 많은 기준으로 표기.\n Buffer Gets : 조회 구간의 Guffer Get이 많은 기준으로 표기.\n User I/O Wait Time : 조회 구간의 User I/O 시간을 기준으로 표기.",
+    "section": "6.5",
+    "page_start": 91,
+    "page_end": 91
+  },
+  {
+    "id": "ezis_86",
+    "text": "92 / 109\nEZIS User Manual v1.11.18.2769\n77.. CChhaannggee TTrraacckkiinngg\n Change Tracking은 PLAN 정보가 변경된 이력에 대하여 언제 plan이 변경 되었는지 한눈에 보기 쉽게\n그래프로 표시합니다.\n 다음과 같은 경우에 실행계획(plan)이 변경되었다고 판단하고 있습니다.\n 반드시 Session 수집 시 인입된 sql_id에 대하여 날짜 별 로 변경 이력 확인.\n 수집데이터 전체에 대하여 plan_hash가 변경되었는지 조회하여 판단함\n Object 변경 이력과 Parameter의 내용을 확인 할 수 있습니다\n Change Tracking >PLAN Change List\n Change Trend 에서 Plan 이 변경된 SQL에 대하여 여러 중요 정보를 제공합니다\n sql_id를 클릭하게 되면 해당 PLAN의 SQL Detail 화면을 보여줍니다.\n Elapsed_time DIFF 의 시간을 클릭하면 변경전, 변경후 PLAN 을 비교할 수 있는 화면을 제공하고",
+    "section": "92",
+    "page_start": 92,
+    "page_end": 92
+  },
+  {
+    "id": "ezis_87",
+    "text": "93 / 109\nEZIS User Manual v1.11.18.2769\n있습니다.\n Plan이 변경되면 증감 내역을 diff 컬럼에 초(sec)단위로 증감 내역을 볼 수 있습니다\n Object Change History\n Table, Procedure, Function 등과 같이 Oracle 의 Object 가 변경이력이 있는 경우 확인 할 수 있습니\n다.\n 변경 이력 내용은 상단의 From ~ To 날짜 조회구간 중 변경 이력이 감지된 경우에 표시 됩니다.\n 언제 어떤 Object 가 변경되었는지 확인 하는데 상당히 유용합니다. 기본은 1 시간 마다 변경이력을\n확인하고 있습니다\n Parameter History\n Oracle 의 v$parameter의 내용을 하루에 한번 수집하여 저장합니다.\n 선택한 기간동안의 파라메터 변경내역을 표시합니다.",
+    "section": "93",
+    "page_start": 93,
+    "page_end": 93
+  },
+  {
+    "id": "ezis_88",
+    "text": "94 / 109\nEZIS User Manual v1.11.18.2769\n88.. CCaappaacciittyy MMaannaaggeemmeenntt\nTablespace의 사용량 정보 또는 ASM 디스크 정보를 확인 할 수 있습니다. 단 ASM의 경우 모니\n터링 대상 서버가 ASM구성이 되어 있는 경우 정보를 수집하여 일자 별로 볼 수 있습니다.\n Tablespace chart\n 하루 1 회 정보를 수집하여 지표화 하였으며 전체 용량 대비 사용량 증감율을 쉽게 확인 할 수 있\n습니다\n 만약 수집 주기를 하루에 수회로 줄이는 경우, 화면에 일자별로 표시되는 용량 정보는 해당 일자의\n마지막 수집된 정보를 표기합니다, 단위는 GB입니다",
+    "section": "94",
+    "page_start": 94,
+    "page_end": 94
+  },
+  {
+    "id": "ezis_89",
+    "text": "96 / 109\nEZIS User Manual v1.11.18.2769\n Disk Info\nAgent 를 설치를 한 Instance의 경우 OS의 Disk정보를 볼 수 있습니다. 현재 이 기능은 Linux\n계열에 설치된 Instance만 지원하고 있습니다.\n Tablespace Diff\n Tablespace name 별 로 조회구간 시작과 마지막일자 기준으로 증감한 용량 정보를 표시 합니다.",
+    "section": "96",
+    "page_start": 96,
+    "page_end": 96
+  },
+  {
+    "id": "ezis_90",
+    "text": "97 / 109\nEZIS User Manual v1.11.18.2769\n Segments\n 조회 구간의 Segments 를 확인할 수 있습니다. 화면의 “Tablespace 그래프”의 날짜를 클릭하면 해\n당 날짜의 Segment를 보여줍니다.\n Parameter\n 선택한 기간에 적용된 initial parameter 의 값을 목록으로 표시합니다.\n 특히 dynamic parameter가 어떻게 적용되었는지 추적하는데 용이합니다.\n Parameter의 변경 이력을 확인하려면 “Change Tracking” 메뉴를 확인하세요",
+    "section": "97",
+    "page_start": 97,
+    "page_end": 97
+  },
+  {
+    "id": "ezis_91",
+    "text": "99 / 109 EZIS User Manual v1.11.18.2769 99.. EEvveenntt AAnnaallyyssiiss Event Analysis는 두가지 기능을 제공하고 있습니다.  사용자가 지정한 임계값 알람  Oracle Alertlog  Critical  지표에 임계값를 지정하여 초과하는 경우 발생한 알람 중에서 Critical 기준으로 발생빈도 상위 5 개 를 시각화하여 Timeline 구간에 표시 합니다. 사용자는 시간대 별 로 발생한 알람에 대하여 쉽게 이해하고 찾아볼 수 있습니다.  Oracle alertlog 가 발생하면 해당 그래프에 점 형태로 표시합니다. 점의 크기는 발생 회수에 비례합 니다.  그래프 위에 마우스를 올리면 그래프 하단에 알람 지표와 값을 Top5 형태로 보여줍니다. 그래프 클 릭시 선택된 시점으로 하단 Event, AlertLog 그리드와 Event Ratio, Kind of Event 그래프 영역의 시간 100 / 109 EZIS User Manual v1.11.18.2769 대가 갱신됩니다.  Alertlog 는 점 형태로 화면에 표시되며, 일반 임계값 초과 알람과 동일하게 화면 하단에 alertlog 개수가 표시 됩니다  Time line | Yesterday  조회 기준일의 전일날짜에 발생한 알람을 시간구간으로 그래프로 나타냅니다.  발생한 알람을 날짜를 변경해 가면서 조회할 때 보다 빠르게 해당 시점을 찾아 낼 수 있는 장점이 있습니다  조회 기준일의 전일날짜에 발생한 alertlog를 시간구간으로 그래프로 나타냅니다.  발생한 alertlog 를 날짜를 변경해 가면서 조회할 때 보다 빠르게 해당 시점을 찾아 낼 수 있는 장 점이 있습니다  Time Line | Weekly  조회",
+    "section": "99",
+    "page_start": 99,
+    "page_end": 103
+  },
+  {
+    "id": "ezis_92",
+    "text": "조회할 때 보다 빠르게 해당 시점을 찾아 낼 수 있는 장 점이 있습니다  Time Line | Weekly  조회 기준일 이전 일주일동안 발생한 알람을 하루 단위로 보여준 그래프입니다.  Critical count가 많이 발생한 날짜를 우선 확인할 때 용이합니다.  마우스 커서를 위에 올렸을 때, 해당일에 발생한 alertlog 와 critical count 의 발생량을 확인할 수 있습니다. 101 / 109 EZIS User Manual v1.11.18.2769  Event Ratio chart  Top 5의 차트의 bar를 선택하면 발생한 알람을 비율로 시각화 하여 보여줍니다.  Kind of Event  Kind of Event 차트의 그래프를 선택하면 발생한 알람을 비율로 시각화 하여 보여줍니다  Event List  조회 구간의 시간대의 알람이 표시 됩니다.  EventLevel : Critical과 Warning의 설정된 임계값이 초과하는 경우 발생한 내역입니다  Time : 알람이 발생한 시간입니다  Server ID : 알람이 발생한 모니터링 대상 서버를 나타냅니다  Stat Name : 지표명입니다  Value : 임계값를 초과하여 발생한 지표의 값입니다.  Limit Value : 사용자가 설정한 임계값이며 이 값이 초과하여 발생하였습니다  Confirm time : 알람이 발생하여 인지한 시간입니다. 102 / 109 EZIS User Manual v1.11.18.2769  Alertlog List  Oracle alertlog 이력을 시간대 별 로 볼수 있는 이력입니다  Alertlogtime : Oracle alertlog가 발생한 시간입니다  Server ID : 알람이 발생한 모니터링 대상 서버를 나타냅니다  Inst ID : Alertlog의 inst id 입니다  Text : alertlog의 내용입니다  주의 : 모니터링 서버가 On-premise 로 구성된 경우에는 물리적 alertlog 파일을 별 도로 관리하지 않으면 파일 크기가 커져서 수집하는데 timeout이 발생하여 표시를 못한는 경우도 있습니다  Event EZIS List  EZIS 제품을 재기동하거나 특정 process가 down 또는 Start 되는 이력을 확인할 수 있습니다. 103 / 109 EZIS User Manual v1.11.18.2769 1100.. TTrraaccee FFiillee  Activity 의 Session 에서 목록을 클릭하면 SQL Detail 화면이 표시됩니다.  화면 우측 상단의 “Trace”버튼을 클릭하면 해당 Session 의 Trace를 수행 할 수 있습니다.  Trace 는 Eventsms 10046이고 Level은 4로 수행됩니다.  Trace 기본 시간은 30초입니다. 더 길게 Trace를 수행하려면 시간을 조정해야 합니다.  “Start”를 클릭하면 Trace를 Background 로 시작합니다.  이 과정의 결과는 “Trace File” 메뉴에서 결과물을 확인 할 수 있습니다.  Path의 파일 경로를 참조하시기 바랍니다. 클릭하면 trace 파일이 다운로드 됩니다. 104 / 109 EZIS User Manual v1.11.18.2769 1111.. RReeppoorrtt",
+    "section": "99",
+    "page_start": 99,
+    "page_end": 103
+  },
+  {
+    "id": "ezis_93",
+    "text": "11.1. Long Trem\n 조회 구간의 레포트를 제공합니다.\n 시간대 선택이 필요한 경우 상단의 Timeline을 선택할 수 있습니다\n Sysstat 에 해당하는 지표는 추가 및 삭제가 가능하며 선택한 지표를 24 시간 기준으로 60 분 간격\n그래프로 표시됩니다\n Add statid를 클릭하여 원하는 지표를 선택할 수 있습니다\n Long term Top SQL 지표 설명\n Top Schema는 조회기간 동안에 Schema별 로 누적 데이터를 보여줍니다.\n Executions : 조회구간의 실행 회수를 표시합니다.\n Elapsed time(s) : sql_id 별 누적 Elapsedtime 의 합산 값입니다.\n Cpu time(s) : sql_id별 소비된 Cpu time 값의 합산 값입니다.\n User i/o time(s) : sql_id 별로 User i/o time 값의 합산 값입니다.\n Buffer Gets : sql_id 별로 Buffer Gets 값의 합산 값입니다.\n Physical Reads : sql_id 별로 Disk Reads 의 합산 값을 표시합니다.\n % CPU : Elapsed time 대비 CPU time 비율입니다.\n % IO : Elapsed time 대비 User I/O Time 의 비율입니다.\n105 / 109\nEZIS User Manual v1.11.18.2769",
+    "section": "11.1",
+    "page_start": 104,
+    "page_end": 104
+  },
+  {
+    "id": "ezis_94",
+    "text": "11.2. AWR Report Oracle 의 AWR 레포트를 실시간으로 다운로드 받을 수 있습니다.  레포트 기간 선택 방법  Snap Timeline 은 AWR 의 Snap 발생을 시각화하여 언제 Snap 이 발생 했는지 표시합니다. 레포트 를 출력할 시작 Snap 과 종료 Snap 바를 클릭하여 해당 구간동안의 레포트를 다운로드 할 수 있습 니다. 106 / 109 EZIS User Manual v1.11.18.2769  레포트 다운로드 방법  Snap Timeline 에서 범위를 선택하면 정보를 표시하고 “AWR Report Download” 버튼을 클릭하면 레 포트가 HTML 파일 형식으로 저장됩니다.  만약 Oracle모니터링 계정이 레포트를 생성할 권한이 없는 경우 아래와 같이 권한이 있는 ID / PW 를 받아 레포트를 출력할 수 있도록 개발되었습니다.  ORACLE의 AWR 레포트 실행 권한이 없는 경우  모니터링 계정이 AWR 레포트를 생성할 권한이 없는 경우, 권한이 있는 계정정보를 입력하고 다운 로드 받을 수 있습니다.  만약 모니터링 계정에 AWR 레포트 실행 권한을 주고자 하는 경우에는 Oracle 에 다음과 같은 권한 을 부여해 주세요.  GRANT EXECUTE ON SYS.DBMS_WORKLOAD_REPOSITORY TO {User ID}; 107 / 109 EZIS User Manual v1.11.18.2769 1122.. EEZZIISS 수수집집 데데이이터터 백백업업 및및 복복원원,, 프프로로그그램램 운운용용 로로그그  현재 EZIS Repository database에 대한 명령어는 PostgreSQL 14버전을 기준으로 이용하고 있습니다.  PostgreSQL의 버전이 업그레이드 되었을 경우, 버전에 맞는 명령어를 반드시 확인하시기 바랍니다.  위데이터랩에서는 고객사의",
+    "section": "11.2",
+    "page_start": 105,
+    "page_end": 109
+  },
+  {
+    "id": "ezis_95",
+    "text": "PostgreSQL 14버전을 기준으로 이용하고 있습니다.  PostgreSQL의 버전이 업그레이드 되었을 경우, 버전에 맞는 명령어를 반드시 확인하시기 바랍니다.  위데이터랩에서는 고객사의 EZIS 수집 데이터에 대한 분석 및 보고서 서비스를 직접 지원하는 경우 백 업 및 복원 절차를 진행합니다. 만약 사용자 스스로 백업 및 복원을 진행 할 경우, console화면에 접속 하여 PostgreSQL 명령어를 사용하시기 바랍니다.  백업 및 복원 시 사용할 명령어는 다음의 공식 홈페이지의 설명을 따라 주시길 바랍니다.  백업: pg_dump https://www.postgresql.org/docs/10/app-pgdump.html  복원: pg_restore https://www.postgresql.org/docs/10/app-pgrestore.html  제품에 사용된 암호화 알고리즘  AES 128  CBC 128  PKCS5Padding 128  SHA2-256  PBKDF2WithHmacSHA256  프로그램 운영 로그  경로: 설치폴더/log/common/running  app.aws_stat.번호.log AWS cloud watch 수집 프로세스  app.notification.log 알림 발송 프로세스  aws.queue.log Queue 프로세스  app.target.번호.log 수집 프로세스  common.main.log main 프로세스  common.was.main.log WAS 프로세스 108 / 109 EZIS User Manual v1.11.18.2769 1133.. FFAAQQ,, 기기타타문문의의  FAQ  Activity 화면에 그래프가 실시간으로 나오지 않는 경우 어떻게 해야 하나요? Setting > Monitoring > Server 로 접속합니다. 그래프 표시가 안되는 서버를 클릭합니다 (화면 좌측의 체크 박스) Test Connection을 누릅니다.연결 실패가 나온다면 모니터링 서버에 접근을 할 수 없어서 화면에 그래프를 그릴 수 없습니다. 서버 정보를 확인해 주세요  원하는 지표를 수집하고 싶습니다. 제품 기본 지표 외에 추가적으로 지표를 수집하고자 하면",
+    "section": "11.2",
+    "page_start": 105,
+    "page_end": 109
+  },
+  {
+    "id": "ezis_96",
+    "text": "그릴 수 없습니다. 서버 정보를 확인해 주세요  원하는 지표를 수집하고 싶습니다. 제품 기본 지표 외에 추가적으로 지표를 수집하고자 하면 Setting > Monitoring > Stat Name을 클릭하세요. 원하는 지표를 찾아 Processing Type에 \"On\"으로 수정하고 저장합니다.  화면에 Event 알람이 발생하지 않습니다. Setting > Monitoring > Server Group 에 임계 값 설정이 되어 있는지 확인해 보세요. 임계 값이 너무 높은 경우에는 Event가 발생하는 빈도가 낮을 수 있습니다.  특정 서버만 모니터링을 중지하고 싶어요. Setting > Monitoring > Logging Info 화면에서 \"Exclude Server\" 버튼을 클릭하고 제외할 서버를 등록 할 수 있습니다.  지표의 이름을 다른 이름으로 변경하고 싶어요. Setting > Monitoring > Stat Name 화면에서 Display Name 항목을 수정하면 Event 또는 그래프 의 지표 명이 변경됩니다.  성능 데이터 저장공간이 부족해요. EZIS Monitoring solution은 저장 기간을 설정 할 수 있습니다. Setting > Advanced > General 메 뉴에서 \"Day(s) of Repository Storage\"를 조정하세요. \"Recommend\" 버튼을 클릭하면 하루 단위 로 저장된 디스크 용량을 확인 할 수 있습니다. Disk Size에 성능 데이터가 저장되는 디스크 파티션 크기를 입력하세요. 해당 용량을 초과하면 자동으로 오래된 성능 데이터를 삭제합니다.  라이선스가 만료되었어요, 제품에 성능 자료는 어떻게 되나요? 라이선스가 만료되었다면 로그인만 제약이 걸려 있습니다. 모니터링은 정상적으로 동작하고 있으며 성능 지표도 안전하게 수집하고 있습니다. 109 / 109 EZIS User Manual v1.11.18.2769  모니터링이 잘 되고 있는지 어떻게 알 수 있나요? 화면 우측 상단에 햄버거 버튼을 클릭하면 Logging Status 화면을 볼 수 있습니다. 각 모니터 링 수집 항목 별 상태를 한눈에 볼 수 있으며, Suspend 된 기능을 Resume 할 수 있습니다.  모니터링 클라이언트 특정 PC만 너무 느립니다. 해결 방법이 없나요? 모니터링 대상 서버가 많은 경우 또는 부하가 많은 경우 클라이언트 PC에서 처리할 데이터가 많으면 느릴 수 있습니다. 이는 클라이언트 PC 사양이 낮은 경우 발생합니다.  크롬 Browser에서 오류가 발생하여 그래프를 정상적으로 표현하지 못해요. 제품이 패치 되거나 기능이 추가되어 활성화 되는 경우, 키보드에서 F12를 눌러 개발자 모드 로 진입 후 새로 고침 아이콘에서 강력 새로 고침을 해주세요. 이전 스크립트가 Browser 캐시 에 남아 있어서 발생하는 문제입니다.  언어는 영어만 지원하나요? 네. 현재는 영어만 지원하고 있습니다. 하지만 향후에는 다국어를 지원할 예정입니다. 불편하 시더라도 양해 부탁드립니다.  기타 문의  EZIS Monitoring solution을 이용 중 문제가 발생하거나 문의사항이 있을 시 EZIS 화면 우측 상단의 트레이 아이콘의 ‘Contact Us’ 버튼을 이용해주시기 바랍니다. 위데이터랩 홈페이지의 문의 URL 로 이동하실 수 있습니다. 제품 문의: https://wedatalab.com/contact-us/",
+    "section": "11.2",
+    "page_start": 105,
+    "page_end": 109
+  }
+]

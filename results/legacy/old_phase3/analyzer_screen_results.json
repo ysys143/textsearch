@@ -1,0 +1,43 @@
+{
+  "results": {
+    "kiwi-cong": {
+      "ndcg_at_10": 0.0,
+      "tokenization_throughput_docs_per_sec": 0.0,
+      "vocab_size": 0,
+      "latency_p50_ms": 0.0,
+      "error": "No module named 'kiwipiepy'"
+    },
+    "kiwi-knlm": {
+      "ndcg_at_10": 0.0,
+      "tokenization_throughput_docs_per_sec": 0.0,
+      "vocab_size": 0,
+      "latency_p50_ms": 0.0,
+      "error": "No module named 'kiwipiepy'"
+    },
+    "mecab": {
+      "ndcg_at_10": 0.0,
+      "tokenization_throughput_docs_per_sec": 0.0,
+      "vocab_size": 0,
+      "latency_p50_ms": 0.0,
+      "error": "MeCab도 Okt도 설치되어 있지 않습니다."
+    },
+    "okt": {
+      "ndcg_at_10": 0.0,
+      "tokenization_throughput_docs_per_sec": 0.0,
+      "vocab_size": 0,
+      "latency_p50_ms": 0.0,
+      "error": "Okt(konlpy)가 설치되어 있지 않습니다."
+    },
+    "whitespace": {
+      "ndcg_at_10": 1.0,
+      "tokenization_throughput_docs_per_sec": 461005.845239052,
+      "vocab_size": 12690,
+      "latency_p50_ms": 0.0034580007195472717
+    }
+  },
+  "top_analyzers": [
+    "whitespace",
+    "kiwi-cong",
+    "kiwi-knlm"
+  ]
+}

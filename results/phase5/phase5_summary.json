@@ -1,0 +1,58 @@
+{
+  "latency_benchmarks": {
+    "2-G": {
+      "p50_ms": 0.73,
+      "p95_ms": 1.15,
+      "n": 213
+    },
+    "3-kiwi": {
+      "p50_ms": 21.54,
+      "p95_ms": 115.7,
+      "n": 213
+    }
+  },
+  "best_miracl": {
+    "phase1": {
+      "method": "kiwi-cong",
+      "ndcg_at_10": 0.3471,
+      "method_id": null
+    },
+    "phase2": {
+      "method": "pg_textsearch + MeCab (BM25/WAND)",
+      "ndcg_at_10": 0.3374,
+      "method_id": "2-H-a"
+    },
+    "phase3": {
+      "method": "pgvector-sparse BM25 (kiwi-cong)",
+      "ndcg_at_10": 0.6326,
+      "method_id": "3-kiwi"
+    },
+    "phase4": {
+      "method": "BGE-M3 dense (cosine)",
+      "ndcg_at_10": 0.7915,
+      "method_id": "4-bgem3-dense"
+    }
+  },
+  "best_ezis": {
+    "phase1": {
+      "method": "kiwi-cong",
+      "ndcg_at_10": 0.9455,
+      "method_id": null
+    },
+    "phase2": {
+      "method": "pg_textsearch + MeCab (BM25/WAND)",
+      "ndcg_at_10": 0.8417,
+      "method_id": "2-H-a"
+    },
+    "phase3": {
+      "method": "kiwi-cong BM25",
+      "ndcg_at_10": 0.9455,
+      "method_id": "3-ezis-kiwi"
+    },
+    "phase4": {
+      "method": "Bayesian BM25+BGE-M3 dense",
+      "ndcg_at_10": 0.9493,
+      "method_id": "4-ezis-bayes-dense"
+    }
+  }
+}

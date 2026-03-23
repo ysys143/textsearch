@@ -1,0 +1,1943 @@
+{
+  "method": "pgvector_sparse_bm25_mecab",
+  "dataset_size": 10000,
+  "timestamp": "2026-03-23T00:40:19.795536+00:00",
+  "num_queries": 213,
+  "n_queries": 213,
+  "ndcg_at_10": 0.47020199463250817,
+  "ndcg_ci_lower": 0.4224753579228998,
+  "ndcg_ci_upper": 0.5189190199681623,
+  "ndcg_at_10_lower": 0.4224753579228998,
+  "ndcg_at_10_upper": 0.5189190199681623,
+  "recall_at_1": 0.24107439248284318,
+  "recall_at_5": 0.4636041840267192,
+  "recall_at_10": 0.6018542229809836,
+  "recall_at_10_lower": 0.5467644334017574,
+  "recall_at_10_upper": 0.6575147433422082,
+  "recall_at_20": 0.6018542229809836,
+  "mrr": 0.4931738579625903,
+  "mrr_lower": 0.4367314069602803,
+  "mrr_upper": 0.548356341754229,
+  "latency_p50_ms": 25.751292007043958,
+  "latency_p95_ms": 36.36050000204705,
+  "latency_p99_ms": 53.68203917343634,
+  "per_query": [
+    {
+      "query_id": "2",
+      "ndcg_at_10": 0.6309297535714575,
+      "recall_at_1": 0.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 0.5
+    },
+    {
+      "query_id": "4",
+      "ndcg_at_10": 0.8529278650606567,
+      "recall_at_1": 0.3333333333333333,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "21",
+      "ndcg_at_10": 0.6309297535714575,
+      "recall_at_1": 0.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 0.5
+    },
+    {
+      "query_id": "24",
+      "ndcg_at_10": 0.9197207891481876,
+      "recall_at_1": 0.5,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "36",
+      "ndcg_at_10": 1.0,
+      "recall_at_1": 1.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "37",
+      "ndcg_at_10": 0.36926780146674987,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.3333333333333333,
+      "recall_at_10": 0.6666666666666666,
+      "recall_at_20": 0.6666666666666666,
+      "mrr": 0.25
+    },
+    {
+      "query_id": "40",
+      "ndcg_at_10": 0.0,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "recall_at_20": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "45",
+      "ndcg_at_10": 0.0,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "recall_at_20": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "49",
+      "ndcg_at_10": 0.43067655807339306,
+      "recall_at_1": 0.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 0.25
+    },
+    {
+      "query_id": "58",
+      "ndcg_at_10": 0.3152014104491349,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.6666666666666666,
+      "recall_at_20": 0.6666666666666666,
+      "mrr": 0.16666666666666666
+    },
+    {
+      "query_id": "61",
+      "ndcg_at_10": 0.6309297535714575,
+      "recall_at_1": 0.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 0.5
+    },
+    {
+      "query_id": "68",
+      "ndcg_at_10": 0.9060254355346823,
+      "recall_at_1": 0.3333333333333333,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "88",
+      "ndcg_at_10": 0.7328286204777911,
+      "recall_at_1": 0.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 0.5
+    },
+    {
+      "query_id": "94",
+      "ndcg_at_10": 0.2051166673279436,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.1,
+      "recall_at_10": 0.2,
+      "recall_at_20": 0.2,
+      "mrr": 0.5
+    },
+    {
+      "query_id": "105",
+      "ndcg_at_10": 0.350055666043193,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.2,
+      "recall_at_10": 0.6,
+      "recall_at_20": 0.6,
+      "mrr": 0.2
+    },
+    {
+      "query_id": "106",
+      "ndcg_at_10": 0.0,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "recall_at_20": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "130",
+      "ndcg_at_10": 0.0,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "recall_at_20": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "145",
+      "ndcg_at_10": 0.3333333333333333,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 0.14285714285714285
+    },
+    {
+      "query_id": "155",
+      "ndcg_at_10": 0.6309297535714575,
+      "recall_at_1": 0.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 0.5
+    },
+    {
+      "query_id": "156",
+      "ndcg_at_10": 0.3391602052736161,
+      "recall_at_1": 0.2,
+      "recall_at_5": 0.2,
+      "recall_at_10": 0.2,
+      "recall_at_20": 0.2,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "159",
+      "ndcg_at_10": 1.0,
+      "recall_at_1": 1.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "163",
+      "ndcg_at_10": 0.23463936301137822,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.3333333333333333,
+      "recall_at_10": 0.3333333333333333,
+      "recall_at_20": 0.3333333333333333,
+      "mrr": 0.3333333333333333
+    },
+    {
+      "query_id": "166",
+      "ndcg_at_10": 1.0,
+      "recall_at_1": 1.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "167",
+      "ndcg_at_10": 0.0,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "recall_at_20": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "184",
+      "ndcg_at_10": 0.0,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "recall_at_20": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "199",
+      "ndcg_at_10": 0.3333333333333333,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 0.14285714285714285
+    },
+    {
+      "query_id": "200",
+      "ndcg_at_10": 0.3567480358963706,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.3333333333333333,
+      "recall_at_10": 0.3333333333333333,
+      "recall_at_20": 0.3333333333333333,
+      "mrr": 0.5
+    },
+    {
+      "query_id": "202",
+      "ndcg_at_10": 0.7327711443782634,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.75,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 0.5
+    },
+    {
+      "query_id": "205",
+      "ndcg_at_10": 0.8772153153380493,
+      "recall_at_1": 0.5,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "215",
+      "ndcg_at_10": 0.38685280723454163,
+      "recall_at_1": 0.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 0.2
+    },
+    {
+      "query_id": "239",
+      "ndcg_at_10": 0.0,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "recall_at_20": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "242",
+      "ndcg_at_10": 0.4950605206767563,
+      "recall_at_1": 0.14285714285714285,
+      "recall_at_5": 0.2857142857142857,
+      "recall_at_10": 0.42857142857142855,
+      "recall_at_20": 0.42857142857142855,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "247",
+      "ndcg_at_10": 0.0,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "recall_at_20": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "249",
+      "ndcg_at_10": 0.38356636737133565,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.4,
+      "recall_at_10": 0.4,
+      "recall_at_20": 0.4,
+      "mrr": 0.5
+    },
+    {
+      "query_id": "252",
+      "ndcg_at_10": 0.7328286204777911,
+      "recall_at_1": 0.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 0.5
+    },
+    {
+      "query_id": "263",
+      "ndcg_at_10": 0.0,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "recall_at_20": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "264",
+      "ndcg_at_10": 0.5723986829443736,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.6666666666666666,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 0.3333333333333333
+    },
+    {
+      "query_id": "268",
+      "ndcg_at_10": 0.5,
+      "recall_at_1": 0.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 0.3333333333333333
+    },
+    {
+      "query_id": "269",
+      "ndcg_at_10": 0.4935232796777481,
+      "recall_at_1": 0.16666666666666666,
+      "recall_at_5": 0.3333333333333333,
+      "recall_at_10": 0.3333333333333333,
+      "recall_at_20": 0.3333333333333333,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "276",
+      "ndcg_at_10": 0.4136877383108716,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.4,
+      "recall_at_10": 0.6,
+      "recall_at_20": 0.6,
+      "mrr": 0.3333333333333333
+    },
+    {
+      "query_id": "284",
+      "ndcg_at_10": 0.3065735963827292,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.5,
+      "recall_at_10": 0.5,
+      "recall_at_20": 0.5,
+      "mrr": 0.3333333333333333
+    },
+    {
+      "query_id": "285",
+      "ndcg_at_10": 0.4632423659320675,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.3333333333333333,
+      "recall_at_10": 0.6666666666666666,
+      "recall_at_20": 0.6666666666666666,
+      "mrr": 0.5
+    },
+    {
+      "query_id": "289",
+      "ndcg_at_10": 0.3562071871080222,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 0.16666666666666666
+    },
+    {
+      "query_id": "292",
+      "ndcg_at_10": 0.09803928583135704,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.2,
+      "recall_at_20": 0.2,
+      "mrr": 0.1
+    },
+    {
+      "query_id": "294",
+      "ndcg_at_10": 0.0,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "recall_at_20": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "303",
+      "ndcg_at_10": 0.21840743681816419,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.5,
+      "recall_at_20": 0.5,
+      "mrr": 0.16666666666666666
+    },
+    {
+      "query_id": "305",
+      "ndcg_at_10": 0.6366824387328317,
+      "recall_at_1": 0.25,
+      "recall_at_5": 0.5,
+      "recall_at_10": 0.5,
+      "recall_at_20": 0.5,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "311",
+      "ndcg_at_10": 0.5554622266077412,
+      "recall_at_1": 0.14285714285714285,
+      "recall_at_5": 0.2857142857142857,
+      "recall_at_10": 0.5714285714285714,
+      "recall_at_20": 0.5714285714285714,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "313",
+      "ndcg_at_10": 0.4637257479802832,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.5,
+      "recall_at_10": 0.75,
+      "recall_at_20": 0.75,
+      "mrr": 0.3333333333333333
+    },
+    {
+      "query_id": "317",
+      "ndcg_at_10": 0.3333333333333333,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 0.14285714285714285
+    },
+    {
+      "query_id": "318",
+      "ndcg_at_10": 1.0,
+      "recall_at_1": 1.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "325",
+      "ndcg_at_10": 1.0,
+      "recall_at_1": 1.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "334",
+      "ndcg_at_10": 0.0,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "recall_at_20": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "344",
+      "ndcg_at_10": 0.0,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "recall_at_20": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "347",
+      "ndcg_at_10": 0.16812753627111746,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.25,
+      "recall_at_10": 0.25,
+      "recall_at_20": 0.25,
+      "mrr": 0.25
+    },
+    {
+      "query_id": "356",
+      "ndcg_at_10": 0.7979719524871096,
+      "recall_at_1": 0.25,
+      "recall_at_5": 0.5,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "364",
+      "ndcg_at_10": 0.3562071871080222,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 0.16666666666666666
+    },
+    {
+      "query_id": "369",
+      "ndcg_at_10": 0.6366824387328317,
+      "recall_at_1": 0.25,
+      "recall_at_5": 0.5,
+      "recall_at_10": 0.5,
+      "recall_at_20": 0.5,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "373",
+      "ndcg_at_10": 0.0,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "recall_at_20": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "389",
+      "ndcg_at_10": 1.0,
+      "recall_at_1": 1.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "403",
+      "ndcg_at_10": 0.8175295903539445,
+      "recall_at_1": 0.5,
+      "recall_at_5": 0.5,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "405",
+      "ndcg_at_10": 0.6870165078530993,
+      "recall_at_1": 0.1,
+      "recall_at_5": 0.3,
+      "recall_at_10": 0.6,
+      "recall_at_20": 0.6,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "409",
+      "ndcg_at_10": 0.5294362295028773,
+      "recall_at_1": 0.25,
+      "recall_at_5": 0.25,
+      "recall_at_10": 0.5,
+      "recall_at_20": 0.5,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "412",
+      "ndcg_at_10": 0.3333333333333333,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 0.14285714285714285
+    },
+    {
+      "query_id": "423",
+      "ndcg_at_10": 0.0,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "recall_at_20": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "425",
+      "ndcg_at_10": 1.0,
+      "recall_at_1": 1.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "426",
+      "ndcg_at_10": 1.0,
+      "recall_at_1": 1.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "440",
+      "ndcg_at_10": 0.20210734650054757,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.3333333333333333,
+      "recall_at_10": 0.3333333333333333,
+      "recall_at_20": 0.3333333333333333,
+      "mrr": 0.25
+    },
+    {
+      "query_id": "448",
+      "ndcg_at_10": 0.16716045496620227,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.3333333333333333,
+      "recall_at_20": 0.3333333333333333,
+      "mrr": 0.16666666666666666
+    },
+    {
+      "query_id": "450",
+      "ndcg_at_10": 0.36926780146674987,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.3333333333333333,
+      "recall_at_10": 0.6666666666666666,
+      "recall_at_20": 0.6666666666666666,
+      "mrr": 0.25
+    },
+    {
+      "query_id": "460",
+      "ndcg_at_10": 1.0,
+      "recall_at_1": 1.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "474",
+      "ndcg_at_10": 0.38685280723454163,
+      "recall_at_1": 0.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 0.2
+    },
+    {
+      "query_id": "485",
+      "ndcg_at_10": 0.6117952373568122,
+      "recall_at_1": 0.1,
+      "recall_at_5": 0.3,
+      "recall_at_10": 0.5,
+      "recall_at_20": 0.5,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "486",
+      "ndcg_at_10": 0.123151194370365,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.25,
+      "recall_at_20": 0.25,
+      "mrr": 0.125
+    },
+    {
+      "query_id": "494",
+      "ndcg_at_10": 1.0,
+      "recall_at_1": 1.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "496",
+      "ndcg_at_10": 0.0,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "recall_at_20": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "504",
+      "ndcg_at_10": 0.5,
+      "recall_at_1": 0.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 0.3333333333333333
+    },
+    {
+      "query_id": "523",
+      "ndcg_at_10": 0.15101961822780524,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.25,
+      "recall_at_10": 0.25,
+      "recall_at_20": 0.25,
+      "mrr": 0.2
+    },
+    {
+      "query_id": "546",
+      "ndcg_at_10": 0.0,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "recall_at_20": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "552",
+      "ndcg_at_10": 0.8065735963827293,
+      "recall_at_1": 0.5,
+      "recall_at_5": 0.5,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "557",
+      "ndcg_at_10": 0.0,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "recall_at_20": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "558",
+      "ndcg_at_10": 0.3903800499921017,
+      "recall_at_1": 0.25,
+      "recall_at_5": 0.25,
+      "recall_at_10": 0.25,
+      "recall_at_20": 0.25,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "573",
+      "ndcg_at_10": 0.39375843764607193,
+      "recall_at_1": 0.09090909090909091,
+      "recall_at_5": 0.18181818181818182,
+      "recall_at_10": 0.2727272727272727,
+      "recall_at_20": 0.2727272727272727,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "575",
+      "ndcg_at_10": 1.0,
+      "recall_at_1": 0.5,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "586",
+      "ndcg_at_10": 0.0,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "recall_at_20": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "591",
+      "ndcg_at_10": 0.45560514958746035,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.5,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 0.2
+    },
+    {
+      "query_id": "597",
+      "ndcg_at_10": 0.448643819352159,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.5,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 0.25
+    },
+    {
+      "query_id": "606",
+      "ndcg_at_10": 1.0,
+      "recall_at_1": 1.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "608",
+      "ndcg_at_10": 0.0,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "recall_at_20": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "613",
+      "ndcg_at_10": 0.13565197343244778,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.3333333333333333,
+      "recall_at_20": 0.3333333333333333,
+      "mrr": 0.1
+    },
+    {
+      "query_id": "629",
+      "ndcg_at_10": 1.0,
+      "recall_at_1": 1.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "635",
+      "ndcg_at_10": 0.6309297535714575,
+      "recall_at_1": 0.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 0.5
+    },
+    {
+      "query_id": "644",
+      "ndcg_at_10": 0.13120507751234178,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.2,
+      "recall_at_10": 0.2,
+      "recall_at_20": 0.2,
+      "mrr": 0.2
+    },
+    {
+      "query_id": "657",
+      "ndcg_at_10": 1.0,
+      "recall_at_1": 1.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "679",
+      "ndcg_at_10": 0.0,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "recall_at_20": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "691",
+      "ndcg_at_10": 0.3903800499921017,
+      "recall_at_1": 0.25,
+      "recall_at_5": 0.25,
+      "recall_at_10": 0.25,
+      "recall_at_20": 0.25,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "693",
+      "ndcg_at_10": 0.0,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "recall_at_20": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "695",
+      "ndcg_at_10": 0.8503449055347546,
+      "recall_at_1": 0.5,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "700",
+      "ndcg_at_10": 0.15101961822780524,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.25,
+      "recall_at_10": 0.25,
+      "recall_at_20": 0.25,
+      "mrr": 0.2
+    },
+    {
+      "query_id": "718",
+      "ndcg_at_10": 0.0,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "recall_at_20": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "720",
+      "ndcg_at_10": 0.6309297535714575,
+      "recall_at_1": 0.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 0.5
+    },
+    {
+      "query_id": "731",
+      "ndcg_at_10": 0.0,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "recall_at_20": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "755",
+      "ndcg_at_10": 0.6901935063354876,
+      "recall_at_1": 0.1,
+      "recall_at_5": 0.3,
+      "recall_at_10": 0.6,
+      "recall_at_20": 0.6,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "758",
+      "ndcg_at_10": 1.0,
+      "recall_at_1": 1.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "763",
+      "ndcg_at_10": 1.0,
+      "recall_at_1": 1.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "769",
+      "ndcg_at_10": 0.18154179253735267,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.3333333333333333,
+      "recall_at_10": 0.3333333333333333,
+      "recall_at_20": 0.3333333333333333,
+      "mrr": 0.2
+    },
+    {
+      "query_id": "777",
+      "ndcg_at_10": 0.21840743681816419,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.5,
+      "recall_at_20": 0.5,
+      "mrr": 0.16666666666666666
+    },
+    {
+      "query_id": "806",
+      "ndcg_at_10": 0.0,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "recall_at_20": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "811",
+      "ndcg_at_10": 0.617319681505689,
+      "recall_at_1": 0.3333333333333333,
+      "recall_at_5": 0.3333333333333333,
+      "recall_at_10": 0.6666666666666666,
+      "recall_at_20": 0.6666666666666666,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "827",
+      "ndcg_at_10": 0.3010299956639812,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 0.1111111111111111
+    },
+    {
+      "query_id": "829",
+      "ndcg_at_10": 0.7707802224715162,
+      "recall_at_1": 0.16666666666666666,
+      "recall_at_5": 0.5,
+      "recall_at_10": 0.8333333333333334,
+      "recall_at_20": 0.8333333333333334,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "834",
+      "ndcg_at_10": 0.6309297535714575,
+      "recall_at_1": 0.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 0.5
+    },
+    {
+      "query_id": "838",
+      "ndcg_at_10": 0.0,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "recall_at_20": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "848",
+      "ndcg_at_10": 0.0,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "recall_at_20": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "881",
+      "ndcg_at_10": 0.0,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "recall_at_20": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "883",
+      "ndcg_at_10": 0.18457569677956817,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.5,
+      "recall_at_20": 0.5,
+      "mrr": 0.1111111111111111
+    },
+    {
+      "query_id": "897",
+      "ndcg_at_10": 0.0,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "recall_at_20": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "901",
+      "ndcg_at_10": 1.0,
+      "recall_at_1": 1.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "906",
+      "ndcg_at_10": 0.31546487678572877,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 0.125
+    },
+    {
+      "query_id": "907",
+      "ndcg_at_10": 0.2685357229842324,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.25,
+      "recall_at_10": 0.5,
+      "recall_at_20": 0.5,
+      "mrr": 0.2
+    },
+    {
+      "query_id": "915",
+      "ndcg_at_10": 0.5135312443624667,
+      "recall_at_1": 0.25,
+      "recall_at_5": 0.25,
+      "recall_at_10": 0.5,
+      "recall_at_20": 0.5,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "919",
+      "ndcg_at_10": 0.38685280723454163,
+      "recall_at_1": 0.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 0.2
+    },
+    {
+      "query_id": "927",
+      "ndcg_at_10": 0.0,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "recall_at_20": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "930",
+      "ndcg_at_10": 1.0,
+      "recall_at_1": 1.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "931",
+      "ndcg_at_10": 0.6122496142821665,
+      "recall_at_1": 0.1,
+      "recall_at_5": 0.4,
+      "recall_at_10": 0.5,
+      "recall_at_20": 0.5,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "932",
+      "ndcg_at_10": 0.0,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "recall_at_20": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "934",
+      "ndcg_at_10": 0.6131471927654584,
+      "recall_at_1": 0.5,
+      "recall_at_5": 0.5,
+      "recall_at_10": 0.5,
+      "recall_at_20": 0.5,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "941",
+      "ndcg_at_10": 0.5,
+      "recall_at_1": 0.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 0.3333333333333333
+    },
+    {
+      "query_id": "946",
+      "ndcg_at_10": 1.0,
+      "recall_at_1": 1.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "947",
+      "ndcg_at_10": 0.5326208815196265,
+      "recall_at_1": 0.08333333333333333,
+      "recall_at_5": 0.25,
+      "recall_at_10": 0.3333333333333333,
+      "recall_at_20": 0.3333333333333333,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "948",
+      "ndcg_at_10": 0.38685280723454163,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.5,
+      "recall_at_10": 0.5,
+      "recall_at_20": 0.5,
+      "mrr": 0.5
+    },
+    {
+      "query_id": "950",
+      "ndcg_at_10": 0.3764290720714305,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.25,
+      "recall_at_10": 0.5,
+      "recall_at_20": 0.5,
+      "mrr": 0.5
+    },
+    {
+      "query_id": "953",
+      "ndcg_at_10": 0.0,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "recall_at_20": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "1003",
+      "ndcg_at_10": 0.0,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "recall_at_20": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "1009",
+      "ndcg_at_10": 0.6084170171049966,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.5,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 0.3333333333333333
+    },
+    {
+      "query_id": "1010",
+      "ndcg_at_10": 0.8117214645716767,
+      "recall_at_1": 0.1111111111111111,
+      "recall_at_5": 0.4444444444444444,
+      "recall_at_10": 0.7777777777777778,
+      "recall_at_20": 0.7777777777777778,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "1011",
+      "ndcg_at_10": 0.0,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "recall_at_20": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "1012",
+      "ndcg_at_10": 0.0,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "recall_at_20": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "1019",
+      "ndcg_at_10": 1.0,
+      "recall_at_1": 1.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "1021",
+      "ndcg_at_10": 1.0,
+      "recall_at_1": 1.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "1033",
+      "ndcg_at_10": 0.23811292043488155,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.16666666666666666,
+      "recall_at_10": 0.3333333333333333,
+      "recall_at_20": 0.3333333333333333,
+      "mrr": 0.25
+    },
+    {
+      "query_id": "1044",
+      "ndcg_at_10": 1.0,
+      "recall_at_1": 1.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "1048",
+      "ndcg_at_10": 0.9609247825245575,
+      "recall_at_1": 0.2,
+      "recall_at_5": 0.8,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "1052",
+      "ndcg_at_10": 0.2090905274901754,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.4,
+      "recall_at_20": 0.4,
+      "mrr": 0.125
+    },
+    {
+      "query_id": "1055",
+      "ndcg_at_10": 0.5,
+      "recall_at_1": 0.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 0.3333333333333333
+    },
+    {
+      "query_id": "1058",
+      "ndcg_at_10": 0.43067655807339306,
+      "recall_at_1": 0.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 0.25
+    },
+    {
+      "query_id": "1059",
+      "ndcg_at_10": 1.0,
+      "recall_at_1": 1.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "1065",
+      "ndcg_at_10": 0.2640681225725909,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.5,
+      "recall_at_10": 0.5,
+      "recall_at_20": 0.5,
+      "mrr": 0.25
+    },
+    {
+      "query_id": "1068",
+      "ndcg_at_10": 1.0,
+      "recall_at_1": 1.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "1075",
+      "ndcg_at_10": 0.24630238874073,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.25,
+      "recall_at_10": 0.25,
+      "recall_at_20": 0.25,
+      "mrr": 0.5
+    },
+    {
+      "query_id": "1076",
+      "ndcg_at_10": 1.0,
+      "recall_at_1": 1.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "1078",
+      "ndcg_at_10": 1.0,
+      "recall_at_1": 0.3333333333333333,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "1082",
+      "ndcg_at_10": 1.0,
+      "recall_at_1": 1.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "1094",
+      "ndcg_at_10": 1.0,
+      "recall_at_1": 1.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "1108",
+      "ndcg_at_10": 0.0,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "recall_at_20": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "1129",
+      "ndcg_at_10": 0.38685280723454163,
+      "recall_at_1": 0.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 0.2
+    },
+    {
+      "query_id": "1138",
+      "ndcg_at_10": 0.6309297535714575,
+      "recall_at_1": 0.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 0.5
+    },
+    {
+      "query_id": "1139",
+      "ndcg_at_10": 1.0,
+      "recall_at_1": 1.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "1140",
+      "ndcg_at_10": 0.5,
+      "recall_at_1": 0.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 0.3333333333333333
+    },
+    {
+      "query_id": "1154",
+      "ndcg_at_10": 0.0,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "recall_at_20": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "1176",
+      "ndcg_at_10": 0.21840743681816419,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.5,
+      "recall_at_20": 0.5,
+      "mrr": 0.16666666666666666
+    },
+    {
+      "query_id": "1183",
+      "ndcg_at_10": 0.38685280723454163,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.5,
+      "recall_at_10": 0.5,
+      "recall_at_20": 0.5,
+      "mrr": 0.5
+    },
+    {
+      "query_id": "1187",
+      "ndcg_at_10": 0.19342640361727081,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.5,
+      "recall_at_20": 0.5,
+      "mrr": 0.125
+    },
+    {
+      "query_id": "1192",
+      "ndcg_at_10": 1.0,
+      "recall_at_1": 1.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "1195",
+      "ndcg_at_10": 0.20438239758848611,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.5,
+      "recall_at_20": 0.5,
+      "mrr": 0.14285714285714285
+    },
+    {
+      "query_id": "1202",
+      "ndcg_at_10": 0.6131471927654584,
+      "recall_at_1": 0.5,
+      "recall_at_5": 0.5,
+      "recall_at_10": 0.5,
+      "recall_at_20": 0.5,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "1206",
+      "ndcg_at_10": 1.0,
+      "recall_at_1": 1.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "1213",
+      "ndcg_at_10": 1.0,
+      "recall_at_1": 1.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "1228",
+      "ndcg_at_10": 1.0,
+      "recall_at_1": 1.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "1240",
+      "ndcg_at_10": 0.9469024295259745,
+      "recall_at_1": 0.3333333333333333,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "1248",
+      "ndcg_at_10": 0.2890648263178879,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 0.1
+    },
+    {
+      "query_id": "1249",
+      "ndcg_at_10": 0.2890648263178879,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 0.1
+    },
+    {
+      "query_id": "1252",
+      "ndcg_at_10": 1.0,
+      "recall_at_1": 1.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "1259",
+      "ndcg_at_10": 1.0,
+      "recall_at_1": 0.5,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "1262",
+      "ndcg_at_10": 0.5028746730079328,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.25,
+      "recall_at_10": 0.75,
+      "recall_at_20": 0.75,
+      "mrr": 0.5
+    },
+    {
+      "query_id": "1266",
+      "ndcg_at_10": 0.32097939710179135,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.2,
+      "recall_at_10": 0.4,
+      "recall_at_20": 0.4,
+      "mrr": 0.5
+    },
+    {
+      "query_id": "1272",
+      "ndcg_at_10": 0.0,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "recall_at_20": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "1273",
+      "ndcg_at_10": 1.0,
+      "recall_at_1": 1.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "1276",
+      "ndcg_at_10": 0.6309297535714575,
+      "recall_at_1": 0.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 0.5
+    },
+    {
+      "query_id": "1301",
+      "ndcg_at_10": 1.0,
+      "recall_at_1": 1.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "1304",
+      "ndcg_at_10": 1.0,
+      "recall_at_1": 1.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "1306",
+      "ndcg_at_10": 0.0,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "recall_at_20": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "1314",
+      "ndcg_at_10": 1.0,
+      "recall_at_1": 1.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "1330",
+      "ndcg_at_10": 0.0,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "recall_at_20": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "1333",
+      "ndcg_at_10": 0.15642624200758548,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.3333333333333333,
+      "recall_at_20": 0.3333333333333333,
+      "mrr": 0.14285714285714285
+    },
+    {
+      "query_id": "1354",
+      "ndcg_at_10": 0.3065735963827292,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.5,
+      "recall_at_10": 0.5,
+      "recall_at_20": 0.5,
+      "mrr": 0.3333333333333333
+    },
+    {
+      "query_id": "1357",
+      "ndcg_at_10": 0.0,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "recall_at_20": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "1368",
+      "ndcg_at_10": 0.26687965254220064,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.2,
+      "recall_at_10": 0.4,
+      "recall_at_20": 0.4,
+      "mrr": 0.25
+    },
+    {
+      "query_id": "1378",
+      "ndcg_at_10": 0.29127873064148246,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.25,
+      "recall_at_10": 0.5,
+      "recall_at_20": 0.5,
+      "mrr": 0.25
+    },
+    {
+      "query_id": "1391",
+      "ndcg_at_10": 0.0,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "recall_at_20": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "1399",
+      "ndcg_at_10": 0.9103075074400794,
+      "recall_at_1": 0.2,
+      "recall_at_5": 0.6,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "1400",
+      "ndcg_at_10": 0.0,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "recall_at_20": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "1402",
+      "ndcg_at_10": 0.0,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "recall_at_20": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "1406",
+      "ndcg_at_10": 0.812653045383133,
+      "recall_at_1": 0.3333333333333333,
+      "recall_at_5": 0.6666666666666666,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "1409",
+      "ndcg_at_10": 1.0,
+      "recall_at_1": 1.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "1436",
+      "ndcg_at_10": 0.48247555939075504,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.5,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 0.25
+    },
+    {
+      "query_id": "1437",
+      "ndcg_at_10": 0.5,
+      "recall_at_1": 0.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 0.3333333333333333
+    },
+    {
+      "query_id": "1440",
+      "ndcg_at_10": 0.0,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "recall_at_20": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "1450",
+      "ndcg_at_10": 1.0,
+      "recall_at_1": 1.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "1467",
+      "ndcg_at_10": 0.21398626473452756,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.2,
+      "recall_at_10": 0.2,
+      "recall_at_20": 0.2,
+      "mrr": 0.5
+    },
+    {
+      "query_id": "1476",
+      "ndcg_at_10": 0.7653606369886217,
+      "recall_at_1": 0.3333333333333333,
+      "recall_at_5": 0.6666666666666666,
+      "recall_at_10": 0.6666666666666666,
+      "recall_at_20": 0.6666666666666666,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "1478",
+      "ndcg_at_10": 1.0,
+      "recall_at_1": 1.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "1491",
+      "ndcg_at_10": 0.7313676349198183,
+      "recall_at_1": 0.1111111111111111,
+      "recall_at_5": 0.3333333333333333,
+      "recall_at_10": 0.7777777777777778,
+      "recall_at_20": 0.7777777777777778,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "1492",
+      "ndcg_at_10": 0.0,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "recall_at_20": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "1495",
+      "ndcg_at_10": 1.0,
+      "recall_at_1": 1.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "1497",
+      "ndcg_at_10": 0.0,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "recall_at_20": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "1511",
+      "ndcg_at_10": 0.21779548001177884,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.16666666666666666,
+      "recall_at_10": 0.3333333333333333,
+      "recall_at_20": 0.3333333333333333,
+      "mrr": 0.25
+    },
+    {
+      "query_id": "1518",
+      "ndcg_at_10": 0.626376385711402,
+      "recall_at_1": 0.25,
+      "recall_at_5": 0.25,
+      "recall_at_10": 0.75,
+      "recall_at_20": 0.75,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "1520",
+      "ndcg_at_10": 0.1208113026994942,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.2,
+      "recall_at_20": 0.2,
+      "mrr": 0.16666666666666666
+    },
+    {
+      "query_id": "1523",
+      "ndcg_at_10": 0.4415801103577823,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.5,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 0.2
+    },
+    {
+      "query_id": "1539",
+      "ndcg_at_10": 1.0,
+      "recall_at_1": 0.5,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "recall_at_20": 1.0,
+      "mrr": 1.0
+    },
+    {
+      "query_id": "1551",
+      "ndcg_at_10": 0.0,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "recall_at_20": 0.0,
+      "mrr": 0.0
+    },
+    {
+      "query_id": "1582",
+      "ndcg_at_10": 0.3501483019834802,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.3333333333333333,
+      "recall_at_10": 0.6666666666666666,
+      "recall_at_20": 0.6666666666666666,
+      "mrr": 0.25
+    }
+  ]
+}

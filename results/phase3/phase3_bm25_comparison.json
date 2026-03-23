@@ -1,0 +1,97 @@
+{
+  "miracl": [
+    {
+      "method_id": "3-mecab",
+      "method": "pgvector-sparse BM25 (Mecab)",
+      "n_queries": 213,
+      "ndcg_at_10": 0.5323,
+      "recall_at_10": 0.7066,
+      "mrr": 0.5104,
+      "zero_result_rate": 0.0,
+      "latency_p50_ms": 18.05,
+      "latency_p95_ms": 173.29,
+      "dataset": "miracl",
+      "tokenizer": "Mecab"
+    },
+    {
+      "method_id": "3-kiwi",
+      "method": "pgvector-sparse BM25 (kiwi-cong)",
+      "n_queries": 213,
+      "ndcg_at_10": 0.6326,
+      "recall_at_10": 0.7911,
+      "mrr": 0.6195,
+      "zero_result_rate": 0.0,
+      "latency_p50_ms": 4.24,
+      "latency_p95_ms": 8.68,
+      "dataset": "miracl",
+      "tokenizer": "kiwi-cong"
+    },
+    {
+      "method_id": "3-okt",
+      "method": "pgvector-sparse BM25 (Okt)",
+      "n_queries": 213,
+      "ndcg_at_10": 0.552,
+      "recall_at_10": 0.712,
+      "mrr": 0.5326,
+      "zero_result_rate": 0.0,
+      "latency_p50_ms": 5.55,
+      "latency_p95_ms": 7.22,
+      "dataset": "miracl",
+      "tokenizer": "Okt"
+    }
+  ],
+  "ezis": [
+    {
+      "method_id": "3-ezis-mecab",
+      "method": "Mecab BM25",
+      "n_queries": 131,
+      "ndcg_at_10": 0.9124,
+      "recall_at_10": 1.0,
+      "mrr": 0.8826,
+      "zero_result_rate": 0.0,
+      "latency_p50_ms": 0.83,
+      "latency_p95_ms": 1.14,
+      "dataset": "ezis",
+      "tokenizer": "Mecab"
+    },
+    {
+      "method_id": "3-ezis-kiwi",
+      "method": "kiwi-cong BM25",
+      "n_queries": 131,
+      "ndcg_at_10": 0.9455,
+      "recall_at_10": 1.0,
+      "mrr": 0.9267,
+      "zero_result_rate": 0.0,
+      "latency_p50_ms": 1.04,
+      "latency_p95_ms": 1.7,
+      "dataset": "ezis",
+      "tokenizer": "kiwi-cong"
+    },
+    {
+      "method_id": "3-ezis-okt",
+      "method": "Okt BM25",
+      "n_queries": 131,
+      "ndcg_at_10": 0.8982,
+      "recall_at_10": 1.0,
+      "mrr": 0.8635,
+      "zero_result_rate": 0.0,
+      "latency_p50_ms": 1.73,
+      "latency_p95_ms": 2.4,
+      "dataset": "ezis",
+      "tokenizer": "Okt"
+    },
+    {
+      "method_id": "3-ezis-ws",
+      "method": "whitespace BM25",
+      "n_queries": 131,
+      "ndcg_at_10": 0.8352,
+      "recall_at_10": 0.9427,
+      "mrr": 0.804,
+      "zero_result_rate": 0.0,
+      "latency_p50_ms": 0.76,
+      "latency_p95_ms": 8.73,
+      "dataset": "ezis",
+      "tokenizer": "whitespace"
+    }
+  ]
+}

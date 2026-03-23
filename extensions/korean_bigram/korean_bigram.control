@@ -1,0 +1,4 @@
+comment = 'Korean bigram text search parser'
+default_version = '1.0'
+module_pathname = '$libdir/korean_bigram'
+relocatable = true

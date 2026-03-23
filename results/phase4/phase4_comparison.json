@@ -1,0 +1,160 @@
+{
+  "miracl": [
+    {
+      "method_id": "4-bm25-kiwi",
+      "method": "BM25 kiwi-cong (pgvector)",
+      "n_queries": 213,
+      "ndcg_at_10": 0.6326,
+      "recall_at_10": 0.7911,
+      "mrr": 0.6195,
+      "latency_p50_ms": 5.66,
+      "latency_p95_ms": 14.58,
+      "dataset": "miracl"
+    },
+    {
+      "method_id": "4-bgem3-sparse",
+      "method": "BGE-M3 sparse (neural)",
+      "n_queries": 213,
+      "ndcg_at_10": 0.7634,
+      "recall_at_10": 0.868,
+      "mrr": 0.783,
+      "latency_p50_ms": 156.92,
+      "latency_p95_ms": 1053.88,
+      "dataset": "miracl"
+    },
+    {
+      "method_id": "4-bgem3-dense",
+      "method": "BGE-M3 dense (cosine)",
+      "n_queries": 213,
+      "ndcg_at_10": 0.7915,
+      "recall_at_10": 0.9154,
+      "mrr": 0.8013,
+      "latency_p50_ms": 253.01,
+      "latency_p95_ms": 924.15,
+      "dataset": "miracl"
+    },
+    {
+      "method_id": "4-hybrid-rrf",
+      "method": "Hybrid BM25+BGE-M3 sparse (RRF)",
+      "n_queries": 213,
+      "ndcg_at_10": 0.716,
+      "recall_at_10": 0.8694,
+      "mrr": 0.706,
+      "latency_p50_ms": 119.08,
+      "latency_p95_ms": 476.72,
+      "dataset": "miracl"
+    },
+    {
+      "method_id": "4-hybrid-rrf-dense",
+      "method": "Hybrid BM25+BGE-M3 dense (RRF)",
+      "n_queries": 213,
+      "ndcg_at_10": 0.7527,
+      "recall_at_10": 0.8907,
+      "mrr": 0.7487,
+      "latency_p50_ms": 641.0,
+      "latency_p95_ms": 2781.28,
+      "dataset": "miracl"
+    },
+    {
+      "method_id": "4-bayes-sparse",
+      "method": "Bayesian BM25+BGE-M3 sparse",
+      "n_queries": 213,
+      "ndcg_at_10": 0.7485,
+      "recall_at_10": 0.8821,
+      "mrr": 0.7492,
+      "latency_p50_ms": 290.94,
+      "latency_p95_ms": 3385.44,
+      "dataset": "miracl"
+    },
+    {
+      "method_id": "4-bayes-dense",
+      "method": "Bayesian BM25+BGE-M3 dense",
+      "n_queries": 213,
+      "ndcg_at_10": 0.7476,
+      "recall_at_10": 0.8854,
+      "mrr": 0.7442,
+      "latency_p50_ms": 379.33,
+      "latency_p95_ms": 1240.63,
+      "dataset": "miracl"
+    }
+  ],
+  "ezis": [
+    {
+      "method_id": "4-ezis-bm25",
+      "method": "BM25 kiwi-cong (in-memory)",
+      "n_queries": 131,
+      "ndcg_at_10": 0.9455,
+      "recall_at_10": 1.0,
+      "mrr": 0.9267,
+      "latency_p50_ms": 0.99,
+      "latency_p95_ms": 1.35,
+      "dataset": "ezis"
+    },
+    {
+      "method_id": "4-ezis-bgem3-dense",
+      "method": "BGE-M3 dense (cosine)",
+      "n_queries": 131,
+      "ndcg_at_10": 0.806,
+      "recall_at_10": 0.9351,
+      "mrr": 0.7648,
+      "latency_p50_ms": 56.85,
+      "latency_p95_ms": 394.0,
+      "dataset": "ezis"
+    },
+    {
+      "method_id": "4-ezis-hybrid-rrf",
+      "method": "Hybrid BM25+BGE-M3 sparse (RRF)",
+      "n_queries": 131,
+      "ndcg_at_10": 0.9134,
+      "recall_at_10": 0.9924,
+      "mrr": 0.886,
+      "latency_p50_ms": 65.44,
+      "latency_p95_ms": 127.09,
+      "dataset": "ezis"
+    },
+    {
+      "method_id": "4-ezis-bgem3-sparse",
+      "method": "BGE-M3 sparse (neural)",
+      "n_queries": 131,
+      "ndcg_at_10": 0.8599,
+      "recall_at_10": 0.9847,
+      "mrr": 0.8192,
+      "latency_p50_ms": 352.09,
+      "latency_p95_ms": 759.75,
+      "dataset": "ezis"
+    },
+    {
+      "method_id": "4-ezis-hybrid-rrf-dense",
+      "method": "Hybrid BM25+BGE-M3 dense (RRF)",
+      "n_queries": 131,
+      "ndcg_at_10": 0.8967,
+      "recall_at_10": 0.9847,
+      "mrr": 0.8677,
+      "latency_p50_ms": 379.76,
+      "latency_p95_ms": 755.61,
+      "dataset": "ezis"
+    },
+    {
+      "method_id": "4-ezis-bayes-sparse",
+      "method": "Bayesian BM25+BGE-M3 sparse",
+      "n_queries": 131,
+      "ndcg_at_10": 0.9394,
+      "recall_at_10": 1.0,
+      "mrr": 0.9179,
+      "latency_p50_ms": 248.68,
+      "latency_p95_ms": 629.98,
+      "dataset": "ezis"
+    },
+    {
+      "method_id": "4-ezis-bayes-dense",
+      "method": "Bayesian BM25+BGE-M3 dense",
+      "n_queries": 131,
+      "ndcg_at_10": 0.9493,
+      "recall_at_10": 1.0,
+      "mrr": 0.9313,
+      "latency_p50_ms": 418.63,
+      "latency_p95_ms": 901.57,
+      "dataset": "ezis"
+    }
+  ]
+}

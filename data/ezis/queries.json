@@ -1,0 +1,788 @@
+[
+  {
+    "query_id": "ezis_q_0",
+    "text": "EZIS를 외부 망 접속이 제한된 환경에서 설치하려면 어떤 방법을 사용해야 하는가?",
+    "relevant_ids": ["ezis_0"],
+    "answer_summary": "외부 망 접속이 제한된 환경에서는 CD 등의 외부 저장 장치를 이용하여 오프라인 설치를 지원한다."
+  },
+  {
+    "query_id": "ezis_q_1",
+    "text": "EZIS가 On-Premise 환경과 Cloud 환경 모두에서 사용 가능하도록 설계된 제품인가?",
+    "relevant_ids": ["ezis_0"],
+    "answer_summary": "EZIS는 On-Premise와 Cloud 환경 모두에 적합하도록 설계되었으며, 전문 엔지니어 없이도 설치가 가능하다."
+  },
+  {
+    "query_id": "ezis_q_2",
+    "text": "SSO 서버 장애 시 EZIS 제품 간 로그인을 개별적으로 유지하려면 어떻게 설정해야 하는가?",
+    "relevant_ids": ["ezis_1"],
+    "answer_summary": "SSO 서버 장애 또는 패치 시에는 Manage Shell에서 SSO Client 기능을 사용안함으로 설정하면 각 제품별로 개별 로그인이 가능하다."
+  },
+  {
+    "query_id": "ezis_q_3",
+    "text": "EZIS SSO 환경에서 특정 사용자를 제품 A, B에는 접근 허용하고 제품 C에만 접근 금지하려면 어떤 설정이 필요한가?",
+    "relevant_ids": ["ezis_1"],
+    "answer_summary": "SSO 인증 서버에 추가된 사용자 ID는 각 EZIS 제품에도 동일하게 등록되어야 하며, 제품 C에 해당 사용자 ID를 추가하지 않으면 그 제품만 사용할 수 없게 된다."
+  },
+  {
+    "query_id": "ezis_q_4",
+    "text": "EZIS 사용자가 비밀번호를 5회 이상 틀렸을 때 어떤 상황이 발생하며, 관리자는 어떤 조치를 취할 수 있는가?",
+    "relevant_ids": ["ezis_2"],
+    "answer_summary": "비밀번호 오류 5회 실패 시 계정이 잠기며(Lock), 관리자는 Lock 컬럼을 통해 잠금 사유를 확인하거나 강제로 로그인 제한을 설정할 수 있다."
+  },
+  {
+    "query_id": "ezis_q_5",
+    "text": "EZIS 신규 사용자 등록 시 Admin Permissions를 'N'으로 설정하면 어떤 기능이 제한되는가?",
+    "relevant_ids": ["ezis_2"],
+    "answer_summary": "Admin Permissions가 'N'인 경우 Setting 메뉴의 설정 변경 권한이 없어진다."
+  },
+  {
+    "query_id": "ezis_q_6",
+    "text": "EZIS에서 특정 사용자 그룹이 Warning 알람만 받고 Critical 알람은 받지 않도록 설정하려면 어떻게 해야 하는가?",
+    "relevant_ids": ["ezis_3"],
+    "answer_summary": "User Group 설정의 Send Event Message Threshold에서 Warning을 'Y', Critical을 'N'으로 설정하면 Warning 범위의 알람만 수신된다."
+  },
+  {
+    "query_id": "ezis_q_7",
+    "text": "UserGroup 메뉴에서 Menu 항목에 추가된 내용이 없으면 사용자에게 어떤 영향이 생기는가?",
+    "relevant_ids": ["ezis_3"],
+    "answer_summary": "Menu에 추가된 내용이 없으면 해당 사용자는 로그인 시 해당 메뉴가 보이지 않는다."
+  },
+  {
+    "query_id": "ezis_q_8",
+    "text": "Oracle alertlog 및 Trace 기능을 EZIS에서 사용하려면 모니터링 계정에 어떤 권한을 추가로 부여해야 하는가?",
+    "relevant_ids": ["ezis_4"],
+    "answer_summary": "alertlog 및 Trace/AWR 기능을 위해 V$diag_info를 조회하여 ezis_dir 이름의 Directory를 생성하고 Read 및 Execute 권한을 부여해야 한다."
+  },
+  {
+    "query_id": "ezis_q_9",
+    "text": "AWR Report 실행 권한을 EZIS 모니터링 계정에 부여하려면 어떤 Oracle 명령을 실행해야 하며, 이 권한이 없으면 어떤 기능이 추가로 제한되는가?",
+    "relevant_ids": ["ezis_5"],
+    "answer_summary": "GRANT EXECUTE ON SYS.DBMS_WORKLOAD_REPOSITORY TO {userid} 권한을 부여해야 하며, 이 권한이 없으면 Oracle alertlog 수집과 Trace 기능도 사용 불가능하다."
+  },
+  {
+    "query_id": "ezis_q_10",
+    "text": "Oracle이 AWS RDS인 경우 Session Trace 기능을 사용하려면 어떤 권한이 필요한가?",
+    "relevant_ids": ["ezis_6"],
+    "answer_summary": "AWS RDS 환경에서 Session Trace 기능을 사용하려면 GRANT EXECUTE ON dbms_monitor TO ${userid} 권한을 부여해야 한다."
+  },
+  {
+    "query_id": "ezis_q_11",
+    "text": "AWS RDS 환경에서 EZIS 디렉토리 접근 권한 부여 방식이 On-Premise 환경과 어떻게 다른가?",
+    "relevant_ids": ["ezis_6"],
+    "answer_summary": "AWS RDS 환경에서는 GRANT EXECUTE ON rdsadmin.rds_file_util TO ${userid}로 디렉토리 권한을 부여하며, On-Premise 환경의 직접 디렉토리 생성 방식과 다르다."
+  },
+  {
+    "query_id": "ezis_q_12",
+    "text": "EZIS 서버 등록 시 CharSet을 잘못 설정하면 어떤 문제가 발생하며, Connection Type은 어떤 두 가지 방식을 제공하는가?",
+    "relevant_ids": ["ezis_7"],
+    "answer_summary": "CharSet이 Oracle과 상이한 경우 Oracle Database로부터 오는 문자열이 일부 깨져 보일 수 있다. Connection Type은 SID 방식과 Service Name 방식 두 가지를 제공한다."
+  },
+  {
+    "query_id": "ezis_q_13",
+    "text": "서버 정기점검 기간 동안 EZIS가 해당 서버에 불필요한 모니터링을 수행하지 않도록 하려면 어떻게 설정해야 하는가?",
+    "relevant_ids": ["ezis_7"],
+    "answer_summary": "Monitoring > Server 메뉴에서 해당 서버의 Use YN을 'N'으로 설정하면 제품이 해당 서버에 어떠한 성능 지표도 수집하지 않는다."
+  },
+  {
+    "query_id": "ezis_q_14",
+    "text": "Cloud 환경에 위치한 Database를 EZIS로 모니터링하려면 Advanced 설정에서 어떤 항목을 추가로 입력해야 하는가?",
+    "relevant_ids": ["ezis_8"],
+    "answer_summary": "Cloud 환경의 Database는 Advanced 탭에서 API 연결을 위한 InstanceID를 입력해야 한다."
+  },
+  {
+    "query_id": "ezis_q_15",
+    "text": "EZIS에서 등록된 여러 서버의 연결 상태를 한꺼번에 확인하려면 어떻게 해야 하는가?",
+    "relevant_ids": ["ezis_8"],
+    "answer_summary": "Server 메뉴에서 테스트할 서버를 복수 선택한 후 상단의 'Test Connection' 버튼을 클릭하면 여러 서버의 연결 상태와 오류 원인을 동시에 확인할 수 있다."
+  },
+  {
+    "query_id": "ezis_q_16",
+    "text": "TNS Alias 방식으로 서버를 등록하려면 tnsnames.ora 외에 어떤 파일을 사용할 수 있으며, TNS Group이 없는 경우 어떤 순서로 설정해야 하는가?",
+    "relevant_ids": ["ezis_9"],
+    "answer_summary": "tnsnames.ora 외에 wallet.zip(압축된 전자지갑 파일)도 사용 가능하다. TNS Group이 없는 경우 상단 TNS Group 버튼을 클릭하여 그룹을 먼저 추가한 후 선택해야 한다."
+  },
+  {
+    "query_id": "ezis_q_17",
+    "text": "EZIS TNS Alias 방식 서버 등록에서 Advanced 및 Test Connection 기능이 Normal 탭과 다른 점은 무엇인가?",
+    "relevant_ids": ["ezis_9"],
+    "answer_summary": "TNS Alias 탭의 Advanced와 Server Test Connection 기능은 Normal 탭과 동일하게 동작하므로 차이가 없다."
+  },
+  {
+    "query_id": "ezis_q_18",
+    "text": "EZIS에서 여러 서버를 한꺼번에 일괄 등록하는 절차는 어떻게 되는가?",
+    "relevant_ids": ["ezis_10"],
+    "answer_summary": "Bulk Registration 버튼 클릭 후 Template을 다운로드하고, Excel에 각 컬럼에 해당하는 값을 입력한 후 Choose File 버튼으로 파일을 선택하거나 Drag & Drop으로 적용하면 된다."
+  },
+  {
+    "query_id": "ezis_q_19",
+    "text": "EZIS 서버 일괄 등록용 Excel 파일에서 Combo 값 입력 시 어떤 제약이 있으며, 사용 후 파일 보안 관리는 어떻게 해야 하는가?",
+    "relevant_ids": ["ezis_10"],
+    "answer_summary": "Combo 값은 Reference 시트에 표시된 값만 입력 가능하다. 파일은 브라우저에서만 읽히며 별도 삭제 및 저장을 하지 않으므로 사용자가 직접 파일을 관리해야 한다."
+  },
+  {
+    "query_id": "ezis_q_20",
+    "text": "AWS RDS와 AWS EC2에 설치된 Oracle을 EZIS로 모니터링할 때 Server Group의 Machine Type을 다르게 지정해야 하는 이유는 무엇인가?",
+    "relevant_ids": ["ezis_11"],
+    "answer_summary": "RDS와 EC2에서 Cloud Watch로 수집하는 항목이 다르기 때문에 두 가지 Type을 별도로 지원한다. RDS는 AWS_RDS, EC2에 Oracle이 설치된 경우는 AWS_EC2를 선택해야 한다."
+  },
+  {
+    "query_id": "ezis_q_21",
+    "text": "EZIS에서 Azure RDS를 모니터링하려면 Server Group의 Machine Type을 어떻게 설정하고 Cloud API 연동은 어떻게 구성하는가?",
+    "relevant_ids": ["ezis_11"],
+    "answer_summary": "Machine Type을 'AZURE RDS'로 선택하고, Cloud ID에 Monitoring > Cloud Group 메뉴에서 설정한 항목을 연결하면 Cloud API 연동을 통해 성능지표를 수집한다."
+  },
+  {
+    "query_id": "ezis_q_22",
+    "text": "기존에 설정된 Server Group 설정을 다른 그룹에 재활용하려면 어떤 기능을 사용해야 하는가?",
+    "relevant_ids": ["ezis_12"],
+    "answer_summary": "ServerGroup Copy 기능을 이용하여 이미 설정된 Server Group을 불러와 동일하게 복사한 뒤, 필요한 내용만 추가하거나 삭제하여 새 Server Group에 적용할 수 있다."
+  },
+  {
+    "query_id": "ezis_q_23",
+    "text": "서버 점검 중 이미 알고 있는 임계값 알람이 계속 발생할 때 해당 지표 알람만 일시적으로 중지하려면 어떻게 설정하는가?",
+    "relevant_ids": ["ezis_12"],
+    "answer_summary": "Server Event Threshold 설정에서 해당 지표의 UseYN을 OFF로 설정하면 임계값이 설정된 상태에서도 해당 지표의 알람을 수동으로 비활성화할 수 있다."
+  },
+  {
+    "query_id": "ezis_q_24",
+    "text": "EZIS에서 'Database Not Running'처럼 임계값 설정이 없는 상태 체크 알람의 수위를 설정하려면 어느 메뉴를 사용해야 하는가?",
+    "relevant_ids": ["ezis_13"],
+    "answer_summary": "Server Event 항목에서 임계값 없이 상태 체크만 하는 알람에 대해 Event Level을 지정하고 Use YN으로 알람 사용 여부를 제어할 수 있다."
+  },
+  {
+    "query_id": "ezis_q_25",
+    "text": "AWS를 IAM_ROLE 방식으로 연결하는 것이 KEY 방식보다 보안상 권장되는 이유는 무엇인가?",
+    "relevant_ids": ["ezis_14"],
+    "answer_summary": "IAM_ROLE 방식은 access key와 secret key 값이 주기적으로 변경되기 때문에 고정된 KEY를 사용하는 방식보다 보안상 더 안전하다."
+  },
+  {
+    "query_id": "ezis_q_26",
+    "text": "EZIS에서 Azure 클라우드 API 연동을 위해 Cloud Group 설정 시 어떤 정보들을 입력해야 하는가?",
+    "relevant_ids": ["ezis_14"],
+    "answer_summary": "Microsoft Entra 애플리케이션의 Directory ID, Application ID, Secret ID, Secret Value 네 가지를 입력해야 한다."
+  },
+  {
+    "query_id": "ezis_q_27",
+    "text": "'Capacity OS Disk' 타입과 'Capacity OS Disk – Mount' 타입의 디스크 용량 계산 방식 차이는 무엇인가?",
+    "relevant_ids": ["ezis_15"],
+    "answer_summary": "'Capacity OS Disk'는 등록된 File System 항목(sum) 기준으로 계산하고, 'Capacity OS Disk – Mount'는 Mount 항목 기준으로 용량을 계산한다."
+  },
+  {
+    "query_id": "ezis_q_28",
+    "text": "특정 디스크 경로에 대해 용량 임계치 알람을 받고 싶지 않다면 어떤 설정을 사용해야 하는가?",
+    "relevant_ids": ["ezis_16"],
+    "answer_summary": "Exclusion List에 알람을 받고 싶지 않은 경로를 추가하면 해당 경로는 임계치 알람 계산에서 제외된다."
+  },
+  {
+    "query_id": "ezis_q_29",
+    "text": "EZIS Monitoring > Logging Info에서 수집 주기를 짧게 설정하면 어떤 영향이 있으며, ACTIVESESSION은 Agent 설치 시 어떤 방식으로 수집되는가?",
+    "relevant_ids": ["ezis_18"],
+    "answer_summary": "수집 주기가 짧을수록 수집 데이터량이 증가한다. ACTIVESESSION은 기본 5초 주기이며 Agent 설치 시 DMA 방식으로 수집된다."
+  },
+  {
+    "query_id": "ezis_q_30",
+    "text": "OS_DISKSPACE 및 OS_PROCESS 수집 기능이 동작하기 위한 필수 조건은 무엇인가?",
+    "relevant_ids": ["ezis_18"],
+    "answer_summary": "OS_DISKSPACE와 OS_PROCESS는 모두 'Agent Only'로 표시되어 있어 Agent가 설치된 경우에만 수집이 가능하다."
+  },
+  {
+    "query_id": "ezis_q_31",
+    "text": "Agent를 설치할 수 없는 환경에서 Oracle alertlog를 수집하려면 어떤 사전 조치가 필요한가?",
+    "relevant_ids": ["ezis_19"],
+    "answer_summary": "Agent가 설치 불가한 경우 Monitoring > Server 메뉴를 참고하여 Oracle Directory 접근 권한(Read 및 Execute)을 부여해야 한다."
+  },
+  {
+    "query_id": "ezis_q_32",
+    "text": "ASH 수집이 Repository DB에 과부하를 줄 때 EZIS에서 성능을 개선할 수 있는 방법은 무엇인가?",
+    "relevant_ids": ["ezis_19"],
+    "answer_summary": "Memory DB를 별도로 설치하면 빠른 결과를 볼 수 있으며, Memory DB 설치는 담당 엔지니어에게 요청해야 한다."
+  },
+  {
+    "query_id": "ezis_q_33",
+    "text": "EZIS에서 SQLTEXT 정보를 찾을 수 없는 경우 어떤 방식으로 대처하는가?",
+    "relevant_ids": ["ezis_20"],
+    "answer_summary": "수집된 SQL 정보를 찾을 수 없는 경우 실시간으로 SQL 정보를 확인하여 Direct로 수집하는 기능이 있다."
+  },
+  {
+    "query_id": "ezis_q_34",
+    "text": "특정 서버에 대해 일부 성능 데이터 수집만 제외하려면 어떤 기능을 어떻게 사용해야 하는가?",
+    "relevant_ids": ["ezis_20"],
+    "answer_summary": "Logging Info 화면의 'Exclude Server' 기능을 통해 특정 Server ID와 특정 Object ID 조합으로 해당 성능 데이터 수집을 제외할 수 있다."
+  },
+  {
+    "query_id": "ezis_q_35",
+    "text": "EZIS에서 Oracle Custom 지표와 일반 Oracle Database 기본 지표를 어떻게 구분할 수 있는가?",
+    "relevant_ids": ["ezis_21"],
+    "answer_summary": "Stat Name 메뉴에서 StatType으로 구분하며, Oracle Custom 지표는 'Oracle Custom Database' 타입이고 stat_id가 음수(-1010000001 등)로 부여되어 있다."
+  },
+  {
+    "query_id": "ezis_q_36",
+    "text": "Soft Parse %와 Execute to Parse %는 각각 어떤 Oracle 성능 상태를 의미하는가?",
+    "relevant_ids": ["ezis_22"],
+    "answer_summary": "Soft Parse %는 실행계획이 라이브러리 캐시에서 찾아져 하드파싱 없이 SQL을 수행한 비율이고, Execute to Parse %는 Parse Call 없이 커서를 캐싱한 채 반복 수행한 비율이다."
+  },
+  {
+    "query_id": "ezis_q_37",
+    "text": "EZIS 제품에서 OOM(Out of Memory) 오류가 발생하면 어떤 동작이 자동으로 이루어지며 어떤 알람이 발생하는가?",
+    "relevant_ids": ["ezis_23"],
+    "answer_summary": "OOM 발생 시 EZIS는 스스로 할당 메모리를 증가시키며 제품을 재기동하고, 이 과정에서 Process Start와 Process Stop 메시지가 발생한다."
+  },
+  {
+    "query_id": "ezis_q_38",
+    "text": "모니터링 대상 서버의 임계치를 수정하는 경우 EZIS 내부에서 어떤 동작이 발생하는가?",
+    "relevant_ids": ["ezis_23"],
+    "answer_summary": "모니터링 대상 서버의 임계치나 서버 정보를 수정하면 내부적으로 관리하는 Process가 재시동되며 Process Start/Stop 메시지가 발생한다."
+  },
+  {
+    "query_id": "ezis_q_39",
+    "text": "EZIS 화면에서 지표 이름으로 Display Name과 Stat Name 중 어느 것이 우선 표시되며, Stat Name이 사용되는 조건은 무엇인가?",
+    "relevant_ids": ["ezis_24"],
+    "answer_summary": "모든 화면에서 기본적으로 Display Name이 표시되며, Display Name이 설정되지 않은 경우에 한해서만 Stat Name이 대신 사용된다."
+  },
+  {
+    "query_id": "ezis_q_40",
+    "text": "ProcessionType을 'ON(Exclude Activity)'으로 설정한 지표는 실시간 화면과 분석 화면 중 어디서만 사용 가능한가?",
+    "relevant_ids": ["ezis_24"],
+    "answer_summary": "'ON(Exclude Activity)'으로 설정한 지표는 실시간 화면에서는 사용되지 않고 오로지 분석 화면에서만 사용된다."
+  },
+  {
+    "query_id": "ezis_q_41",
+    "text": "EZIS에서 사용자 정의 모니터링 쿼리를 등록할 때 쿼리 형식 요건과, 여러 쿼리를 등록할 때 내부 처리 방식은 무엇인가?",
+    "relevant_ids": ["ezis_25"],
+    "answer_summary": "쿼리는 name과 value 형태로 작성해야 하며, 여러 탭에 등록된 쿼리들은 내부적으로 UNION ALL로 합쳐져 처리된다."
+  },
+  {
+    "query_id": "ezis_q_42",
+    "text": "EZIS Event Filter Management를 임계값 알람에 적용하면 SMS나 메일 수신 주기에도 영향을 주는가?",
+    "relevant_ids": ["ezis_26"],
+    "answer_summary": "Event Filter에서 설정한 주기(Time)대로 화면 표시가 조정되며, SMS나 메일 등 알람 수신도 동일한 주기로 동기화된다."
+  },
+  {
+    "query_id": "ezis_q_43",
+    "text": "EZIS 제품 이벤트 알람을 임시로 수신 중지하려면 어떻게 설정하는가?",
+    "relevant_ids": ["ezis_27"],
+    "answer_summary": "Event > Product Event 메뉴에서 해당 지표의 UseYN 값을 'N'으로 설정하면 알람을 받지 않는 중지 상태가 된다."
+  },
+  {
+    "query_id": "ezis_q_44",
+    "text": "등록된 서버가 많을 때 EZIS 화면 상단에서 특정 서버 그룹만 표시하려면 어떤 설정을 사용해야 하는가?",
+    "relevant_ids": ["ezis_28"],
+    "answer_summary": "Appearance > Server Group 메뉴에서 그룹을 생성하고 서버를 추가하면 화면 상단 서버 선택 컴포넌트에서 그룹별로 서버를 표시할 수 있다. 그룹 미지정 서버는 'Not Assigned'로 확인 가능하다."
+  },
+  {
+    "query_id": "ezis_q_45",
+    "text": "EZIS Repository 저장 데이터가 디스크 용량을 초과할 것이 우려될 때 자동으로 오래된 데이터를 삭제하게 하려면 어떻게 설정하는가?",
+    "relevant_ids": ["ezis_29"],
+    "answer_summary": "Advanced > General에서 Disk Size 항목에 성능 데이터가 저장되는 디스크 파티션 크기를 입력하고 Active에 체크하면 용량 초과 시 파티션 주기에서 하루 또는 이틀 치 데이터를 자동 삭제한다."
+  },
+  {
+    "query_id": "ezis_q_46",
+    "text": "Ultra Session Snapshot의 데이터 보관 주기 설정이 일반 성능지표와 다른 점은 무엇인가?",
+    "relevant_ids": ["ezis_29"],
+    "answer_summary": "Ultra Session Snapshot은 데이터량이 많아 시간(Hour) 단위로 보관 주기를 지정하며, Repository DB 사용과 In-Memory Repository 사용 두 가지 설정이 별도로 존재한다."
+  },
+  {
+    "query_id": "ezis_q_47",
+    "text": "EZIS Process 설정에서 Port List와 Process-Queue의 역할 차이는 무엇인가?",
+    "relevant_ids": ["ezis_30"],
+    "answer_summary": "Port List는 Queue process가 사용할 포트 번호 범위를 설정하고, Process-Queue는 Queue process가 이용할 특정한 1개의 포트 번호를 지정한다."
+  },
+  {
+    "query_id": "ezis_q_48",
+    "text": "EZIS에서 세션이 많아 실시간 모니터링 데이터가 브라우저에 제대로 표시되지 않을 때 어떤 설정을 조정해야 하는가?",
+    "relevant_ids": ["ezis_31"],
+    "answer_summary": "Process-WAS 설정에서 Max Binary Message Size 또는 Max Text Message Size 값을 늘려서 1회에 전송 가능한 데이터 크기를 증가시킬 수 있다."
+  },
+  {
+    "query_id": "ezis_q_49",
+    "text": "실시간 통신 유지 설정에서 Idle Timeout과 Ping의 역할 차이는 무엇인가?",
+    "relevant_ids": ["ezis_32"],
+    "answer_summary": "Ping은 실시간 통신 유지를 위한 핑 메시지 처리 주기를 설정하고, Idle Timeout은 유휴 상태가 설정된 시간에 도달하면 접속을 종료하는 기능이다."
+  },
+  {
+    "query_id": "ezis_q_50",
+    "text": "EZIS에서 로그인 대입 공격을 방어하기 위한 설정은 무엇이며, 어떤 원리로 동작하는가?",
+    "relevant_ids": ["ezis_33"],
+    "answer_summary": "PBKDF2 알고리즘으로 Execution Time(ms)을 설정하면 로그인 시 해당 시간만큼 지연이 발생하여 대입 공격을 방어한다. Calculate 버튼으로 설정값을 적용한다."
+  },
+  {
+    "query_id": "ezis_q_51",
+    "text": "EZIS에서 비밀번호 변경 주기 알림 기능을 비활성화하려면 어떻게 설정하는가?",
+    "relevant_ids": ["ezis_33"],
+    "answer_summary": "User Password Change Cycle(day) 설정에서 기간을 크게 늘리면 비밀번호 변경 주기 알림 Dialog가 사실상 표시되지 않게 된다."
+  },
+  {
+    "query_id": "ezis_q_52",
+    "text": "EZIS에서 동일 알람이 SMS 또는 메일로 너무 자주 수신될 때 수신 횟수를 제한하려면 어떤 설정을 사용하는가?",
+    "relevant_ids": ["ezis_34"],
+    "answer_summary": "Advanced > General의 Event 설정에서 Send Method Filter를 사용하면 특정 분 동안 동일 알람을 N개까지만 수신하도록 제한할 수 있다. 예: 20min/3count 설정 시 20분 동안 동일 알람 3회만 수신."
+  },
+  {
+    "query_id": "ezis_q_53",
+    "text": "Auto event clear time 기능을 사용해도 SMS 알람 수신에는 영향이 없는 이유는 무엇인가?",
+    "relevant_ids": ["ezis_34"],
+    "answer_summary": "Auto event clear time은 화면상의 알람 자동 해소 기능이며, 알람 발생 시 문자나 SMS 등으로 수신하는 경우에는 이 설정의 영향을 받지 않는다."
+  },
+  {
+    "query_id": "ezis_q_54",
+    "text": "EZIS 제품 구동 시 서버 부하가 높아 Connection 확인 기능이 오작동하는 경우 어떤 조건에서 자동으로 보류되고 다시 활성화되는가?",
+    "relevant_ids": ["ezis_35"],
+    "answer_summary": "설정 시간 동안 설정 횟수만큼 연속으로 정상 접속되지 않는 경우 Connection 확인 기능이 자동으로 보류되며, 설정 시간을 초과하는 시점부터 다시 활성화된다."
+  },
+  {
+    "query_id": "ezis_q_55",
+    "text": "THREADS, STAT 두 기능의 수집 오류가 지속될 때 모든 Logging Info 기능이 중지되는 조건과 재개 방법은 무엇인가?",
+    "relevant_ids": ["ezis_36"],
+    "answer_summary": "Failure Duration(sec)으로 설정된 시간 동안 연속 오류 발생 시 해당 서버의 모든 Logging Info가 중지된다. Logging Status Dialog에서 Full Suspended 아이콘 클릭 후 Resume으로 재개하거나 Automatic Resume(sec) 설정으로 자동 재개할 수 있다."
+  },
+  {
+    "query_id": "ezis_q_56",
+    "text": "특정 Logging Info 기능이 Read Timeout 오류로 중지된 경우 자동으로 재개되는 조건은 무엇인가?",
+    "relevant_ids": ["ezis_36"],
+    "answer_summary": "Thread 수집 기능 수행 시 실행 중인 EZIS 세션들의 쿼리를 분석하여 중지된 기능이 실행한 쿼리가 존재하지 않는 경우 해당 기능이 자동으로 재개된다."
+  },
+  {
+    "query_id": "ezis_q_57",
+    "text": "EZIS에서 Oracle Session 수집 시 Inactive 세션과 SYSTEM 유저 세션을 제외하되, Transaction이 걸린 Inactive 세션은 유지하려면 어떻게 설정해야 하는가?",
+    "relevant_ids": ["ezis_37"],
+    "answer_summary": "Session의 Inactive 항목을 OFF로 설정하면 Inactive 세션이 제외되지만, Transaction이 걸린 세션은 OFF 상태에서도 수집된다. SYSTEM 유저 세션은 System User 항목을 OFF로 별도 설정한다."
+  },
+  {
+    "query_id": "ezis_q_58",
+    "text": "실시간 Activity 화면에서 Elapsed Time이 짧은 Thread를 필터링하여 표시하지 않으려면 어떻게 설정하는가?",
+    "relevant_ids": ["ezis_37"],
+    "answer_summary": "Advanced > Logging Info의 Activity 섹션에서 Filter - Elapsed Time 값(밀리초)을 설정하면 해당 값 미만인 Thread는 실시간 화면에 표시되지 않는다."
+  },
+  {
+    "query_id": "ezis_q_59",
+    "text": "Agent 통신이 종료된 경우 EZIS가 성능 데이터를 계속 수집할 수 있는 방법은 무엇인가?",
+    "relevant_ids": ["ezis_38"],
+    "answer_summary": "Advanced > Logging Info의 Agent 설정에서 Failover를 활성화하면 Agent 통신 종료 시 Query 방식으로 전환하여 성능 데이터를 계속 수집할 수 있다."
+  },
+  {
+    "query_id": "ezis_q_60",
+    "text": "Oracle SQL Plan 변경 이력 추적 시 SYS 계정에서 변경된 SQL은 알람이 발송되지 않는 이유는 무엇인가?",
+    "relevant_ids": ["ezis_38"],
+    "answer_summary": "Plan 변경 이력 기능은 'SYS' 계정에서 변경된 SQL의 Plan 정보는 알람으로 발송하지 않도록 설계되어 있다."
+  },
+  {
+    "query_id": "ezis_q_61",
+    "text": "EZIS에서 Oracle alertlog 파일이 비워진 것으로 판단될 때 처음부터 다시 읽으려면 어떤 설정을 활성화해야 하는가?",
+    "relevant_ids": ["ezis_39"],
+    "answer_summary": "Alert Log 설정의 'Move First Position When Truncated'를 활성화하면 Log 파일이 비워진 것으로 판단될 때 처음부터 내용을 읽는다."
+  },
+  {
+    "query_id": "ezis_q_62",
+    "text": "EZIS alertlog 수집 시 특정 키워드가 포함된 경우에만 이벤트를 발생시키려면 어떻게 설정해야 하는가?",
+    "relevant_ids": ["ezis_39"],
+    "answer_summary": "Alert Log 탭에서 Keyword를 Add하여 등록하면 해당 키워드가 포함된 alertlog 내용에 대해서만 alertlog 이벤트(Statid: -1020000002)가 발생한다. Ignore Case 설정으로 대소문자 구분도 제어할 수 있다."
+  },
+  {
+    "query_id": "ezis_q_63",
+    "text": "EZIS 라이선스 파일 등록 절차는 어떤 순서로 진행해야 하는가?",
+    "relevant_ids": ["ezis_40"],
+    "answer_summary": "'파일 선택'으로 라이선스 파일 선택 → 'Verify'로 인증 → 'Apply'로 등록 → 'Go to Login'으로 로그인 페이지 이동 순서로 진행한다."
+  },
+  {
+    "query_id": "ezis_q_64",
+    "text": "EZIS에서 Email, Slack, SMS 등의 이벤트 알람 발송 기능을 사용하려면 어떤 전제 조건이 필요한가?",
+    "relevant_ids": ["ezis_41"],
+    "answer_summary": "이벤트 통지 API는 고객사마다 다르므로 사전 협의가 필요하며, 별도의 Plugin을 설치하는 형태로 제공된다."
+  },
+  {
+    "query_id": "ezis_q_65",
+    "text": "EZIS 설정이 변경되어 서버에 반영이 필요한 경우 사용자는 어떻게 알 수 있는가?",
+    "relevant_ids": ["ezis_42"],
+    "answer_summary": "화면 상단에 종 모양 아이콘으로 알람이 표시되어 설정 변경 반영 또는 프로세스 재시작, 화면 새로고침이 필요함을 알려준다."
+  },
+  {
+    "query_id": "ezis_q_66",
+    "text": "EZIS Logging Stats 화면에서 Agent 미설정 서버와 Query 방식 수집 서버의 상태 표시 방식 차이는 무엇인가?",
+    "relevant_ids": ["ezis_43"],
+    "answer_summary": "Query 방식 수집의 경우 수집 대상이 아닌 항목은 빈란 또는 NA로 표시되고, Agent 미설정 서버는 Agent 관련 항목이 빈란으로 표시된다."
+  },
+  {
+    "query_id": "ezis_q_67",
+    "text": "EZIS Activity 화면에서 특정 서버에 부하가 집중될 때 해당 서버만 집중 모니터링하려면 어떻게 하는가?",
+    "relevant_ids": ["ezis_44"],
+    "answer_summary": "화면 상단에서 모니터링 대상 서버를 하나만 선택하면 선택된 서버만 실시간 화면에 그래프로 표시되어 집중 모니터링이 가능하다."
+  },
+  {
+    "query_id": "ezis_q_68",
+    "text": "EZIS Activity 화면 구성을 해당 제품을 사용하는 모든 사용자에게 공유하려면 어떤 버튼을 사용해야 하는가?",
+    "relevant_ids": ["ezis_44"],
+    "answer_summary": "'Shared' 버튼을 클릭하여 화면을 저장하면 해당 제품을 사용하는 모든 사용자에게 화면 저장 내용이 공유된다."
+  },
+  {
+    "query_id": "ezis_q_69",
+    "text": "EZIS 실시간 화면에서 지표를 변경하여 모니터링하려면 어떤 조건을 만족해야 하는가?",
+    "relevant_ids": ["ezis_45"],
+    "answer_summary": "실시간으로 선택 가능한 지표는 Setting > Monitoring > StatName에서 ProcessionType이 'ON'으로 설정된 지표만 변경이 가능하다."
+  },
+  {
+    "query_id": "ezis_q_70",
+    "text": "Active Session Elapsed Time view에서 그래프 점들이 상단에 위치하는 것과 하단에 위치하는 것은 각각 어떤 상태를 의미하는가?",
+    "relevant_ids": ["ezis_46"],
+    "answer_summary": "점들이 그래프 상단에 있으면 세션에 지연 요소가 발생하고 있는 것이고, 하단에 위치하면 평균 수행 시간이 짧아 세션이 정상적으로 처리되고 있는 상태이다."
+  },
+  {
+    "query_id": "ezis_q_71",
+    "text": "EZIS 24H 비교 그래프에서 최근 10분 구간의 그래프가 하향하는 형태로 보이는 이유는 무엇인가?",
+    "relevant_ids": ["ezis_46"],
+    "answer_summary": "최근 10분 구간은 아직 갱신 중이기 때문에 데이터가 완전하지 않아 그래프가 하향하는 형태로 표시된다."
+  },
+  {
+    "query_id": "ezis_q_72",
+    "text": "EZIS Activity 화면에서 여러 세션을 동시에 Kill하려면 어떤 절차를 따라야 하는가?",
+    "relevant_ids": ["ezis_47"],
+    "answer_summary": "'Pause' 버튼을 활성화하여 화면을 멈춘 후 Kill할 세션들을 복수 선택하고 Kill 버튼을 클릭하면 다수의 세션을 동시에 종료할 수 있다."
+  },
+  {
+    "query_id": "ezis_q_73",
+    "text": "RAC로 구성된 Instance에서 EZIS를 통해 Lock을 Kill할 때 어떤 제약이 있는가?",
+    "relevant_ids": ["ezis_47"],
+    "answer_summary": "RAC 구성에서는 EZIS에 등록된 서버의 Lock만 Kill할 수 있다."
+  },
+  {
+    "query_id": "ezis_q_74",
+    "text": "Session Detail에서 Bind 탭의 데이터가 현재 시점과 다를 수 있는 이유는 무엇인가?",
+    "relevant_ids": ["ezis_48"],
+    "answer_summary": "Bind capture는 실제로 15분 간격으로 수집되므로 Bind 탭에서 보이는 데이터는 최소 15분 이내의 데이터이며 실시간 값이 아닐 수 있다."
+  },
+  {
+    "query_id": "ezis_q_75",
+    "text": "Session Detail 화면에서 특정 sql_id가 어떤 세션에서 수행되었는지 이력을 추적하려면 어떤 기능을 사용해야 하는가?",
+    "relevant_ids": ["ezis_48"],
+    "answer_summary": "SQL History 기능을 사용하면 sql_id가 수행된 해당 세션을 찾아서 이력을 확인할 수 있다."
+  },
+  {
+    "query_id": "ezis_q_76",
+    "text": "Session Detail에서 Connection Info 정보를 보려면 어떤 설정이 활성화되어 있어야 하는가?",
+    "relevant_ids": ["ezis_49"],
+    "answer_summary": "Settings > Monitoring > Logging Info의 SESSION_CONNECT_INFO 기능이 활성화된 경우에만 Connection Info 탭이 표시된다."
+  },
+  {
+    "query_id": "ezis_q_77",
+    "text": "Session Detail 화면에서 실시간 Plan을 확인할 때 다른 user의 Plan은 볼 수 없는 이유는 무엇인가?",
+    "relevant_ids": ["ezis_54"],
+    "answer_summary": "Real Time Plan은 해당 모니터링 서버에 접근한 user의 Plan만 실시간으로 볼 수 있으며, 다른 user로의 접근 및 실시간 Plan 조회는 지원하지 않는다."
+  },
+  {
+    "query_id": "ezis_q_78",
+    "text": "EZIS Performance 화면에서 성능 데이터의 기본 저장 기간은 얼마이며, 저장 기간을 변경하려면 어디서 설정하는가?",
+    "relevant_ids": ["ezis_50"],
+    "answer_summary": "기본값은 7일간 저장하며, Advanced > General의 'Day(s) of Repository Storage'에서 물리적 디스크 크기에 따라 저장 날짜를 조정할 수 있다."
+  },
+  {
+    "query_id": "ezis_q_79",
+    "text": "EZIS Performance 화면에서 Time-Sync 기능을 활성화하면 화면 전환 시 어떤 정보가 유지되는가?",
+    "relevant_ids": ["ezis_51"],
+    "answer_summary": "Time-Sync 기능을 사용하면 화면 전환 시에도 달력으로 선택한 날짜와 Timeline bar로 선택한 시간대가 공유된다."
+  },
+  {
+    "query_id": "ezis_q_80",
+    "text": "EZIS SQL ElapsedTime / Wait_time 그래프에서 SYS, MDSYS, DBSNMP 스키마가 제외되는 이유는 무엇이며 wait_time은 어떻게 계산되는가?",
+    "relevant_ids": ["ezis_51"],
+    "answer_summary": "시스템 스키마의 SQL은 그래프 계산 시 제외되도록 설계되어 있으며, wait_time은 elapsed_time에서 cpu_time을 빼서 계산한다. V$sqlarea 정보를 기반으로 한다."
+  },
+  {
+    "query_id": "ezis_q_81",
+    "text": "EZIS SQL(All) 화면에서 SQL Text가 약 200자만 표시되는 이유는 무엇이며, 전체 SQL을 보려면 어떻게 해야 하는가?",
+    "relevant_ids": ["ezis_52"],
+    "answer_summary": "SQL 구문이 너무 길면 조회 시 부하를 유발할 수 있으므로 약 200자만 표시하며, 전체 SQL을 보려면 SQL ID를 클릭하여 SQL Detail 화면 팝업에서 확인해야 한다."
+  },
+  {
+    "query_id": "ezis_q_82",
+    "text": "SQL Detail 화면에서 'Real Time Plan' 버튼을 클릭하면 모니터링 서버에 어떤 명령이 실행되는가?",
+    "relevant_ids": ["ezis_54"],
+    "answer_summary": "'Real Time Plan' 버튼을 클릭하면 모니터링 서버에 'EXPLAIN PLAN FOR {SQL구문}' 명령이 실시간으로 실행된다."
+  },
+  {
+    "query_id": "ezis_q_83",
+    "text": "SQL Finder 기능은 어떤 상황에서 유용하게 사용할 수 있는가?",
+    "relevant_ids": ["ezis_55"],
+    "answer_summary": "SQL Finder는 특정 SQL ID의 장기간 활동 내역을 추적할 수 있어 특정 SQL의 문제 사실 또는 개선 사항을 추적하는 데 유용하다."
+  },
+  {
+    "query_id": "ezis_q_84",
+    "text": "EZIS Performance > Session 화면에서 P/Reads(Delta)와 P/Reads(/sec)의 차이점은 무엇인가?",
+    "relevant_ids": ["ezis_56"],
+    "answer_summary": "P/Reads(Delta)는 Physical Reads를 수집 주기의 Delta 값으로 환산하여 높은 값을 보여주고, P/Reads(/sec)는 Physical Reads의 초당 변화량을 계산하여 보여준다."
+  },
+  {
+    "query_id": "ezis_q_85",
+    "text": "EZIS에서 Oracle의 IOSTAT_FUNCTION 지표를 볼 때 IO Type 방식과 IO Function 방식의 계산식 차이는 무엇인가?",
+    "relevant_ids": ["ezis_57"],
+    "answer_summary": "IO Type은 Write_reqs = Large_Write_reqs + Small_Write_reqs, Read_reqs = Large_Read_reqs + Small_Read_reqs로 구분하고, IO Function은 Requests = small_read_reqs + small_write_reqs + large_read_reqs + large_write_reqs 합계로 계산한다."
+  },
+  {
+    "query_id": "ezis_q_86",
+    "text": "EZIS Wait Analysis에서 Wait Class 그래프를 10분 단위에서 1분 단위로 상세하게 보려면 어떻게 해야 하는가?",
+    "relevant_ids": ["ezis_66"],
+    "answer_summary": "그래프의 기본 구간은 10분이며, 마우스로 그래프를 확대하면 1분 간격으로 상세하게 볼 수 있다."
+  },
+  {
+    "query_id": "ezis_q_87",
+    "text": "Active Session Elapsed Time 차트와 Active Session I/O 차트는 각각 어떤 정보를 시각화하는가?",
+    "relevant_ids": ["ezis_67"],
+    "answer_summary": "Active Session Elapsed Time은 세션의 Elapsed Time, Wait Time을 바 차트로 표시하고 Lock Count를 선 그래프로 표시한다. Active Session I/O는 세션에서 발생한 I/O 양을 바 차트로 표시한다."
+  },
+  {
+    "query_id": "ezis_q_88",
+    "text": "EZIS Wait Analysis의 SQL 탭과 SQL(All) 탭의 데이터 범위 차이는 무엇인가?",
+    "relevant_ids": ["ezis_69"],
+    "answer_summary": "SQL 탭은 Session으로 수집된 SQL만을 보여주지만, SQL(All) 탭은 해당 시간대에 변경 이력이 있는 모든 SQL(V$sqlarea 기반)을 보여준다."
+  },
+  {
+    "query_id": "ezis_q_89",
+    "text": "EZIS Transaction 화면에서 Age (minute) 컬럼은 무엇을 의미하며, 어떤 시점부터 측정되는가?",
+    "relevant_ids": ["ezis_71"],
+    "answer_summary": "Age (minute)는 Transaction이 시작된 이후 경과한 시간을 분 단위로 표시하며, Start Date 컬럼에 기록된 Transaction 시작 시간부터 측정된다."
+  },
+  {
+    "query_id": "ezis_q_90",
+    "text": "RAC 구성에서 EZIS Lock Tree 화면의 Block 값이 2인 경우 어떤 의미인가?",
+    "relevant_ids": ["ezis_72"],
+    "answer_summary": "Block 값이 2이면 로컬 노드에서는 다른 프로세스를 차단하지 않지만 원격 노드에서는 차단할 수도 있고 안 할 수도 있는 상태이며, 이는 Oracle RAC 구성에서만 사용되는 값이다."
+  },
+  {
+    "query_id": "ezis_q_91",
+    "text": "EZIS Wait Analysis > Lock 화면에서 세션 상태가 SNIPED인 경우 이것이 의미하는 상태는 무엇인가?",
+    "relevant_ids": ["ezis_72"],
+    "answer_summary": "SNIPED는 세션이 비활성 상태이며 클라이언트를 기다리고 있는 상태를 의미한다."
+  },
+  {
+    "query_id": "ezis_q_92",
+    "text": "EZIS RBS(Rollback Segments) 화면에서 No Undo 값이 YES로 표시되는 조건은 무엇인가?",
+    "relevant_ids": ["ezis_75"],
+    "answer_summary": "No Undo 값은 실행 취소 트랜잭션이 없는 경우 YES로 표시된다."
+  },
+  {
+    "query_id": "ezis_q_93",
+    "text": "EZIS SQL Analysis는 어떤 방식으로 SQL 성능을 Top-Down으로 분석할 수 있는가?",
+    "relevant_ids": ["ezis_76"],
+    "answer_summary": "SQL Analysis는 Schema별 Program/Module/Machine별로 sql의 성능을 계층적으로 볼 수 있도록 구현되어 있으며, Category 탭에서 각 분류별 sql_id의 비중을 확인할 수 있다."
+  },
+  {
+    "query_id": "ezis_q_94",
+    "text": "EZIS SQL Analysis에서 Wait Time (AVG:Sec) 값이 크게 표시된다면 어떤 상황을 의미하는가?",
+    "relevant_ids": ["ezis_77"],
+    "answer_summary": "Wait Time은 ElapsedTime에서 CPU Time을 뺀 값으로, 이 값이 크면 해당 SQL이 CPU를 사용하지 않고 대기 상태에서 수행되었음을 의미한다."
+  },
+  {
+    "query_id": "ezis_q_95",
+    "text": "EZIS Literal SQL 화면은 어떤 종류의 SQL 부하를 탐지하는 데 사용하는가?",
+    "relevant_ids": ["ezis_79"],
+    "answer_summary": "Bind 변수 없이 반복적으로 수행되어 부하를 주는 Literal SQL을 탐지하는 데 사용하며, Literal SQL Cnt, Buffer Avg, Elapsed Avg 등의 지표로 부하 원인을 분석할 수 있다."
+  },
+  {
+    "query_id": "ezis_q_96",
+    "text": "SQL Square Map에서 셀이 회색으로 표시되는 경우와 색이 진하게 표시되는 경우는 각각 어떤 의미인가?",
+    "relevant_ids": ["ezis_80"],
+    "answer_summary": "회색 셀은 해당 구간에 데이터가 존재하지 않음을 의미하고, 색이 진할수록 해당 1분 구간에서 지표의 발생 빈도가 높음을 의미한다."
+  },
+  {
+    "query_id": "ezis_q_97",
+    "text": "SQL Square Map의 지표 계산에서 SYS, SYSTEM, MDSYS 스키마가 제외되는 지표 범위는 어떻게 되는가?",
+    "relevant_ids": ["ezis_80"],
+    "answer_summary": "Elapsed time, Execute Count, Wait_Time, Disk reads 등 SQL Square Map의 모든 지표 계산에서 parsing_schema_name이 'SYS', 'SYSTEM', 'MDSYS'인 sql_id는 제외된다."
+  },
+  {
+    "query_id": "ezis_q_98",
+    "text": "SQL Square Map에서 특정 sql_id가 수행된 시간대 셀만 하이라이트하여 수행 이력을 찾으려면 어떻게 하는가?",
+    "relevant_ids": ["ezis_81", "ezis_82"],
+    "answer_summary": "SQL Summary에서 특정 sql_id의 체크박스를 클릭하면 해당 sql_id가 포함된 시간대의 Cell만 표시되어 수행 이력을 찾을 수 있다."
+  },
+  {
+    "query_id": "ezis_q_99",
+    "text": "Session Square Map과 SQL Square Map의 성능 데이터 표시 방식의 차이점은 무엇인가?",
+    "relevant_ids": ["ezis_83"],
+    "answer_summary": "Session Square Map은 1분 단위로 Session으로 유입되는 sql_id별 각 성능 지표의 최대값을 구하여 합계치를 표시하는 반면, SQL Square Map은 sql_id별 Delta값을 executions으로 나눈 평균값 합계를 사용한다."
+  },
+  {
+    "query_id": "ezis_q_100",
+    "text": "Top SQL Map에서 면적이 넓은 블록과 색감이 비슷한 블록들은 각각 어떤 정보를 나타내는가?",
+    "relevant_ids": ["ezis_85"],
+    "answer_summary": "면적이 넓을수록 해당 지표 값이 크다는 것을 의미하며, 비슷한 색감은 같은 Module의 SQL을 그룹화하여 표시한 것이다."
+  },
+  {
+    "query_id": "ezis_q_101",
+    "text": "Change Tracking에서 SQL Plan 변경이 감지되는 조건은 무엇이며, 어떤 sql_id를 대상으로 확인하는가?",
+    "relevant_ids": ["ezis_86"],
+    "answer_summary": "반드시 Session 수집 시 유입된 sql_id를 대상으로 날짜별로 plan_hash가 변경되었는지 수집 데이터 전체를 조회하여 판단한다."
+  },
+  {
+    "query_id": "ezis_q_102",
+    "text": "Change Tracking에서 Plan 변경 전후를 비교하려면 어떻게 해야 하는가?",
+    "relevant_ids": ["ezis_87"],
+    "answer_summary": "PLAN Change List에서 Elapsed_time DIFF의 시간을 클릭하면 변경 전, 변경 후 PLAN을 비교할 수 있는 화면이 제공된다."
+  },
+  {
+    "query_id": "ezis_q_103",
+    "text": "EZIS에서 Oracle Object 변경 이력을 확인하는 기본 주기는 얼마이며, 어떤 종류의 Object를 추적할 수 있는가?",
+    "relevant_ids": ["ezis_87"],
+    "answer_summary": "기본 1시간마다 변경 이력을 확인하며, Table, Procedure, Function 등 Oracle Object의 변경 이력을 확인할 수 있다."
+  },
+  {
+    "query_id": "ezis_q_104",
+    "text": "Tablespace 용량 수집 주기를 하루에 여러 번으로 설정했을 때 화면에 표시되는 일자별 용량 정보는 어떤 기준으로 표시되는가?",
+    "relevant_ids": ["ezis_88"],
+    "answer_summary": "수집 주기를 하루에 여러 번으로 줄이더라도 화면에는 해당 일자의 마지막에 수집된 정보가 표기된다."
+  },
+  {
+    "query_id": "ezis_q_105",
+    "text": "EZIS Capacity Management에서 ASM 정보를 수집하려면 어떤 조건이 필요한가?",
+    "relevant_ids": ["ezis_88"],
+    "answer_summary": "모니터링 대상 서버가 ASM 구성으로 되어 있는 경우에만 ASM 디스크 정보를 수집하여 일자별로 볼 수 있다."
+  },
+  {
+    "query_id": "ezis_q_106",
+    "text": "EZIS에서 Linux 계열이 아닌 Instance의 OS Disk Info를 볼 수 없는 이유는 무엇인가?",
+    "relevant_ids": ["ezis_89"],
+    "answer_summary": "Disk Info 기능은 현재 Linux 계열에 설치된 Instance만 지원하고 있어 다른 OS에 설치된 Instance는 Disk 정보를 확인할 수 없다."
+  },
+  {
+    "query_id": "ezis_q_107",
+    "text": "Oracle Parameter 변경 이력을 추적하려면 EZIS에서 어느 메뉴들을 순서에 맞게 사용해야 하는가?",
+    "relevant_ids": ["ezis_90"],
+    "answer_summary": "Capacity Management > Parameter에서 선택한 기간에 적용된 initial parameter 값 목록을 확인하고, 변경 이력은 Change Tracking 메뉴에서 확인한다."
+  },
+  {
+    "query_id": "ezis_q_108",
+    "text": "EZIS Event Analysis에서 Critical 알람 발생 빈도 상위 5개를 시간대별로 시각화하여 확인하려면 어떤 화면을 사용하는가?",
+    "relevant_ids": ["ezis_91"],
+    "answer_summary": "Event Analysis 화면의 Timeline 구간에서 임계값 초과 Critical 기준 발생빈도 상위 5개가 시각화되며, 그래프 위에 마우스를 올리면 해당 시점의 알람 지표와 값을 Top5 형태로 확인할 수 있다."
+  },
+  {
+    "query_id": "ezis_q_109",
+    "text": "EZIS Event Analysis에서 Oracle alertlog가 그래프에 어떻게 표시되며, 발생 횟수는 어떻게 시각화되는가?",
+    "relevant_ids": ["ezis_91"],
+    "answer_summary": "Oracle alertlog는 그래프에 점 형태로 표시되며, 점의 크기는 발생 횟수에 비례한다."
+  },
+  {
+    "query_id": "ezis_q_110",
+    "text": "EZIS Event Analysis의 Time Line | Weekly 기능은 어떤 상황에서 유용하며 어떤 정보를 제공하는가?",
+    "relevant_ids": ["ezis_92"],
+    "answer_summary": "조회 기준일 이전 일주일 동안 발생한 알람을 하루 단위로 보여주며, Critical count가 많이 발생한 날짜를 우선 파악할 때 유용하다. 마우스 커서를 올리면 해당일의 alertlog와 critical count 발생량을 확인할 수 있다."
+  },
+  {
+    "query_id": "ezis_q_111",
+    "text": "On-Premise 환경에서 Oracle alertlog 파일 크기가 너무 커져 수집에 timeout이 발생할 때 어떻게 해야 하는가?",
+    "relevant_ids": ["ezis_92"],
+    "answer_summary": "On-Premise 환경에서는 물리적 alertlog 파일을 별도로 관리하지 않으면 파일 크기가 커져 수집 시 timeout이 발생하므로, alertlog 파일을 주기적으로 정리하여 관리해야 한다."
+  },
+  {
+    "query_id": "ezis_q_112",
+    "text": "EZIS에서 Trace 기능을 실행하면 어떤 Oracle 이벤트와 레벨로 수행되며, 기본 수행 시간은 얼마인가?",
+    "relevant_ids": ["ezis_92"],
+    "answer_summary": "Trace는 Event 10046, Level 4로 수행되며 기본 시간은 30초이다. 더 길게 수행하려면 시간을 직접 조정해야 한다."
+  },
+  {
+    "query_id": "ezis_q_113",
+    "text": "EZIS Long Term Report에서 Sysstat 지표를 추가하면 어떤 형식의 그래프로 표시되는가?",
+    "relevant_ids": ["ezis_93"],
+    "answer_summary": "추가된 Sysstat 지표는 24시간 기준으로 60분 간격의 그래프로 표시된다."
+  },
+  {
+    "query_id": "ezis_q_114",
+    "text": "Long Term Report에서 % CPU와 % IO는 각각 어떻게 계산되는가?",
+    "relevant_ids": ["ezis_93"],
+    "answer_summary": "% CPU는 Elapsed time 대비 CPU time 비율이며, % IO는 Elapsed time 대비 User I/O Time의 비율이다."
+  },
+  {
+    "query_id": "ezis_q_115",
+    "text": "EZIS에서 AWR Report 다운로드 시 모니터링 계정에 실행 권한이 없는 경우 어떻게 처리할 수 있는가?",
+    "relevant_ids": ["ezis_94"],
+    "answer_summary": "모니터링 계정이 AWR Report 실행 권한이 없는 경우 권한이 있는 별도 계정 ID/PW를 입력하여 다운로드할 수 있도록 지원한다. 직접 권한 부여 시 GRANT EXECUTE ON SYS.DBMS_WORKLOAD_REPOSITORY TO {User ID}를 실행하면 된다."
+  },
+  {
+    "query_id": "ezis_q_116",
+    "text": "EZIS AWR Report에서 특정 구간의 레포트를 선택하고 다운로드하는 절차는 어떻게 되는가?",
+    "relevant_ids": ["ezis_94"],
+    "answer_summary": "Snap Timeline에서 레포트 출력할 시작 Snap과 종료 Snap 바를 클릭하여 구간을 선택하면 정보가 표시되고, 'AWR Report Download' 버튼을 클릭하면 HTML 파일로 저장된다."
+  },
+  {
+    "query_id": "ezis_q_117",
+    "text": "EZIS 수집 데이터를 사용자가 직접 백업 및 복원할 때 어떤 명령어를 사용해야 하며 PostgreSQL 버전 주의사항은 무엇인가?",
+    "relevant_ids": ["ezis_95"],
+    "answer_summary": "백업은 pg_dump, 복원은 pg_restore 명령어를 사용하며, 현재 PostgreSQL 14버전 기준이므로 버전 업그레이드 시 해당 버전에 맞는 명령어를 반드시 확인해야 한다."
+  },
+  {
+    "query_id": "ezis_q_118",
+    "text": "EZIS 제품에서 사용하는 암호화 알고리즘들은 무엇인가?",
+    "relevant_ids": ["ezis_95"],
+    "answer_summary": "EZIS는 AES 128, CBC 128, PKCS5Padding 128, SHA2-256, PBKDF2WithHmacSHA256 암호화 알고리즘을 사용한다."
+  },
+  {
+    "query_id": "ezis_q_119",
+    "text": "Activity 화면에 그래프가 실시간으로 표시되지 않을 때 문제 원인을 확인하는 절차는 어떻게 되는가?",
+    "relevant_ids": ["ezis_95"],
+    "answer_summary": "Setting > Monitoring > Server로 접속하여 해당 서버를 선택하고 Test Connection을 실행한다. 연결 실패가 나오면 모니터링 서버에 접근할 수 없어 그래프를 그릴 수 없으므로 서버 정보를 확인해야 한다."
+  },
+  {
+    "query_id": "ezis_q_120",
+    "text": "EZIS에서 라이선스가 만료된 경우 모니터링과 성능 지표 수집은 계속 동작하는가?",
+    "relevant_ids": ["ezis_96"],
+    "answer_summary": "라이선스가 만료되면 로그인에만 제약이 걸리며, 모니터링은 정상적으로 동작하고 성능 지표도 안전하게 수집되고 있다."
+  },
+  {
+    "query_id": "ezis_q_121",
+    "text": "EZIS에서 성능 데이터 저장 공간이 부족할 때 자동으로 오래된 데이터를 삭제하도록 설정하는 절차는 무엇인가?",
+    "relevant_ids": ["ezis_96"],
+    "answer_summary": "Setting > Advanced > General에서 'Day(s) of Repository Storage'를 조정하고, Disk Size 항목에 디스크 파티션 크기를 입력하면 해당 용량 초과 시 자동으로 오래된 성능 데이터가 삭제된다."
+  },
+  {
+    "query_id": "ezis_q_122",
+    "text": "EZIS에서 기본 지표 외 추가 지표를 수집하고 싶을 때 어떤 설정 화면에서 어떻게 처리하는가?",
+    "relevant_ids": ["ezis_96"],
+    "answer_summary": "Setting > Monitoring > Stat Name에서 원하는 지표를 찾아 Processing Type을 'On'으로 수정하고 저장하면 해당 지표가 수집된다."
+  },
+  {
+    "query_id": "ezis_q_123",
+    "text": "EZIS 크롬 브라우저에서 패치 후 그래프가 정상 표시되지 않을 때 해결 방법은 무엇이며 발생 원인은 무엇인가?",
+    "relevant_ids": ["ezis_96"],
+    "answer_summary": "F12로 개발자 모드 진입 후 새로 고침 아이콘에서 강력 새로 고침을 수행해야 한다. 이전 스크립트가 브라우저 캐시에 남아 발생하는 문제이다."
+  },
+  {
+    "query_id": "ezis_q_124",
+    "text": "EZIS Ultra Session Snapshot에서 Memory DB를 사용하면 일반 Repo DB 대비 어떤 장점이 있으며, 사용 조건은 무엇인가?",
+    "relevant_ids": ["ezis_62"],
+    "answer_summary": "Memory DB를 사용하면 ASH 데이터를 메모리 데이터베이스에 저장하여 매우 빠른 조회 결과를 볼 수 있으며, 고객사 장비에 메모리가 충분한 경우에만 사용할 수 있다."
+  },
+  {
+    "query_id": "ezis_q_125",
+    "text": "Ultra Session Snapshot 화면의 Top SQL에서 Plan Hash Value를 클릭하면 무엇을 확인할 수 있는가?",
+    "relevant_ids": ["ezis_63"],
+    "answer_summary": "Plan Hash Value를 클릭하면 해당 쿼리의 Plan 내용을 상세하게 볼 수 있다."
+  },
+  {
+    "query_id": "ezis_q_126",
+    "text": "EZIS Latency 화면에서 높은 대기 시간이 발생하는 주요 원인 두 가지는 무엇인가?",
+    "relevant_ids": ["ezis_61"],
+    "answer_summary": "높은 Latency(동기식 단일 블록 읽기의 평균 대기 시간)는 일반적으로 높은 I/O 요청 로드로 인해 발생하며, CPU 로드가 지나치게 높을 때도 지연 시간이 증가할 수 있다."
+  },
+  {
+    "query_id": "ezis_q_127",
+    "text": "EZIS SQL Detail 화면에서 ElapsedTime 값은 어떻게 계산되며, Sql info 영역에 표시되는 값의 특성은 무엇인가?",
+    "relevant_ids": ["ezis_54"],
+    "answer_summary": "SQL Detail의 Sql info 영역에서 ElapsedTime 값은 elapsed_time을 executions으로 나눈 평균 경과 시간으로 계산되며, 표시되는 값은 누적값이다."
+  },
+  {
+    "query_id": "ezis_q_128",
+    "text": "EZIS에서 특정 서버의 모니터링을 일시 중지할 수 있는 두 가지 방법은 무엇인가?",
+    "relevant_ids": ["ezis_7", "ezis_96"],
+    "answer_summary": "첫째, Server 메뉴에서 해당 서버의 Use YN을 'N'으로 설정하는 방법이 있고, 둘째, Logging Info의 'Exclude Server' 기능으로 특정 서버의 특정 수집 기능만 제외하는 방법이 있다."
+  },
+  {
+    "query_id": "ezis_q_129",
+    "text": "Sysstat Analysis 화면에서 특정 구간을 드래그하면 화면 하단에 어떤 정보가 갱신되는가?",
+    "relevant_ids": ["ezis_60"],
+    "answer_summary": "각 그래프 화면을 드래그하여 더 자세한 조회 구간을 선택하면 화면 하단의 Top SQL 목록이 해당 구간에 맞게 갱신된다."
+  },
+  {
+    "query_id": "ezis_q_130",
+    "text": "EZIS에서 AWS_STAT 수집 사용 시 주의해야 할 비용 관련 사항은 무엇인가?",
+    "relevant_ids": ["ezis_19"],
+    "answer_summary": "AWS_STAT는 AWS Cloud Watch를 통해 1분에 한 번 지표가 갱신되며, AWS 호출 시 비용이 발생할 수 있으므로 유의해야 한다."
+  }
+]
