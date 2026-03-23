@@ -1,0 +1,335 @@
+{
+  "version": "1.0.0",
+  "lastScanned": 1774205312828,
+  "projectRoot": "/Users/jaesolshin/Documents/GitHub/textsearch",
+  "techStack": {
+    "languages": [],
+    "frameworks": [],
+    "packageManager": null,
+    "runtime": null
+  },
+  "build": {
+    "buildCommand": null,
+    "testCommand": null,
+    "lintCommand": null,
+    "devCommand": null,
+    "scripts": {}
+  },
+  "conventions": {
+    "namingStyle": null,
+    "importStyle": null,
+    "testPattern": null,
+    "fileOrganization": null
+  },
+  "structure": {
+    "isMonorepo": false,
+    "workspaces": [],
+    "mainDirectories": [],
+    "gitBranches": null
+  },
+  "customNotes": [],
+  "directoryMap": {},
+  "hotPaths": [
+    {
+      "path": "bm25_module.py",
+      "accessCount": 81,
+      "lastAccessed": 1774275086928,
+      "type": "file"
+    },
+    {
+      "path": "experiments/phase2_tsvector/phase2_tsvector_comparison.py",
+      "accessCount": 60,
+      "lastAccessed": 1774277006255,
+      "type": "file"
+    },
+    {
+      "path": "experiments/phase3_5_interaction_matrix.py",
+      "accessCount": 45,
+      "lastAccessed": 1774236750444,
+      "type": "file"
+    },
+    {
+      "path": "experiments/phase2_bm25_impl.py",
+      "accessCount": 31,
+      "lastAccessed": 1774236749268,
+      "type": "file"
+    },
+    {
+      "path": "experiments/phase1_tsvector.py",
+      "accessCount": 30,
+      "lastAccessed": 1774236748964,
+      "type": "file"
+    },
+    {
+      "path": "experiments/phase4_neural_sparse.py",
+      "accessCount": 28,
+      "lastAccessed": 1774226318021,
+      "type": "file"
+    },
+    {
+      "path": "docs/plan/phase2_tsvector_korean.md",
+      "accessCount": 28,
+      "lastAccessed": 1774277633752,
+      "type": "file"
+    },
+    {
+      "path": "experiments/phase3_analyzer_screen.py",
+      "accessCount": 27,
+      "lastAccessed": 1774236749838,
+      "type": "file"
+    },
+    {
+      "path": "docker-compose.yml",
+      "accessCount": 24,
+      "lastAccessed": 1774273153550,
+      "type": "file"
+    },
+    {
+      "path": "experiments/phase2_5_param_tuning.py",
+      "accessCount": 23,
+      "lastAccessed": 1774236749584,
+      "type": "file"
+    },
+    {
+      "path": "",
+      "accessCount": 20,
+      "lastAccessed": 1774277967832,
+      "type": "directory"
+    },
+    {
+      "path": "benchmark/data/load_mmarco.py",
+      "accessCount": 13,
+      "lastAccessed": 1774236739396,
+      "type": "file"
+    },
+    {
+      "path": "benchmark/runner.py",
+      "accessCount": 11,
+      "lastAccessed": 1774213455363,
+      "type": "file"
+    },
+    {
+      "path": "experiments/phase5_system_comparison.py",
+      "accessCount": 11,
+      "lastAccessed": 1774236750992,
+      "type": "file"
+    },
+    {
+      "path": "docs/plan/phase4_bm25_vs_neural.md",
+      "accessCount": 11,
+      "lastAccessed": 1774281940126,
+      "type": "file"
+    },
+    {
+      "path": "experiments/phase3_native_bm25/phase3_bm25_comparison.py",
+      "accessCount": 10,
+      "lastAccessed": 1774254485268,
+      "type": "file"
+    },
+    {
+      "path": "src/bm25_module.py",
+      "accessCount": 10,
+      "lastAccessed": 1774275092912,
+      "type": "directory"
+    },
+    {
+      "path": "experiments",
+      "accessCount": 8,
+      "lastAccessed": 1774236745819,
+      "type": "directory"
+    },
+    {
+      "path": "experiments/phase1_morphological/phase1_analyzer_comparison.py",
+      "accessCount": 8,
+      "lastAccessed": 1774243554966,
+      "type": "file"
+    },
+    {
+      "path": "idea.md",
+      "accessCount": 8,
+      "lastAccessed": 1774255522925,
+      "type": "file"
+    },
+    {
+      "path": "bm25_extracted.py",
+      "accessCount": 7,
+      "lastAccessed": 1774236738457,
+      "type": "file"
+    },
+    {
+      "path": "benchmark/data/load_namuwiki.py",
+      "accessCount": 6,
+      "lastAccessed": 1774214096362,
+      "type": "file"
+    },
+    {
+      "path": "run_benchmark.py",
+      "accessCount": 6,
+      "lastAccessed": 1774214096611,
+      "type": "file"
+    },
+    {
+      "path": "neuron-dev.txt",
+      "accessCount": 5,
+      "lastAccessed": 1774211813749,
+      "type": "file"
+    },
+    {
+      "path": "results/benchmark_report.md",
+      "accessCount": 5,
+      "lastAccessed": 1774233358855,
+      "type": "file"
+    },
+    {
+      "path": "benchmark/data/load_ezis.py",
+      "accessCount": 5,
+      "lastAccessed": 1774240738856,
+      "type": "file"
+    },
+    {
+      "path": "docs/plan/phase3_native_bm25.md",
+      "accessCount": 5,
+      "lastAccessed": 1774273169353,
+      "type": "file"
+    },
+    {
+      "path": "docs/plan/phase5_system_comparison.md",
+      "accessCount": 5,
+      "lastAccessed": 1774281974442,
+      "type": "file"
+    },
+    {
+      "path": "benchmark/eval.py",
+      "accessCount": 4,
+      "lastAccessed": 1774221914380,
+      "type": "file"
+    },
+    {
+      "path": "docs/plan/phase1_morphological_analyzers.md",
+      "accessCount": 4,
+      "lastAccessed": 1774249628058,
+      "type": "file"
+    },
+    {
+      "path": "requirements.txt",
+      "accessCount": 3,
+      "lastAccessed": 1774219901094,
+      "type": "file"
+    },
+    {
+      "path": "experiments/eval_phase4.py",
+      "accessCount": 3,
+      "lastAccessed": 1774226282617,
+      "type": "file"
+    },
+    {
+      "path": "pyproject.toml",
+      "accessCount": 3,
+      "lastAccessed": 1774240487544,
+      "type": "file"
+    },
+    {
+      "path": "experiments/phase3_native_bm25/phase2_bm25_impl.py",
+      "accessCount": 3,
+      "lastAccessed": 1774273165293,
+      "type": "file"
+    },
+    {
+      "path": "excerpt.pdf",
+      "accessCount": 2,
+      "lastAccessed": 1774210966734,
+      "type": "file"
+    },
+    {
+      "path": "Makefile",
+      "accessCount": 2,
+      "lastAccessed": 1774214096862,
+      "type": "file"
+    },
+    {
+      "path": "data/ezis/queries.json",
+      "accessCount": 2,
+      "lastAccessed": 1774242835367,
+      "type": "file"
+    },
+    {
+      "path": "experiments/phase1_morphological/phase3_analyzer_screen.py",
+      "accessCount": 2,
+      "lastAccessed": 1774243125872,
+      "type": "file"
+    },
+    {
+      "path": "docs/plan/phase0_data_prep.md",
+      "accessCount": 2,
+      "lastAccessed": 1774249126220,
+      "type": "file"
+    },
+    {
+      "path": "benchmark/__init__.py",
+      "accessCount": 1,
+      "lastAccessed": 1774212674765,
+      "type": "file"
+    },
+    {
+      "path": "benchmark/report.py",
+      "accessCount": 1,
+      "lastAccessed": 1774212720543,
+      "type": "file"
+    },
+    {
+      "path": "benchmark/README.md",
+      "accessCount": 1,
+      "lastAccessed": 1774212779969,
+      "type": "file"
+    },
+    {
+      "path": "benchmark/data/__init__.py",
+      "accessCount": 1,
+      "lastAccessed": 1774213402893,
+      "type": "file"
+    },
+    {
+      "path": "experiments/__init__.py",
+      "accessCount": 1,
+      "lastAccessed": 1774213423833,
+      "type": "file"
+    },
+    {
+      "path": ".python-version",
+      "accessCount": 1,
+      "lastAccessed": 1774219909425,
+      "type": "file"
+    },
+    {
+      "path": "data/EZIS_Oracle_Manual.pdf",
+      "accessCount": 1,
+      "lastAccessed": 1774235866503,
+      "type": "file"
+    },
+    {
+      "path": "docs/plan/README.md",
+      "accessCount": 1,
+      "lastAccessed": 1774235987694,
+      "type": "file"
+    },
+    {
+      "path": "pyrightconfig.json",
+      "accessCount": 1,
+      "lastAccessed": 1774240848487,
+      "type": "file"
+    },
+    {
+      "path": "data/ezis/chunks.json",
+      "accessCount": 1,
+      "lastAccessed": 1774242231365,
+      "type": "file"
+    },
+    {
+      "path": "experiments/phase4_bm25_vs_neural/eval_phase4.py",
+      "accessCount": 1,
+      "lastAccessed": 1774246200221,
+      "type": "file"
+    }
+  ],
+  "userDirectives": []
+}
