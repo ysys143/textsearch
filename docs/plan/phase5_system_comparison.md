@@ -112,55 +112,32 @@ client.create_collection(
 
 ---
 
-## 출력
+## PostgreSQL Best 세팅 (Phase 1~4 확정 — Phase 5 baseline)
 
-- `results/phase5/phase5_final_report.md` — Phase 1~4 전체 통합 결과표
-- `results/phase5/phase5_summary.json`
+Phase 5 비교에서 PostgreSQL 대표 선수로 사용할 세팅:
 
-> **비고**: Elasticsearch/Qdrant/Vespa Docker 이미지 pull 실패로 Phase 5 외부 시스템 비교는 미실시.
-> Phase 5는 Phase 1~4 PostgreSQL-only 결과 통합 리포트로 대체.
+### BM25-only 티어
+
+| 세팅 | MIRACL NDCG@10 | EZIS NDCG@10 | p50 |
+|------|---------------|-------------|-----|
+| **pl/pgsql BM25 + MeCab (public.korean)** | **0.6412** | 0.9290 | 10ms |
+| pgvector-sparse BM25 (kiwi-cong) | 0.6326 | **0.9455** | 4ms |
+
+→ Phase 5 BM25 baseline: **pl/pgsql + public.korean** (MIRACL 최고, 순수 SQL)
+
+### Neural 티어
+
+| 세팅 | MIRACL NDCG@10 | EZIS NDCG@10 | p50 |
+|------|---------------|-------------|-----|
+| **BGE-M3 dense (cosine)** | **0.7915** | 0.8060 | 253ms |
+| Bayesian BM25+BGE-M3 dense | 0.7476 | **0.9493** | 379ms |
+| splade-ko (pgvector sparsevec) | 0.6962 | 0.8998 | 105ms |
+
+→ Phase 5 neural baseline: **BGE-M3 dense** (전반), **Bayesian+dense** (도메인 특화)
 
 ---
 
-## 실험 결과 요약
+## 출력
 
-### MIRACL-ko 최종 순위 (상위 10)
-
-| Phase | 방법 | NDCG@10 | Latency p50 |
-|-------|------|---------|-------------|
-| phase4 | BGE-M3 dense (cosine) | **0.7915** | 253ms |
-| phase4 | BGE-M3 sparse (neural) | 0.7634 | 157ms |
-| phase4 | Hybrid BM25+BGE-M3 dense (RRF) | 0.7527 | 641ms |
-| phase4 | Bayesian BM25+BGE-M3 sparse | 0.7485 | 291ms |
-| phase4 | Bayesian BM25+BGE-M3 dense | 0.7476 | 379ms |
-| phase4 | Hybrid BM25+BGE-M3 sparse (RRF) | 0.7160 | 119ms |
-| phase4 | splade-ko (yjoonjang/splade-ko-v1) | 0.6962 | **104.67ms** |
-| phase2 | pl/pgsql BM25 + MeCab (public.korean) | 0.6412 | 10ms |
-| phase3 | pgvector-sparse BM25 (kiwi-cong) | 0.6326 | 4ms |
-
-### EZIS 최종 순위 (상위 5)
-
-| Phase | 방법 | NDCG@10 |
-|-------|------|---------|
-| phase4 | Bayesian BM25+BGE-M3 dense | **0.9493** |
-| phase1/3/4 | BM25 kiwi-cong | 0.9455 |
-| phase4 | Bayesian BM25+BGE-M3 sparse | 0.9394 |
-| phase2 | pl/pgsql BM25 + MeCab | 0.9290 |
-| phase4 | splade-ko | 0.8998 |
-
-### 핵심 발견
-
-1. **MIRACL**: BGE-M3 dense 단독 (NDCG=0.7915)이 어떤 hybrid도 능가
-2. **EZIS**: BM25 kiwi-cong (0.9455)이 dense (0.8060)를 크게 앞서는 도메인 특성 (전문 기술 용어)
-3. **splade-ko 재측정**: pgvector sparsevec DB-side scan → p50 555ms→**104.67ms** (5.3×), 병목은 MPS 모델 추론 (~100ms)
-4. **pl/pgsql 4-table BM25**: 인덱스 재설계(bm25idx+bm25df+bm25doclen+bm25stats)로 p50 45ms→10ms (4.3×)
-5. **PostgreSQL vs 전문 엔진**: BM25 품질 기준 pl/pgsql+MeCab (0.6412)이 pgvector-sparse (0.6326)를 능가; neural은 별도 GPU 추론 필요
-
-### Production 추천
-
-| 시나리오 | 추천 |
-|---------|------|
-| 품질 최우선 (GPU 있음) | BGE-M3 dense 단독 |
-| 품질+비용 균형 | Bayesian BM25+BGE-M3 dense |
-| PostgreSQL-only, 저지연 | pl/pgsql BM25 + MeCab (public.korean) |
-| 기술 도메인 문서 | BM25 kiwi-cong 단독 |
+- `results/phase5/phase5_comparison.json` — PG vs ES vs Qdrant 전체 결과
+- `results/phase5/phase5_final_report.md` — 종합 리포트
