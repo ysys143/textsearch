@@ -152,6 +152,12 @@
       "type": "file"
     },
     {
+      "path": "docs/plan/phase5_system_comparison.md",
+      "accessCount": 2,
+      "lastAccessed": 1774307527024,
+      "type": "file"
+    },
+    {
       "path": "docs/plan/phase2_tsvector_korean.md",
       "accessCount": 1,
       "lastAccessed": 1774306819426,
@@ -179,12 +185,6 @@
       "path": "idea.md",
       "accessCount": 1,
       "lastAccessed": 1774307227887,
-      "type": "file"
-    },
-    {
-      "path": "docs/plan/phase5_system_comparison.md",
-      "accessCount": 1,
-      "lastAccessed": 1774307285120,
       "type": "file"
     }
   ],
