@@ -68,18 +68,6 @@
 - **5-pgsql**: 완전 DB-side → connection pool로 horizontal scale 가능, concurrent 유리
 - **5-hybrid**: BGE-M3 MPS 추론이 bottleneck, concurrent 시 큐잉 발생 예상
 
-### 4. HNSW 인덱스 효과 (하이브리드 내 dense 컴포넌트)
-
-하이브리드(5-hybrid)에서 dense 벡터 검색 부분에 HNSW 적용 시 효과 측정.
-
-| 인덱스 | dense 쿼리 latency (p50) | recall 손실 |
-|--------|------------------------|------------|
-| exact scan (현재) | ~120ms (DB 부분만) | 0% |
-| HNSW m=16, ef=64 | ? | 예상 <2% |
-| HNSW m=16, ef=200 | ? | 예상 <1% |
-
-> sparse 벡터는 pgvector에서 HNSW 미지원 — exact scan 유일 옵션.
-
 ---
 
 ## 실험 매트릭스
@@ -88,9 +76,8 @@
 |---------|------|------|---------|
 | 5-A | pgvector-sparse kiwi-cong | 10k | 오프라인 빌드, 온라인 추가 latency, QPS@1/4/8/16, IDF staleness |
 | 5-B | pl/pgsql BM25 + MeCab | 10k | 오프라인 빌드, 온라인 추가 latency, QPS@1/4/8/16, IDF staleness |
-| 5-C | Bayesian BM25+BGE-M3 dense (exact) | 10k | 오프라인 빌드, 온라인 추가 latency (dual-index), QPS@1/4/8 |
-| 5-D | Bayesian BM25+BGE-M3 dense + HNSW | 10k | dense HNSW 빌드 비용, latency 개선, recall tradeoff |
-| 5-E | (선택) 100k scale | 100k | 5-A/B/C 동일 측정, 스케일링 곡선 |
+| 5-C | Bayesian BM25+BGE-M3 dense | 10k | 오프라인 빌드, 온라인 추가 latency (dual-index), QPS@1/4/8 |
+| 5-D | (선택) 100k scale | 100k | 5-A/B/C 동일 측정, 스케일링 곡선 |
 
 ---
 
@@ -104,8 +91,6 @@
 
 3. **Hybrid 운영 비용 정당화**: BM25+dense 하이브리드는 두 인덱스 관리 비용이 있음.
    EZIS NDCG 0.9493 vs BM25 단독 0.9455의 +0.4% 개선이 ~2x 운영 비용을 정당화하는가?
-
-4. **HNSW 가성비**: 하이브리드 dense 컴포넌트에 HNSW 적용 시 latency 개선 vs 인덱스 빌드 비용.
 
 ---
 
