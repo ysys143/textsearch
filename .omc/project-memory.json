@@ -354,6 +354,30 @@
       "accessCount": 1,
       "lastAccessed": 1774329163895,
       "type": "file"
+    },
+    {
+      "path": "vendor/textsearch_ko/ts_mecab_ko.c",
+      "accessCount": 1,
+      "lastAccessed": 1774335122217,
+      "type": "file"
+    },
+    {
+      "path": "vendor/textsearch_ko/textsearch_ko--1.0.sql",
+      "accessCount": 1,
+      "lastAccessed": 1774335122524,
+      "type": "file"
+    },
+    {
+      "path": "vendor/textsearch_ko/textsearch_ko.control",
+      "accessCount": 1,
+      "lastAccessed": 1774335265640,
+      "type": "file"
+    },
+    {
+      "path": "vendor/textsearch_ko/README.md",
+      "accessCount": 1,
+      "lastAccessed": 1774335265775,
+      "type": "file"
     }
   ],
   "userDirectives": []
