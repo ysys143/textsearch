@@ -46,7 +46,7 @@ def _normalize_tokenizer_name(name: str) -> str:
 def build_bm25_index_for_analyzer(conn, tokenizer_name: str, docs: List[Dict]):
     """Build BM25Embedder inverted index for given analyzer. Drops existing index first."""
     sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    from src.bm25_module import BM25Embedder  # lazy import
+    from experiments.common.bm25_module import BM25Embedder  # lazy import
     embedder = BM25Embedder(tokenizer=_normalize_tokenizer_name(tokenizer_name))
     embedder.fit([d["text"] for d in docs])
     return embedder
@@ -55,7 +55,7 @@ def build_bm25_index_for_analyzer(conn, tokenizer_name: str, docs: List[Dict]):
 def run_analyzer_bm25(conn, tokenizer_name: str, queries: List[Dict], k: int = 10) -> List[Dict]:
     """Run BM25 search with given analyzer. Returns [{query_id, ranked_ids}]."""
     sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    from src.bm25_module import BM25Embedder, SAMPLE_SENTENCES  # lazy import
+    from experiments.common.bm25_module import BM25Embedder, SAMPLE_SENTENCES  # lazy import
     docs = [{"id": i, "text": t} for i, t in enumerate(SAMPLE_SENTENCES)]
     embedder = BM25Embedder(tokenizer=_normalize_tokenizer_name(tokenizer_name))
     embedder.fit([d["text"] for d in docs])
@@ -95,7 +95,7 @@ def run_analyzer_screen(
         analyzer_names = ["kiwi-cong", "kiwi-knlm", "mecab", "okt", "kkma", "whitespace"]
 
     sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    from src.bm25_module import BM25Embedder, SAMPLE_SENTENCES  # lazy import
+    from experiments.common.bm25_module import BM25Embedder, SAMPLE_SENTENCES  # lazy import
 
     if docs is None:
         docs = [{"id": i, "text": t} for i, t in enumerate(SAMPLE_SENTENCES)]

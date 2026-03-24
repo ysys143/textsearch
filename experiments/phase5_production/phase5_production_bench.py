@@ -656,7 +656,7 @@ def run_experiment_5A(db_url: str, miracl_docs, miracl_queries,
     print("Experiment 5-A: pgvector-sparse IDF staleness")
     print("=" * 70)
 
-    from src.bm25_module import BM25Embedder_PG
+    from experiments.common.bm25_module import BM25Embedder_PG
 
     results = {}
 

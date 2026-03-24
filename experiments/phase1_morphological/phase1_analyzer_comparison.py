@@ -25,7 +25,7 @@ from typing import Dict, List, Tuple
 ROOT = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(ROOT))
 
-from src.bm25_module import BM25Embedder  # noqa: E402
+from experiments.common.bm25_module import BM25Embedder  # noqa: E402
 
 # ---------------------------------------------------------------------------
 # Tokenizers to benchmark

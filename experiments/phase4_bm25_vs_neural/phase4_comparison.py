@@ -222,7 +222,7 @@ def main() -> None:
 
     # Load BM25 kiwi-cong embedder (Phase 3 best)
     print("\n[Setup] Loading BM25 kiwi-cong embedder (Phase 3 best)...")
-    from src.bm25_module import BM25Embedder_PG, BM25Embedder
+    from experiments.common.bm25_module import BM25Embedder_PG, BM25Embedder
     BM25_TABLE  = "text_embedding_sparse_bm25_kiwi_cong"
     VOCAB_CACHE = ".cache/bm25_vocab_kiwi_cong.json"
 

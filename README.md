@@ -81,60 +81,35 @@ textsearch/
 │   │   └── phase5_production_pg.md
 │   │
 │   └── source-analysis/            # PG 확장 소스 분석
-│       ├── textsearch_ko_analysis.md
-│       └── pg_search_analysis.md
+│       ├── bm25_implementations_comparison.md
+│       ├── paradedb_code_analysis.md
+│       └── pg_textsearch_code_analysis.md
 │
 ├── experiments/                    # 실험 코드
-│   ├── phase1_morphological/
-│   │   └── phase1_analyzer_comparison.py
-│   ├── phase2_tsvector/
-│   │   ├── phase2_korean_config.py
-│   │   └── phase2_tokenizer_integration.py
-│   ├── phase3_native_bm25/
-│   │   ├── phase3_pl_pgsql_bm25.py
-│   │   ├── phase3_pgvector_sparse.py
-│   │   └── phase3_bm25_benchmark.py
-│   ├── phase4_bm25_vs_neural/
-│   │   ├── phase4_neural_sparse.py
-│   │   ├── phase4_bm25_comparison.py
-│   │   └── phase4_hybrid_fusion.py
-│   └── phase5_production/
-│       ├── phase5_pl_pgsql_v2.py
-│       ├── phase5_incremental_ingestion.py
-│       └── phase5_production_benchmark.py
+│   ├── common/
+│   │   └── bm25_module.py         # BM25 임베더 + pl/pgsql DDL 헬퍼 (실험 공용)
+│   ├── phase1_morphological/       # 형태소 분석기 비교
+│   ├── phase2_tsvector/            # tsvector 한국어 통합
+│   ├── phase3_native_bm25/         # Native BM25 구현 비교
+│   ├── phase4_bm25_vs_neural/      # BM25 vs Neural Sparse
+│   ├── phase5_production/          # Production 최적화
+│   └── phase5_system_comparison/   # 시스템 비교 (ES/Qdrant)
 │
-├── extensions/                     # PostgreSQL 확장 (포크/커스텀)
-│   ├── textsearch_ko/              # MeCab 기반 한국어 토크나이저
-│   │   ├── README.md
-│   │   ├── src/
-│   │   └── sql/
-│   └── korean_bigram/              # 한국어 음절 파서
-│       ├── README.md
-│       ├── src/
-│       └── sql/
+├── extensions/                     # 우리 코드 (포크/커스텀 PG 확장)
+│   ├── textsearch_ko/              # MeCab 한국어 토크나이저 (ysys143 포크)
+│   └── korean_bigram/              # 한국어 음절 파서 (직접 작성 C 확장)
 │
-├── vendor/                         # 참조 소스 (원본)
-│   ├── textsearch_ko_original/
-│   ├── pg_textsearch_original/
-│   ├── pg_search_original/
-│   └── pg_bigm_original/
+├── vendor/                         # 외부 참조 소스 (원본, _original)
+│   ├── textsearch_ko_original/     # i0seph/textsearch_ko
+│   ├── pg_textsearch_original/     # timescale/pg_textsearch
+│   ├── pg_search_original/         # paradedb/paradedb
+│   └── pg_bigm_original/           # pgbigm/pg_bigm
 │
-├── src/                            # 공유 Python 모듈
-│   ├── bm25_module.py              # BM25 임베더 + pl/pgsql 함수
-│   ├── tokenizer_utils.py          # 형태소 분석기 래퍼
-│   ├── data_loader.py              # MIRACL/EZIS 로더
-│   └── metrics.py                  # NDCG, Recall, MRR 계산
-│
-├── results/                        # 실험 결과 (JSON + Markdown)
-│   ├── phase1_results.json
-│   ├── phase2_results.json
-│   ├── phase3_results.json
-│   ├── phase4_results.json
-│   └── phase5_results.json
+├── results/                        # 실험 결과 (JSON + MD 요약)
+│   ├── phase1/ ~ phase5/           # Phase별 결과
+│   └── legacy/                     # 초기 탐색 결과 보관
 │
 ├── docker-compose.yml              # 인프라 (PG, ES, Qdrant, Weaviate)
-├── pyproject.toml                  # 프로젝트 메타 (uv)
-├── requirements.txt                # 의존성
 └── README.md                       # 이 파일
 ```
 

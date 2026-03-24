@@ -403,7 +403,7 @@ def main():
 
     else:
         # postgres — use existing BM25 infrastructure
-        from src.bm25_module import bm25_sql_search
+        from experiments.common.bm25_module import bm25_sql_search
         class _PGSearcher:
             _index_build_time = 0.0
             def search(self, query: str, k: int = 10):

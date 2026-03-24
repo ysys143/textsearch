@@ -208,7 +208,7 @@ def main() -> None:
 
     # pgvector-sparse kiwi-cong latency
     print("  pgvector-sparse kiwi-cong...")
-    from src.bm25_module import BM25Embedder_PG
+    from experiments.common.bm25_module import BM25Embedder_PG
     with conn.cursor() as cur:
         cur.execute("SELECT text FROM text_embedding ORDER BY id")
         corpus_texts = [r[0] for r in cur.fetchall()]

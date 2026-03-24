@@ -164,7 +164,7 @@ def run_qdrant(qdrant_url: str, docs: list[dict], queries: list[dict],
         SparseVectorParams, SparseVector, NamedSparseVector,
         VectorParams, Distance, SparseIndexParams,
     )
-    from src.bm25_module import BM25Embedder_PG
+    from experiments.common.bm25_module import BM25Embedder_PG
 
     print(f"\n[Qdrant] {dataset_label}: connecting to {qdrant_url}...")
     host, port_str = qdrant_url.replace("http://", "").split(":")

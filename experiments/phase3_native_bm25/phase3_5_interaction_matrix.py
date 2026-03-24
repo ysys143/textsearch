@@ -116,7 +116,7 @@ def run_interaction_matrix(
 
 
     sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    from src.bm25_module import BM25Embedder, SAMPLE_SENTENCES  # lazy import; use base class for in-memory dict scoring
+    from experiments.common.bm25_module import BM25Embedder, SAMPLE_SENTENCES  # lazy import; use base class for in-memory dict scoring
 
     if not docs:
         docs = [{"id": i, "text": t} for i, t in enumerate(SAMPLE_SENTENCES)]

@@ -30,7 +30,7 @@ sys.path.insert(0, str(ROOT))
 import psycopg2
 
 import psycopg2.extras
-from src.bm25_module import BM25Embedder, BM25Embedder_PG, bm25_sparse_search
+from experiments.common.bm25_module import BM25Embedder, BM25Embedder_PG, bm25_sparse_search
 
 
 # ---------------------------------------------------------------------------

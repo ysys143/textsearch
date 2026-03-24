@@ -18,7 +18,7 @@ except ImportError:
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
-from src.bm25_module import BM25Embedder_PG, bm25_sparse_search
+from experiments.common.bm25_module import BM25Embedder_PG, bm25_sparse_search
 from benchmark.runner import run_benchmark
 from benchmark.eval import compute_ndcg, compute_recall, compute_mrr
 
