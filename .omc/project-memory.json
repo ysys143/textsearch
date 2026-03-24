@@ -153,8 +153,8 @@
     },
     {
       "path": "experiments/phase5_production/phase5_production_bench.py",
-      "accessCount": 10,
-      "lastAccessed": 1774325677125,
+      "accessCount": 13,
+      "lastAccessed": 1774326536960,
       "type": "file"
     },
     {
@@ -221,6 +221,12 @@
       "path": "experiments/phase4_bm25_vs_neural/phase4_comparison.py",
       "accessCount": 2,
       "lastAccessed": 1774320953750,
+      "type": "file"
+    },
+    {
+      "path": "results/phase5/phase5_production_report.md",
+      "accessCount": 2,
+      "lastAccessed": 1774326542127,
       "type": "file"
     },
     {
@@ -300,12 +306,6 @@
       "accessCount": 1,
       "lastAccessed": 1774320948075,
       "type": "directory"
-    },
-    {
-      "path": "results/phase5/phase5_production_report.md",
-      "accessCount": 1,
-      "lastAccessed": 1774326358488,
-      "type": "file"
     }
   ],
   "userDirectives": []
