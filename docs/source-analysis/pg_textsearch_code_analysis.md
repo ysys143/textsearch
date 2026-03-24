@@ -116,7 +116,7 @@ ALTER TEXT SEARCH CONFIGURATION public.korean
 
 ## 4. textsearch_ko C extension 분석
 
-위 config의 `PARSER = public.korean`을 제공하는 `vendor/textsearch_ko/ts_mecab_ko.c`를 분석한다.
+위 config의 `PARSER = public.korean`을 제공하는 `extensions/textsearch_ko/ts_mecab_ko.c`를 분석한다.
 
 ### 구조 개요
 

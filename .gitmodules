@@ -1,0 +1,12 @@
+[submodule "vendor/textsearch_ko_original"]
+	path = vendor/textsearch_ko_original
+	url = https://github.com/i0seph/textsearch_ko
+[submodule "extensions/textsearch_ko"]
+	path = extensions/textsearch_ko
+	url = https://github.com/ysys143/textsearch_ko
+[submodule "vendor/pg_textsearch"]
+	path = vendor/pg_textsearch
+	url = https://github.com/timescale/pg_textsearch
+[submodule "vendor/pg_search"]
+	path = vendor/pg_search
+	url = https://github.com/paradedb/paradedb

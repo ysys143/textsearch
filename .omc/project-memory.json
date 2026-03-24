@@ -278,6 +278,12 @@
       "type": "directory"
     },
     {
+      "path": "docs/source-analysis/pg_textsearch_code_analysis.md",
+      "accessCount": 2,
+      "lastAccessed": 1774337021316,
+      "type": "file"
+    },
+    {
       "path": "docs/source-analysis/bm25_implementations_comparison.md",
       "accessCount": 1,
       "lastAccessed": 1774306819553,

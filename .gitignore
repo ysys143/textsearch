@@ -29,9 +29,8 @@ Thumbs.db
 # Large data files (keep structure, not binary)
 data/kiwi_models/
 
-# Vendor submodules (tracked as submodules, not files)
-vendor/textsearch_ko/
-vendor/pg_bigm/
+# Our extensions (forked/custom, tracked as submodules)
+extensions/textsearch_ko/
 
 # Local scratch
 /archive/
