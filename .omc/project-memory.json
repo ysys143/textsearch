@@ -165,8 +165,8 @@
     },
     {
       "path": "experiments/phase2_tsvector/phase2_tsvector_comparison.py",
-      "accessCount": 4,
-      "lastAccessed": 1774306822544,
+      "accessCount": 5,
+      "lastAccessed": 1774316508785,
       "type": "file"
     },
     {
@@ -251,6 +251,24 @@
       "path": "docs/plan/phase3_native_bm25.md",
       "accessCount": 1,
       "lastAccessed": 1774316317821,
+      "type": "directory"
+    },
+    {
+      "path": "docs",
+      "accessCount": 1,
+      "lastAccessed": 1774316497300,
+      "type": "directory"
+    },
+    {
+      "path": "experiments",
+      "accessCount": 1,
+      "lastAccessed": 1774316498351,
+      "type": "directory"
+    },
+    {
+      "path": "experiments/phase2_tsvector",
+      "accessCount": 1,
+      "lastAccessed": 1774316503826,
       "type": "directory"
     }
   ],
