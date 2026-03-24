@@ -189,8 +189,8 @@
     },
     {
       "path": "docs/plan/phase2_tsvector_korean.md",
-      "accessCount": 1,
-      "lastAccessed": 1774306819426,
+      "accessCount": 2,
+      "lastAccessed": 1774316319162,
       "type": "file"
     },
     {
@@ -234,6 +234,24 @@
       "accessCount": 1,
       "lastAccessed": 1774316024889,
       "type": "file"
+    },
+    {
+      "path": "docs/plan",
+      "accessCount": 1,
+      "lastAccessed": 1774316311505,
+      "type": "directory"
+    },
+    {
+      "path": "results",
+      "accessCount": 1,
+      "lastAccessed": 1774316312288,
+      "type": "directory"
+    },
+    {
+      "path": "docs/plan/phase3_native_bm25.md",
+      "accessCount": 1,
+      "lastAccessed": 1774316317821,
+      "type": "directory"
     }
   ],
   "userDirectives": []
