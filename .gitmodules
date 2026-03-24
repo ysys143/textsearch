@@ -4,9 +4,9 @@
 [submodule "extensions/textsearch_ko"]
 	path = extensions/textsearch_ko
 	url = https://github.com/ysys143/textsearch_ko
-[submodule "vendor/pg_textsearch"]
-	path = vendor/pg_textsearch
+[submodule "vendor/pg_textsearch_original"]
+	path = vendor/pg_textsearch_original
 	url = https://github.com/timescale/pg_textsearch
-[submodule "vendor/pg_search"]
-	path = vendor/pg_search
+[submodule "vendor/pg_search_original"]
+	path = vendor/pg_search_original
 	url = https://github.com/paradedb/paradedb
