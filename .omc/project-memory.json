@@ -182,21 +182,21 @@
       "type": "file"
     },
     {
-      "path": "experiments/phase2_tsvector/phase2_tsvector_comparison.py",
-      "accessCount": 5,
-      "lastAccessed": 1774316508785,
+      "path": "src/bm25_module.py",
+      "accessCount": 6,
+      "lastAccessed": 1774334773626,
       "type": "file"
     },
     {
       "path": "docs/plan/phase2_tsvector_korean.md",
-      "accessCount": 5,
-      "lastAccessed": 1774317920101,
+      "accessCount": 6,
+      "lastAccessed": 1774334822048,
       "type": "file"
     },
     {
-      "path": "src/bm25_module.py",
+      "path": "experiments/phase2_tsvector/phase2_tsvector_comparison.py",
       "accessCount": 5,
-      "lastAccessed": 1774320928242,
+      "lastAccessed": 1774316508785,
       "type": "file"
     },
     {
@@ -218,6 +218,12 @@
       "type": "directory"
     },
     {
+      "path": "experiments/phase2_tsvector/phase2_textsearch_ko_ab.py",
+      "accessCount": 4,
+      "lastAccessed": 1774334821981,
+      "type": "file"
+    },
+    {
       "path": "experiments/phase5_system_comparison/phase5_final_report.py",
       "accessCount": 3,
       "lastAccessed": 1774308177245,
@@ -230,9 +236,15 @@
       "type": "directory"
     },
     {
-      "path": "experiments/phase2_tsvector/phase2_textsearch_ko_ab.py",
+      "path": "docs/plan/phase7_textsearch_fork.md",
       "accessCount": 3,
-      "lastAccessed": 1774320930432,
+      "lastAccessed": 1774334773560,
+      "type": "file"
+    },
+    {
+      "path": "docs/plan/phase6_vectorchord_bm25.md",
+      "accessCount": 3,
+      "lastAccessed": 1774334838077,
       "type": "file"
     },
     {
@@ -257,12 +269,6 @@
       "path": "docs/plan/phase8_pgsearch_fork.md",
       "accessCount": 2,
       "lastAccessed": 1774333442623,
-      "type": "file"
-    },
-    {
-      "path": "docs/plan/phase7_textsearch_fork.md",
-      "accessCount": 2,
-      "lastAccessed": 1774333443649,
       "type": "file"
     },
     {
@@ -347,12 +353,6 @@
       "path": "docs/plan/phase7_pgsearch_fork.md",
       "accessCount": 1,
       "lastAccessed": 1774329163895,
-      "type": "file"
-    },
-    {
-      "path": "docs/plan/phase6_vectorchord_bm25.md",
-      "accessCount": 1,
-      "lastAccessed": 1774333506509,
       "type": "file"
     }
   ],
