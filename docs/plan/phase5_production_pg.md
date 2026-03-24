@@ -25,6 +25,7 @@
 |---------|------|---------------|-------------|---------|------|
 | **5-sparse** | pgvector-sparse BM25 (kiwi-cong) | 0.6326 | 0.9455 | **pre-computed** (벡터에 내장) | Python-side 토크나이즈, incremental 불가 |
 | **5-pgsql** | pl/pgsql BM25 + MeCab | 0.6412 | 0.9290 | **query-time** (실시간 계산) | 완전 DB-side, incremental 가능 |
+| **5-ts** | pg_textsearch + MeCab (OR-query 개선) | 0.3374 (Phase 2 AND 기준) | 0.8417 | WAND 내장 | **개선 실험**: AND→OR 쿼리 변환으로 recall 회복 시도 |
 | **5-hybrid** | Bayesian BM25+BGE-M3 dense | 0.7476 | 0.9493 | BM25 컴포넌트에 따라 결정 | 두 인덱스 동시 관리 |
 
 ### 구조적 차이: IDF 계산 시점
@@ -100,8 +101,9 @@ rebuild 주기(매 100건? 500건? 1000건?)에 따른 NDCG 유지 곡선 측정
 | 5-A | pgvector-sparse kiwi-cong | 10k | 오프라인 빌드, 온라인 추가 latency, QPS@1/4/8/16, IDF staleness |
 | 5-B1 | pl/pgsql BM25 + MeCab (현재: full scan) | 10k | 오프라인 빌드, 온라인 추가 latency, QPS@1/4/8/16 |
 | 5-B2 | pl/pgsql BM25 + MeCab (최적화: stats 테이블 분리) | 10k | full scan 제거 후 latency/QPS 개선 측정, 스케일링 곡선 |
+| 5-T | pg_textsearch + MeCab (AND→OR 쿼리 개선) | 10k | NDCG/R@10 재측정, latency, QPS — 0.86ms 유지되면서 recall 회복하는가? |
 | 5-C | Bayesian BM25+BGE-M3 dense | 10k | 오프라인 빌드, 온라인 추가 latency (dual-index), QPS@1/4/8 |
-| 5-D | (선택) 100k scale | 100k | 5-A/B/C 동일 측정, 스케일링 곡선 |
+| 5-D | (선택) 100k scale | 100k | 5-A/B/C/T 동일 측정, 스케일링 곡선 |
 
 ---
 
@@ -114,7 +116,12 @@ rebuild 주기(매 100건? 500건? 1000건?)에 따른 NDCG 유지 곡선 측정
 2. **Concurrent 병목**: kiwi Python-side 토크나이즈가 8-concurrent 환경에서 병목인가?
    pl/pgsql MeCab DB-side 대비 QPS 차이가 실질적인가?
 
-3. **Hybrid 운영 비용 정당화**: BM25+dense 하이브리드는 두 인덱스 관리 비용이 있음.
+3. **pg_textsearch OR-query 개선 (5-T)**: Phase 2에서 pg_textsearch + MeCab이 NDCG=0.3374, R@10=0.3844로 부진했던 원인은
+   `<@>` 연산자가 내부적으로 AND 매칭(plainto_tsquery 유사)하여 관련 문서 대부분을 탈락시킨 것.
+   OR tsquery를 직접 구성(`to_tsquery('term1 | term2 | ...')`)하여 recall을 회복하면서 WAND의 sub-ms latency를 유지할 수 있는가?
+   성공 시: **0.86ms latency + 높은 recall** — production에서 가장 이상적인 조합 가능.
+
+4. **Hybrid 운영 비용 정당화**: BM25+dense 하이브리드는 두 인덱스 관리 비용이 있음.
    EZIS NDCG 0.9493 vs BM25 단독 0.9455의 +0.4% 개선이 ~2x 운영 비용을 정당화하는가?
 
 ---
