@@ -146,15 +146,15 @@
   },
   "hotPaths": [
     {
-      "path": "docs/plan/phase6_system_comparison.md",
-      "accessCount": 7,
-      "lastAccessed": 1774315323786,
+      "path": "docs/plan/phase5_production_pg.md",
+      "accessCount": 10,
+      "lastAccessed": 1774316140021,
       "type": "file"
     },
     {
-      "path": "docs/plan/phase5_production_pg.md",
-      "accessCount": 6,
-      "lastAccessed": 1774315672283,
+      "path": "docs/plan/phase6_system_comparison.md",
+      "accessCount": 7,
+      "lastAccessed": 1774315323786,
       "type": "file"
     },
     {
