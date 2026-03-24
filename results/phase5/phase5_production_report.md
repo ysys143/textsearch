@@ -274,15 +274,71 @@ PostgreSQL의 B-tree는 범용 자료구조이므로 "term → 매칭 문서 목
 
 참고: pg_textsearch, ParadeDB 모두 posting list + WAND를 PG extension 안에 구현해서 Lucene급 I/O 패턴을 PG 안에서 구현하려 한 시도다. 스케일링 아키텍처 자체는 맞는 방향이나, Phase 5에서 확인한 한국어 토크나이저 문제(AND 매칭, Lindera 사전)로 사용이 불가했다.
 
-#### PostgreSQL 단독 스케일링 한계
+#### PostgreSQL 단독 스케일링 한계 — scale-up으로 어디까지 가능한가?
 
-| 규모 | pl/pgsql v2 | pgvector-sparse | 판정 |
-|------|------------|-----------------|------|
-| ~10k | 3ms, QPS 240 | 1ms, QPS 1000+ | PG 단독 최적 |
-| ~100k | ~10ms (btree depth 3) | ~2ms, rebuild 2min | PG 단독 가능 |
-| ~1M | ~30-60ms (btree depth 4, 50M rows) | rebuild 9min | PG 단독 한계 |
-| ~10M | inverted_index 5억 rows | rebuild 수 시간 | **불가능** |
-| ~100M | — | — | **불가능** |
+**병목은 메모리다.** pl/pgsql v2의 쿼리 경로에서 CPU(BM25 계산)는 경량이고, trigger INSERT도 O(tokens per doc)으로 규모 무관하게 안정적이다. 유일한 병목은 inverted_index의 B-tree random I/O인데, **테이블이 메모리에 올라가면 random I/O가 buffer hit로 바뀌어 사실상 해소된다.**
+
+**inverted_index 크기 추정** (row ≈ 50 bytes, B-tree index ≈ 30 bytes/row):
+
+| 규모 | inverted_index rows | 테이블+인덱스 크기 |
+|------|:---:|:---:|
+| 1k docs | 54k | ~5MB |
+| 10k docs | ~500k | ~40MB |
+| 100k docs | ~5M | ~400MB |
+| 1M docs | ~50M | ~4GB |
+| 10M docs | ~500M | ~40GB |
+| 100M docs | ~5B | ~400GB |
+
+**서버 스펙별 수용 규모** (shared_buffers = RAM의 25%, OS page cache 포함 실질 캐시 = RAM의 ~70%):
+
+| 서버 스펙 | shared_buffers | effective_cache_size | 실질 대응 규모 | 월 비용 (AWS RDS) |
+|----------|:---:|:---:|:---:|:---:|
+| 64GB RAM (db.r6g.2xlarge) | ~16GB | ~45GB | **~10M docs** | ~$800 |
+| 256GB RAM (db.r6g.8xlarge) | ~64GB | ~180GB | **~40M docs** | ~$3,200 |
+| 512GB RAM (db.r6g.16xlarge) | ~128GB | ~360GB | **~80M docs** | ~$6,400 |
+| 1TB RAM (db.r6g.metal) | ~256GB | ~700GB | **~100M+ docs** | ~$12,000 |
+
+**메모리에 올라간 상태의 예상 latency** (buffer hit ≈ 0.01ms):
+
+| 규모 | B-tree depth | buffer hits/query | 예상 p50 |
+|------|:---:|:---:|:---:|
+| 1k (실측) | 2 | 433 | 3ms |
+| 1M | 4 | ~600 | ~5ms |
+| 10M | 5 | ~800 | ~7ms |
+| 100M | 5-6 | ~1000 | ~10ms |
+
+메모리에 올라가 있으면 100M에서도 p50 ~10ms — 디스크로 넘어가는 순간과는 극적으로 다르다.
+
+**Trigger INSERT 비용** (규모 무관, O(tokens per doc)):
+
+| 규모 | inverted_index INSERT/doc | trigger latency |
+|------|:---:|:---:|
+| 1k (실측) | ~54 rows | 3.6ms |
+| 1M | ~54 rows | ~5ms |
+| 10M | ~54 rows | ~8ms |
+
+**Vacuum 부하** (하루 10k UPDATE 가정):
+
+검색 시스템은 INSERT-heavy, UPDATE 적음이 일반적. dead tuples는 UPDATE 빈도에 비례하지 테이블 크기에 비례하지 않으므로 큰 문제 아님.
+
+**ES 클러스터 vs PG scale-up 비용 비교:**
+
+| 규모 | PG scale-up | ES 클러스터 (3노드) | 유리한 쪽 |
+|------|:---:|:---:|:---:|
+| ~1M | 64GB, ~$800 | 3×8GB, ~$600 | 비슷 (PG가 운영 단순) |
+| ~10M | 256GB, ~$3,200 | 3×16GB, ~$2,000 | **비슷** |
+| ~30M | 512GB, ~$6,400 | 3×32GB, ~$4,000 | **ES 유리** |
+| ~100M | 1TB, ~$12,000 | 3×64GB, ~$6,000 | **ES 유리** |
+
+~10M까지는 PG scale-up이 ES와 비용이 비슷하면서 운영이 단순하다. 30M+부터 ES가 비용 효율적이며, 이 구간에서는 ES의 수평 확장(노드 추가)이 PG의 수직 확장(더 큰 인스턴스)보다 유연하다.
+
+**핵심 전제: 디스크로 넘어가면 게임 오버.** 위 latency 추정은 inverted_index가 메모리에 올라간 전제다. 메모리 부족으로 디스크 I/O가 발생하면, B-tree random I/O vs Lucene posting list sequential I/O 차이가 극적으로 벌어져 PG의 latency가 수십~수백 ms로 치솟는다.
+
+| 규모 | scale-up | 비용 대비 | 판정 |
+|------|----------|----------|------|
+| ~1M | 64GB | ES 대비 저렴+단순 | **PG scale-up 권장** |
+| ~10M | 256GB | ES와 비슷 | **PG scale-up 가능, ES 준비 시작** |
+| ~30M+ | 512GB+ | ES가 저렴+유연 | **ES 전환 권장** |
 
 #### 1~100M 전 구간 대응 가능한 옵션
 
@@ -324,9 +380,10 @@ PostgreSQL의 B-tree는 범용 자료구조이므로 "term → 매칭 문서 목
 
 | 환경 | 권고 BM25 구성 | 이유 |
 |------|--------------|------|
-| **Managed PG** (RDS, Cloud SQL) | pgvector-sparse + 정기 rebuild | textsearch_ko C 확장 설치 불가 → MeCab 사용 불가. kiwipiepy(Python)로 BM25 sparse vector 생성, 정기 rebuild (매 1000건 또는 일배치). IDF staleness 영향 미미. |
-| **Self-hosted PG** (10k~100k docs) | **pl/pgsql BM25 v2 + MeCab** | R1~R4 충족, 3ms latency, trigger 기반 incremental. textsearch_ko 설치 후 완전 DB-side 운영. hybrid에서 dense 대비 latency 비중 6%. |
-| **Self-hosted PG** (1M+ docs) | pl/pgsql v2 + 파티셔닝, 또는 Elasticsearch | 1M+ 규모에서 inverted_index 50M+ 행 → btree depth 4, p50 30~60ms 예상. dense inference와 비슷한 수준이므로 hybrid에서는 문제 없으나, BM25 단독 사용 시 ES 전환 고려. |
+| **Managed PG** (RDS, Cloud SQL) | pgvector-sparse + 정기 rebuild (멀티워커) | textsearch_ko C 확장 설치 불가 → MeCab 사용 불가. kiwipiepy(Python)로 BM25 sparse vector 생성, stateless 워커로 병렬 rebuild (매 1000건 또는 일배치). IDF staleness 영향 미미. 100k까지 rebuild 2분, 비용 월 $0.6 이하. |
+| **Self-hosted PG** (~10M docs) | **pl/pgsql BM25 v2 + MeCab + scale-up** | R1~R4 충족, trigger 기반 incremental. 256GB RAM(~$3,200/월)이면 inverted_index 전체가 메모리에 올라가 p50 ~7ms. ES 클러스터와 비용 비슷하면서 운영이 단순. |
+| **Self-hosted PG** (10M~30M docs) | pl/pgsql v2 + 512GB RAM, 또는 ES 전환 | PG 512GB(~$6,400/월) vs ES 3노드(~$4,000/월). 비용 역전 구간. hybrid에서 BM25 p50 ~8ms로 여전히 dense(50ms)보다 작지만, ES 전환 시 수평 확장 유연성 확보. |
+| **30M+ docs** | **PG(원본) + Elasticsearch(검색)** | PG scale-up 비용이 ES 대비 2배+. CDC/trigger로 PG→ES 동기화, Nori 한국어 내장. ES의 posting list + WAND가 대규모에서 B-tree 대비 I/O 효율 압도. |
 
 ### Phase 6 Baseline 확정
 
