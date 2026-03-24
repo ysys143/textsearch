@@ -272,6 +272,12 @@
       "type": "file"
     },
     {
+      "path": "results",
+      "accessCount": 2,
+      "lastAccessed": 1774336545087,
+      "type": "directory"
+    },
+    {
       "path": "docs/source-analysis/bm25_implementations_comparison.md",
       "accessCount": 1,
       "lastAccessed": 1774306819553,
@@ -311,12 +317,6 @@
       "path": "docs/plan",
       "accessCount": 1,
       "lastAccessed": 1774316311505,
-      "type": "directory"
-    },
-    {
-      "path": "results",
-      "accessCount": 1,
-      "lastAccessed": 1774316312288,
       "type": "directory"
     },
     {
