@@ -21,11 +21,27 @@
 
 ## 평가 대상 세팅
 
-| 세팅 ID | 방법 | MIRACL NDCG@10 | EZIS NDCG@10 | 비고 |
-|---------|------|---------------|-------------|------|
-| **5-sparse** | pgvector-sparse BM25 (kiwi-cong) | 0.6326 | 0.9455 | Python-side 토크나이즈 |
-| **5-pgsql** | pl/pgsql BM25 + MeCab | 0.6412 | 0.9290 | 완전 DB-side |
-| **5-hybrid** | Bayesian BM25+BGE-M3 dense | 0.7476 | 0.9493 | 두 인덱스 동시 관리 |
+| 세팅 ID | 방법 | MIRACL NDCG@10 | EZIS NDCG@10 | IDF 구조 | 비고 |
+|---------|------|---------------|-------------|---------|------|
+| **5-sparse** | pgvector-sparse BM25 (kiwi-cong) | 0.6326 | 0.9455 | **pre-computed** (벡터에 내장) | Python-side 토크나이즈, incremental 불가 |
+| **5-pgsql** | pl/pgsql BM25 + MeCab | 0.6412 | 0.9290 | **query-time** (실시간 계산) | 완전 DB-side, incremental 가능 |
+| **5-hybrid** | Bayesian BM25+BGE-M3 dense | 0.7476 | 0.9493 | BM25 컴포넌트에 따라 결정 | 두 인덱스 동시 관리 |
+
+### 구조적 차이: IDF 계산 시점
+
+두 BM25 구현은 IDF를 다루는 방식이 근본적으로 다르다:
+
+**pgvector-sparse (pre-computed IDF)**:
+- `BM25Embedder_PG.fit()` 시점에 corpus 통계(df, avgdl, N) 계산
+- 각 문서의 sparse vector에 IDF가 TF와 함께 곱해져 저장됨
+- 문서 추가 시: 새 벡터 INSERT는 O(1), 그러나 기존 벡터는 구 IDF 기준 → **full rebuild 필요**
+- 관리 부담: pip install kiwipiepy만으로 완결 (managed PG 호환)
+
+**pl/pgsql (query-time IDF)**:
+- `inverted_index`에는 `term_freq`과 `doc_length`만 저장 (TF 정보만)
+- `bm25_ranking()` 함수가 쿼리마다 `AVG(doc_length)`, `COUNT(DISTINCT doc_id)`, `COUNT(DISTINCT doc_id) AS df`를 실시간 계산
+- 문서 추가 시: trigger로 `inverted_index` INSERT만 하면 끝 → **incremental update 자연스러움**, IDF staleness 없음
+- 관리 부담: textsearch_ko C 확장 + MeCab 바이너리 (self-hosted PG 전용, managed PG 불가)
 
 ---
 
@@ -43,17 +59,18 @@
 
 ### 2. 온라인 문서 추가 비용 (실시간 1건씩 추가)
 
-| 세팅 | 추가 비용 | IDF staleness 여부 |
-|------|---------|--------------------|
-| 5-sparse | kiwi-cong 토크나이즈 → sparse vector upsert | **있음** — corpus 통계 변경 시 이전 벡터 무효 |
-| 5-pgsql | bm25idx INSERT + bm25df UPDATE + bm25stats UPDATE | **있음** — IDF 재계산 범위에 따라 근사 vs 전체 재빌드 |
-| 5-hybrid | sparse upsert + BGE-M3 임베딩 + dense upsert | sparse는 staleness 있음, dense는 corpus 독립 |
+| 세팅 | 추가 방법 | IDF staleness |
+|------|---------|---------------|
+| 5-sparse | kiwi-cong 토크나이즈 → sparse vector upsert | **full rebuild 필요** — IDF가 벡터에 내장, 기존 벡터 전체 무효 |
+| 5-pgsql | trigger로 inverted_index INSERT (자동) | **없음** — IDF를 쿼리 시점에 실시간 계산 |
+| 5-hybrid | (BM25 컴포넌트 방식에 따름) + BGE-M3 임베딩 + dense upsert | BM25 부분은 위와 동일, dense는 corpus 독립 |
 
-**핵심 문제**: BM25 IDF는 corpus 전체 통계 기반. 문서 추가 시 IDF가 바뀌면 이전 문서들의 BM25 가중치도 무효화됨.
+이 차이가 Phase 5의 핵심 tradeoff:
+- **5-sparse**: 빠른 검색(4ms) + 높은 갱신 비용(full rebuild)
+- **5-pgsql**: 느린 검색(10ms) + 낮은 갱신 비용(incremental INSERT)
 
-- pgvector-sparse: 새 문서 추가는 O(1)이지만 기존 벡터들은 구 IDF 기준 — staleness 누적
-- pl/pgsql: bm25stats 업데이트는 incremental 가능하나, bm25idx의 기존 tfidf 값은 stale
-- 실험: 초기 10k 인덱싱 후 1k 추가, NDCG 재측정 → staleness 실제 영향 정량화
+**실험**: 5-sparse에서 초기 10k 인덱싱 후 1k 추가(rebuild 없이), NDCG 재측정 → staleness 실제 영향 정량화.
+rebuild 주기(매 100건? 500건? 1000건?)에 따른 NDCG 유지 곡선 측정.
 
 ### 3. 쿼리 Latency / Concurrent Throughput
 
@@ -83,8 +100,9 @@
 
 ## 핵심 가설 및 검증 포인트
 
-1. **IDF staleness 정량화**: 초기 10k 인덱싱 후 1k 추가 시 NDCG 저하 측정.
-   pgvector-sparse vs pl/pgsql — 어느 쪽이 더 빨리 degradation되는가?
+1. **IDF staleness 정량화 (5-sparse 전용)**: 초기 10k 인덱싱 후 rebuild 없이 1k 추가 시 NDCG 저하 측정.
+   pl/pgsql은 query-time IDF이므로 staleness 없음 — 5-sparse만 해당.
+   rebuild 주기별(100/500/1000건) NDCG 유지 곡선으로 최적 rebuild 정책 도출.
 
 2. **Concurrent 병목**: kiwi Python-side 토크나이즈가 8-concurrent 환경에서 병목인가?
    pl/pgsql MeCab DB-side 대비 QPS 차이가 실질적인가?
