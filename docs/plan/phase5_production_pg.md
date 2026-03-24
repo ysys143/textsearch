@@ -43,6 +43,12 @@
 - 문서 추가 시: trigger로 `inverted_index` INSERT만 하면 끝 → **incremental update 자연스러움**, IDF staleness 없음
 - 관리 부담: textsearch_ko C 확장 + MeCab 바이너리 (self-hosted PG 전용, managed PG 불가)
 
+> **현재 구현의 문제**: `bm25_ranking()`이 매 쿼리마다 `AVG(doc_length)`, `COUNT(DISTINCT doc_id)`를 inverted_index에서 full scan으로 집계.
+> 10k docs에서 10ms이지만 100k+ 규모에서는 선형 증가 예상 — production 부적합.
+>
+> **최적화 방향**: corpus 통계를 별도 테이블(`bm25_stats`, `bm25_df`)로 분리, 문서 추가 시 trigger로 incremental update.
+> 쿼리 시 stats lookup O(1) + term index lookup O(log n) → full scan 제거, query-time IDF 장점은 유지.
+
 ---
 
 ## 평가 차원
@@ -92,7 +98,8 @@ rebuild 주기(매 100건? 500건? 1000건?)에 따른 NDCG 유지 곡선 측정
 | 실험 ID | 세팅 | 규모 | 측정 항목 |
 |---------|------|------|---------|
 | 5-A | pgvector-sparse kiwi-cong | 10k | 오프라인 빌드, 온라인 추가 latency, QPS@1/4/8/16, IDF staleness |
-| 5-B | pl/pgsql BM25 + MeCab | 10k | 오프라인 빌드, 온라인 추가 latency, QPS@1/4/8/16, IDF staleness |
+| 5-B1 | pl/pgsql BM25 + MeCab (현재: full scan) | 10k | 오프라인 빌드, 온라인 추가 latency, QPS@1/4/8/16 |
+| 5-B2 | pl/pgsql BM25 + MeCab (최적화: stats 테이블 분리) | 10k | full scan 제거 후 latency/QPS 개선 측정, 스케일링 곡선 |
 | 5-C | Bayesian BM25+BGE-M3 dense | 10k | 오프라인 빌드, 온라인 추가 latency (dual-index), QPS@1/4/8 |
 | 5-D | (선택) 100k scale | 100k | 5-A/B/C 동일 측정, 스케일링 곡선 |
 
