@@ -147,8 +147,8 @@
   "hotPaths": [
     {
       "path": "docs/plan/phase5_production_pg.md",
-      "accessCount": 10,
-      "lastAccessed": 1774316140021,
+      "accessCount": 13,
+      "lastAccessed": 1774316883015,
       "type": "file"
     },
     {
@@ -180,6 +180,12 @@
       "accessCount": 3,
       "lastAccessed": 1774316751909,
       "type": "file"
+    },
+    {
+      "path": "experiments/phase2_tsvector",
+      "accessCount": 3,
+      "lastAccessed": 1774316988666,
+      "type": "directory"
     },
     {
       "path": "docs/plan/phase5_system_comparison.md",
@@ -266,9 +272,9 @@
       "type": "directory"
     },
     {
-      "path": "experiments/phase2_tsvector",
+      "path": "experiments/phase3_native_bm25/phase2_5_param_tuning.py",
       "accessCount": 1,
-      "lastAccessed": 1774316503826,
+      "lastAccessed": 1774316989822,
       "type": "directory"
     }
   ],
