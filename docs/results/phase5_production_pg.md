@@ -340,9 +340,21 @@ CREATE EXTENSION textsearch_ko;
 
 **Phase 5는 Production PostgreSQL BM25의 최적 세팅을 확정했다.**
 
-- **기성 솔루션** (pg_textsearch, ParadeDB)는 한국어 환경에서 구조적 미스매치-> 사용 불가
-- **pl/pgsql 직접 구현** (stats 분리)이 유일한 viable 경로 -> R1~R4 충족
+- **기성 솔루션** (pg_textsearch, ParadeDB)는 한국어 환경에서 구조적 미스매치 → 사용 불가
+- **pl/pgsql 직접 구현** (stats 분리)이 유일한 viable 경로 → R1~R4 충족
 - **IDF staleness**: pl/pgsql query-time 방식으로 완전 해결, incremental update 가능
 - **스케일링**: 100M docs까지 PostgreSQL 내에서 처리 가능, 그 이상은 Elasticsearch 권고
 
-Phase 6부터는 이 BM25 컴포넌트를 BGE-M3 dense와 hybrid로 결합해서 **최고 품질 한국어 검색** 달성.
+### 추가 조사 필요 → Phase 6, 7, 8 신설
+
+Phase 5에서 확인된 **기성 확장의 한국어 한계**를 해결하기 위해 3개 Phase를 추가했다:
+
+| Phase | 접근 | 핵심 아이디어 | 난이도 |
+|-------|------|-------------|--------|
+| **Phase 6** | VectorChord-BM25 + textsearch_ko | Block-WeakAnd(Lucene급 I/O) + 기존 MeCab 토크나이저 재사용 | 낮음 (설정 조합) |
+| **Phase 7** | pg_textsearch 포크 | AND→OR 매칭 수정, Rust 소스 수정 | 중간 |
+| **Phase 8** | pg_search (ParadeDB) 포크 | MeCab FFI 토크나이저 연결, Tantivy 통합 | 높음 |
+
+**전략**: Phase 6 성공 시 → Phase 7/8 불필요, 바로 Phase 9(시스템 비교)로 진행. Phase 6 실패 시에만 포크 경로(7→8) 진행.
+
+**배경**: pl/pgsql v2는 production-ready하지만 B-tree 기반 inverted_index의 I/O 패턴이 대규모에서 불리. Block-WeakAnd posting list 구조(VectorChord-BM25)로 교체하면 Lucene급 I/O를 PG 안에서 달성할 수 있다. 핵심은 이미 검증된 textsearch_ko(MeCab)를 그대로 연결하는 것.
