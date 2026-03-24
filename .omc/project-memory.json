@@ -183,8 +183,8 @@
     },
     {
       "path": "src/bm25_module.py",
-      "accessCount": 6,
-      "lastAccessed": 1774334773626,
+      "accessCount": 7,
+      "lastAccessed": 1774336005442,
       "type": "file"
     },
     {
@@ -377,6 +377,12 @@
       "path": "vendor/textsearch_ko/README.md",
       "accessCount": 1,
       "lastAccessed": 1774335265775,
+      "type": "file"
+    },
+    {
+      "path": "extensions/korean_bigram/korean_bigram.c",
+      "accessCount": 1,
+      "lastAccessed": 1774336006104,
       "type": "file"
     }
   ],
