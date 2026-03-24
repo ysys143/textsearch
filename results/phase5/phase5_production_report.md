@@ -321,24 +321,38 @@ PostgreSQL의 B-tree는 범용 자료구조이므로 "term → 매칭 문서 목
 
 검색 시스템은 INSERT-heavy, UPDATE 적음이 일반적. dead tuples는 UPDATE 빈도에 비례하지 테이블 크기에 비례하지 않으므로 큰 문제 아님.
 
-**ES 클러스터 vs PG scale-up 비용 비교:**
+**PG scale-up vs ES 전환 — 인프라 비용만으로 판단할 수 없다:**
 
-| 규모 | PG scale-up | ES 클러스터 (3노드) | 유리한 쪽 |
+| 규모 | PG scale-up (월) | ES 클러스터 3노드 (월) | 인프라만 보면 |
 |------|:---:|:---:|:---:|
-| ~1M | 64GB, ~$800 | 3×8GB, ~$600 | 비슷 (PG가 운영 단순) |
-| ~10M | 256GB, ~$3,200 | 3×16GB, ~$2,000 | **비슷** |
-| ~30M | 512GB, ~$6,400 | 3×32GB, ~$4,000 | **ES 유리** |
-| ~100M | 1TB, ~$12,000 | 3×64GB, ~$6,000 | **ES 유리** |
+| ~1M | 64GB, ~$800 | 3×8GB, ~$600 | 비슷 |
+| ~10M | 256GB, ~$3,200 | 3×16GB, ~$2,000 | 비슷 |
+| ~30M | 512GB, ~$6,400 | 3×32GB, ~$4,000 | ES 유리 |
+| ~100M | 1TB, ~$12,000 | 3×64GB, ~$6,000 | ES 유리 |
 
-~10M까지는 PG scale-up이 ES와 비용이 비슷하면서 운영이 단순하다. 30M+부터 ES가 비용 효율적이며, 이 구간에서는 ES의 수평 확장(노드 추가)이 PG의 수직 확장(더 큰 인스턴스)보다 유연하다.
+하지만 ES 전환의 **숨은 비용**이 인프라 차이를 압도한다:
 
-**핵심 전제: 디스크로 넘어가면 게임 오버.** 위 latency 추정은 inverted_index가 메모리에 올라간 전제다. 메모리 부족으로 디스크 I/O가 발생하면, B-tree random I/O vs Lucene posting list sequential I/O 차이가 극적으로 벌어져 PG의 latency가 수십~수백 ms로 치솟는다.
+| 전환 비용 항목 | 영향 |
+|--------------|------|
+| 코드 재작성 | SQL → ES JSON DSL, 검색 로직 전체 재구현 |
+| CDC 파이프라인 구축 | PG→ES 동기화 + 불일치 모니터링 + 장애 복구 |
+| 이중 시스템 운영 | PG + ES 클러스터 모두 관리, 모니터링, 백업 |
+| 팀 학습 비용 | JVM 튜닝, shard 관리, ES 디버깅, 쿼리 최적화 등 새로운 도메인 지식 |
+| 장애 복잡도 증가 | 두 시스템 간 데이터 불일치, split brain, GC pause 등 |
+| 마이그레이션 검증 | 검색 품질 동등성 검증, 성능 벤치마크, 롤백 계획 |
 
-| 규모 | scale-up | 비용 대비 | 판정 |
-|------|----------|----------|------|
-| ~1M | 64GB | ES 대비 저렴+단순 | **PG scale-up 권장** |
-| ~10M | 256GB | ES와 비슷 | **PG scale-up 가능, ES 준비 시작** |
-| ~30M+ | 512GB+ | ES가 저렴+유연 | **ES 전환 권장** |
+엔지니어 1명이 전환에 2~4주를 쓰면, 인프라 월 $2,000~$6,000 차이는 수 개월치가 상쇄된다. ES 전환은 **인프라 비용 절감이 아니라 PG가 물리적 한계에 부딪혔을 때의 불가피한 선택**이다.
+
+**결론: PG를 최대한 끌고 간다.**
+
+| 규모 | 전략 | 판정 |
+|------|------|------|
+| ~10M | PG scale-up (256GB) | **PG 단독, 전환 불필요** |
+| ~30M | PG scale-up (512GB) | **PG 단독 유지, 인프라 비용 월 $6,400은 ES 전환 비용 대비 저렴** |
+| ~100M | PG scale-up (1TB) | **가능하면 PG 유지. 월 $12,000이지만 전환 비용 + 이중 운영 대비 합리적일 수 있음** |
+| 100M+ & latency 한계 | ES 전환 검토 | **PG 1TB에서도 메모리 부족 시, 또는 수평 확장이 필수적일 때만** |
+
+**핵심 전제: 디스크로 넘어가면 게임 오버.** 위 latency 추정은 inverted_index가 메모리에 올라간 전제다. 메모리 부족으로 디스크 I/O가 발생하면, B-tree random I/O vs Lucene posting list sequential I/O 차이가 극적으로 벌어져 PG의 latency가 수십~수백 ms로 치솟는다. PG scale-up의 핵심은 **inverted_index를 메모리에 유지하는 것**이며, 이것이 깨지는 시점이 진짜 전환 시점이다.
 
 #### 1~100M 전 구간 대응 가능한 옵션
 
@@ -351,26 +365,26 @@ PostgreSQL의 B-tree는 범용 자료구조이므로 "term → 매칭 문서 목
 
 > ES/OpenSearch만 한국어 형태소 분석기를 엔진 내장으로 제공한다. Qdrant/Milvus는 pgvector-sparse와 동일하게 app-side tokenizer 관리가 필요하며, 같은 rebuild 문제를 갖는다.
 
-#### 현실적 전략: 점진적 전환
+#### 현실적 전략: PG scale-up을 최대한 끌고 간다
+
+ES 전환은 인프라 비용 절감이 아니라 **PG가 물리적 한계에 부딪혔을 때의 불가피한 선택**이다. 전환에 수반되는 코드 재작성(SQL→JSON DSL), CDC 파이프라인 구축, 이중 시스템 운영, 팀 학습 비용은 인프라 월 비용 차이를 수 개월치 이상 상쇄한다.
 
 | 구간 | 아키텍처 | 이유 |
 |------|---------|------|
 | **1k~100k** | PG 단독 (pl/pgsql v2) | 추가 인프라 불필요, 검색 품질 동등 |
-| **100k~1M** | PG 단독 가능, ES 준비 시작 | hybrid에서 BM25 30-60ms는 dense와 비슷 — 아직 병목 아님 |
-| **1M~100M** | **PG(원본) + ES(검색 인덱스)** | CDC/trigger로 PG→ES 동기화, ES가 BM25+dense 검색 담당 |
+| **100k~10M** | PG scale-up (64~256GB) | 메모리에 올라가면 p50 3~7ms. 월 $800~$3,200 |
+| **10M~100M** | PG scale-up (512GB~1TB) | 월 $6,400~$12,000. ES 전환 비용 대비 저렴 |
+| **100M+ & 메모리 한계** | PG(원본) + ES(검색) 전환 | inverted_index가 물리 메모리 초과 시에만 |
+
+ES 전환이 정당화되는 시점은 **inverted_index가 물리 메모리에 안 담길 때** — 즉 디스크 I/O가 발생하여 B-tree random I/O로 latency가 급등하는 시점이다. 그 전까지는 RAM 추가가 ES 전환보다 항상 저렴하다.
 
 ```
-┌──────────┐    CDC / trigger    ┌──────────────┐
-│ PostgreSQL│  ─────────────────▶ │ Elasticsearch│
-│ (원본 DB) │                     │ (검색 인덱스) │
-└──────────┘                     └──────────────┘
-  CRUD, 트랜잭션, 조인              BM25(Nori) + dense 검색
-                                   수평 확장, shard/replica
+[PG 단독]                    [PG scale-up]                 [PG+ES (불가피)]
+  1k ─── 100k ──── 1M ──── 10M ──── 30M ──── 100M ──── 100M+
+  64GB 이하         64GB     256GB    512GB     1TB      메모리 한계 도달
 ```
 
-이 패턴(PG + ES dual)이 가장 흔한 production 패턴이다. PG의 트랜잭션 보장 + ES의 검색 스케일링을 모두 활용하며, 1M 이하에서는 ES 없이 PG 단독 운영 → 규모 성장 시 ES를 추가하는 **점진적 전환**이 가능하다.
-
-> Phase 6에서 ES Nori vs pl/pgsql v2의 실제 품질/성능 차이를 측정하면, 이 전환 시점 판단이 더 정확해진다.
+> Phase 6에서 ES Nori vs pl/pgsql v2의 실제 품질/성능 차이를 측정하면, 전환 시 검색 품질 손익을 사전에 파악할 수 있다.
 
 ---
 
@@ -378,12 +392,15 @@ PostgreSQL의 B-tree는 범용 자료구조이므로 "term → 매칭 문서 목
 
 ### 환경별 권고안
 
+**기본 전략: PG를 최대한 끌고 간다.** ES 전환은 코드 재작성, CDC 파이프라인, 이중 운영, 팀 학습 등 인프라 비용 이상의 전환 비용을 수반한다. 인프라 월 비용 차이보다 전환 비용이 압도적으로 크므로, PG가 물리적 한계에 부딪히기 전까지 scale-up으로 대응한다.
+
 | 환경 | 권고 BM25 구성 | 이유 |
 |------|--------------|------|
 | **Managed PG** (RDS, Cloud SQL) | pgvector-sparse + 정기 rebuild (멀티워커) | textsearch_ko C 확장 설치 불가 → MeCab 사용 불가. kiwipiepy(Python)로 BM25 sparse vector 생성, stateless 워커로 병렬 rebuild (매 1000건 또는 일배치). IDF staleness 영향 미미. 100k까지 rebuild 2분, 비용 월 $0.6 이하. |
-| **Self-hosted PG** (~10M docs) | **pl/pgsql BM25 v2 + MeCab + scale-up** | R1~R4 충족, trigger 기반 incremental. 256GB RAM(~$3,200/월)이면 inverted_index 전체가 메모리에 올라가 p50 ~7ms. ES 클러스터와 비용 비슷하면서 운영이 단순. |
-| **Self-hosted PG** (10M~30M docs) | pl/pgsql v2 + 512GB RAM, 또는 ES 전환 | PG 512GB(~$6,400/월) vs ES 3노드(~$4,000/월). 비용 역전 구간. hybrid에서 BM25 p50 ~8ms로 여전히 dense(50ms)보다 작지만, ES 전환 시 수평 확장 유연성 확보. |
-| **30M+ docs** | **PG(원본) + Elasticsearch(검색)** | PG scale-up 비용이 ES 대비 2배+. CDC/trigger로 PG→ES 동기화, Nori 한국어 내장. ES의 posting list + WAND가 대규모에서 B-tree 대비 I/O 효율 압도. |
+| **Self-hosted PG** (~10M docs) | **pl/pgsql BM25 v2 + MeCab** (256GB RAM) | R1~R4 충족, trigger 기반 incremental. inverted_index ~40GB가 메모리에 올라가 p50 ~7ms. 월 ~$3,200. |
+| **Self-hosted PG** (~30M docs) | **pl/pgsql BM25 v2 + MeCab** (512GB RAM) | inverted_index ~120GB 메모리 수용. 월 ~$6,400. ES 인프라($4,000)보다 비싸지만 전환 비용(코드 재작성+CDC+이중 운영+팀 학습) 대비 저렴. |
+| **Self-hosted PG** (~100M docs) | **pl/pgsql BM25 v2 + MeCab** (1TB RAM) | inverted_index ~400GB 메모리 수용. 월 ~$12,000. 고비용이지만 단일 시스템 운영의 단순성 유지. |
+| **100M+ & 메모리 한계 도달** | PG(원본) + ES(검색) 전환 검토 | inverted_index가 물리 메모리를 초과하여 디스크 I/O 발생 시, B-tree random I/O로 latency 급등. 이 시점에서만 ES 전환이 전환 비용을 정당화한다. |
 
 ### Phase 6 Baseline 확정
 
