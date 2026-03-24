@@ -170,6 +170,12 @@
       "type": "file"
     },
     {
+      "path": "docs/plan/phase5_production_pg.md",
+      "accessCount": 3,
+      "lastAccessed": 1774315578077,
+      "type": "file"
+    },
+    {
       "path": "docs/plan/phase5_system_comparison.md",
       "accessCount": 2,
       "lastAccessed": 1774307527024,
@@ -221,12 +227,6 @@
       "path": "experiments/phase5_system_comparison/phase5_es_qdrant.py",
       "accessCount": 1,
       "lastAccessed": 1774314259613,
-      "type": "file"
-    },
-    {
-      "path": "docs/plan/phase5_production_pg.md",
-      "accessCount": 1,
-      "lastAccessed": 1774315078467,
       "type": "file"
     }
   ],
