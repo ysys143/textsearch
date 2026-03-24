@@ -153,8 +153,8 @@
     },
     {
       "path": "results/phase5/phase5_production_report.md",
-      "accessCount": 15,
-      "lastAccessed": 1774328894548,
+      "accessCount": 16,
+      "lastAccessed": 1774333617784,
       "type": "file"
     },
     {
@@ -165,20 +165,20 @@
     },
     {
       "path": "docker-compose.yml",
+      "accessCount": 13,
+      "lastAccessed": 1774333586887,
+      "type": "file"
+    },
+    {
+      "path": "docs/plan/README.md",
       "accessCount": 9,
-      "lastAccessed": 1774329010061,
+      "lastAccessed": 1774333555971,
       "type": "file"
     },
     {
       "path": "docs/plan/phase6_system_comparison.md",
       "accessCount": 7,
       "lastAccessed": 1774315323786,
-      "type": "file"
-    },
-    {
-      "path": "docs/plan/README.md",
-      "accessCount": 6,
-      "lastAccessed": 1774328802134,
       "type": "file"
     },
     {
@@ -203,6 +203,12 @@
       "path": "docs/plan/phase8_system_comparison.md",
       "accessCount": 5,
       "lastAccessed": 1774329230004,
+      "type": "file"
+    },
+    {
+      "path": "docs/plan/phase9_system_comparison.md",
+      "accessCount": 5,
+      "lastAccessed": 1774333657802,
       "type": "file"
     },
     {
@@ -246,6 +252,18 @@
       "accessCount": 2,
       "lastAccessed": 1774326799033,
       "type": "directory"
+    },
+    {
+      "path": "docs/plan/phase8_pgsearch_fork.md",
+      "accessCount": 2,
+      "lastAccessed": 1774333442623,
+      "type": "file"
+    },
+    {
+      "path": "docs/plan/phase7_textsearch_fork.md",
+      "accessCount": 2,
+      "lastAccessed": 1774333443649,
+      "type": "file"
     },
     {
       "path": "docs/source-analysis/bm25_implementations_comparison.md",
@@ -329,6 +347,12 @@
       "path": "docs/plan/phase7_pgsearch_fork.md",
       "accessCount": 1,
       "lastAccessed": 1774329163895,
+      "type": "file"
+    },
+    {
+      "path": "docs/plan/phase6_vectorchord_bm25.md",
+      "accessCount": 1,
+      "lastAccessed": 1774333506509,
       "type": "file"
     }
   ],

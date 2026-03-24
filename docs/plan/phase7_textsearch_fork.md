@@ -1,4 +1,4 @@
-# Phase 6: pg_textsearch 포크 — 한국어 지원 해결
+# Phase 7: pg_textsearch 포크 — 한국어 지원 해결
 
 ## 목표
 

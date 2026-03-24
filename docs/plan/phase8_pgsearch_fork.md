@@ -1,4 +1,4 @@
-# Phase 7: pg_search (ParadeDB) 포크 — 한국어 지원 해결
+# Phase 8: pg_search (ParadeDB) 포크 — 한국어 지원 해결
 
 ## 목표
 
