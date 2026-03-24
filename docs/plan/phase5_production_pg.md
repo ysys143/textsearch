@@ -9,8 +9,12 @@
 > **Dense 단독 제외**: BGE-M3 dense 단독은 Phase 4에서 이미 측정 완료(NDCG=0.7915).
 > Phase 5는 BM25 기반 세팅 및 BM25+dense 하이브리드의 **운영 비용 최적화**에 집중한다.
 
-핵심 질문: "pgvector-sparse kiwi-cong vs pl/pgsql BM25+MeCab — 운영 환경에서 어느 것이 맞는가?
-그리고 하이브리드(BM25+dense)를 선택할 경우 추가 운영 비용은 정당화되는가?"
+> **전제**: Dense(BGE-M3) 검색이 표준이고, BM25는 정확도를 올리는 보조 신호.
+> Hybrid(BM25+dense)는 선택이 아니라 **필수** — Phase 4에서 EZIS 0.9493(hybrid) vs 0.8060(dense 단독)으로 확인됨.
+> Phase 5의 질문은 hybrid 채택 여부가 아니라, **hybrid 인프라에서 BM25 컴포넌트를 어떻게 구성하는 것이 최적인가?**
+
+핵심 질문: "hybrid의 BM25 컴포넌트로 pgvector-sparse / pl/pgsql / pg_textsearch 중 무엇이 최적인가?
+latency, incremental update, 운영 복잡도를 종합적으로 고려한 production 최적 구성은?"
 
 ## 의존성
 
@@ -26,7 +30,7 @@
 | **5-sparse** | pgvector-sparse BM25 (kiwi-cong) | 0.6326 | 0.9455 | **pre-computed** (벡터에 내장) | Python-side 토크나이즈, incremental 불가 |
 | **5-pgsql** | pl/pgsql BM25 + MeCab | 0.6412 | 0.9290 | **query-time** (실시간 계산) | 완전 DB-side, incremental 가능 |
 | **5-ts** | pg_textsearch + MeCab (OR-query 개선) | 0.3374 (Phase 2 AND 기준) | 0.8417 | WAND 내장 | **개선 실험**: AND→OR 쿼리 변환으로 recall 회복 시도 |
-| **5-hybrid** | Bayesian BM25+BGE-M3 dense | 0.7476 | 0.9493 | BM25 컴포넌트에 따라 결정 | 두 인덱스 동시 관리 |
+| **5-hybrid** | Bayesian BM25+BGE-M3 dense | 0.7476 | 0.9493 | BM25 컴포넌트에 따라 결정 | **최종 목표** — BM25 컴포넌트를 위 3가지 중 최적으로 선택 |
 
 ### 구조적 차이: IDF 계산 시점
 
@@ -121,8 +125,10 @@ rebuild 주기(매 100건? 500건? 1000건?)에 따른 NDCG 유지 곡선 측정
    OR tsquery를 직접 구성(`to_tsquery('term1 | term2 | ...')`)하여 recall을 회복하면서 WAND의 sub-ms latency를 유지할 수 있는가?
    성공 시: **0.86ms latency + 높은 recall** — production에서 가장 이상적인 조합 가능.
 
-4. **Hybrid 운영 비용 정당화**: BM25+dense 하이브리드는 두 인덱스 관리 비용이 있음.
-   EZIS NDCG 0.9493 vs BM25 단독 0.9455의 +0.4% 개선이 ~2x 운영 비용을 정당화하는가?
+4. **Hybrid BM25 컴포넌트 최적 선택**: hybrid는 전제. 각 BM25 구현의 hybrid 내 성능 비교:
+   - 5-sparse: 빠른 검색 but full rebuild 필요 → hybrid 파이프라인에서 rebuild 주기가 운영에 미치는 영향?
+   - 5-B2: incremental update 가능 but latency 높음 → dense 쿼리 시간(~120ms)과 합산 시 BM25 latency가 차지하는 비중은?
+   - 5-T: sub-ms latency + incremental → hybrid에서 BM25 latency를 무시할 수 있는 수준인가?
 
 ---
 
