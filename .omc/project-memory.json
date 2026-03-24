@@ -212,15 +212,21 @@
       "type": "file"
     },
     {
-      "path": "docs/plan/phase5_system_comparison.md",
-      "accessCount": 2,
-      "lastAccessed": 1774307527024,
-      "type": "file"
+      "path": "",
+      "accessCount": 3,
+      "lastAccessed": 1774328624284,
+      "type": "directory"
     },
     {
       "path": "docs/plan/README.md",
+      "accessCount": 3,
+      "lastAccessed": 1774328654295,
+      "type": "file"
+    },
+    {
+      "path": "docs/plan/phase5_system_comparison.md",
       "accessCount": 2,
-      "lastAccessed": 1774315131842,
+      "lastAccessed": 1774307527024,
       "type": "file"
     },
     {
@@ -311,12 +317,6 @@
       "path": "experiments/phase4_bm25_vs_neural",
       "accessCount": 1,
       "lastAccessed": 1774320948075,
-      "type": "directory"
-    },
-    {
-      "path": "",
-      "accessCount": 1,
-      "lastAccessed": 1774328564020,
       "type": "directory"
     }
   ],
