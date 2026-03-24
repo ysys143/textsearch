@@ -147,14 +147,14 @@
   "hotPaths": [
     {
       "path": "docs/plan/phase5_production_pg.md",
-      "accessCount": 27,
-      "lastAccessed": 1774320643858,
+      "accessCount": 28,
+      "lastAccessed": 1774338160505,
       "type": "file"
     },
     {
       "path": "results/phase5/phase5_production_report.md",
-      "accessCount": 16,
-      "lastAccessed": 1774333617784,
+      "accessCount": 17,
+      "lastAccessed": 1774338159557,
       "type": "file"
     },
     {
@@ -189,14 +189,14 @@
     },
     {
       "path": "docs/plan/phase2_tsvector_korean.md",
-      "accessCount": 6,
-      "lastAccessed": 1774334822048,
+      "accessCount": 7,
+      "lastAccessed": 1774338134706,
       "type": "file"
     },
     {
       "path": "experiments/phase2_tsvector/phase2_tsvector_comparison.py",
-      "accessCount": 5,
-      "lastAccessed": 1774316508785,
+      "accessCount": 6,
+      "lastAccessed": 1774338134950,
       "type": "file"
     },
     {
@@ -248,22 +248,22 @@
       "type": "file"
     },
     {
-      "path": "docs/plan/phase5_system_comparison.md",
-      "accessCount": 2,
-      "lastAccessed": 1774307527024,
-      "type": "file"
-    },
-    {
       "path": "experiments/phase4_bm25_vs_neural/phase4_comparison.py",
-      "accessCount": 2,
-      "lastAccessed": 1774320953750,
+      "accessCount": 3,
+      "lastAccessed": 1774338148382,
       "type": "file"
     },
     {
       "path": "results/phase5/phase5_production_pg.json",
-      "accessCount": 2,
-      "lastAccessed": 1774326799033,
+      "accessCount": 3,
+      "lastAccessed": 1774338160735,
       "type": "directory"
+    },
+    {
+      "path": "docs/plan/phase5_system_comparison.md",
+      "accessCount": 2,
+      "lastAccessed": 1774307527024,
+      "type": "file"
     },
     {
       "path": "docs/plan/phase8_pgsearch_fork.md",
@@ -284,33 +284,45 @@
       "type": "file"
     },
     {
+      "path": "results/phase2/phase2_tsvector_comparison.json",
+      "accessCount": 2,
+      "lastAccessed": 1774338134306,
+      "type": "file"
+    },
+    {
+      "path": "results/phase2/phase2_textsearch_ko_ab.json",
+      "accessCount": 2,
+      "lastAccessed": 1774338134514,
+      "type": "file"
+    },
+    {
+      "path": "docs/plan/phase3_native_bm25.md",
+      "accessCount": 2,
+      "lastAccessed": 1774338141017,
+      "type": "directory"
+    },
+    {
+      "path": "results/phase5/phase5_final_report.md",
+      "accessCount": 2,
+      "lastAccessed": 1774338159765,
+      "type": "file"
+    },
+    {
+      "path": "results/phase1/phase1_analyzer_comparison.md",
+      "accessCount": 2,
+      "lastAccessed": 1774338180315,
+      "type": "file"
+    },
+    {
       "path": "docs/source-analysis/bm25_implementations_comparison.md",
       "accessCount": 1,
       "lastAccessed": 1774306819553,
       "type": "file"
     },
     {
-      "path": "results/phase2/phase2_tsvector_comparison.json",
-      "accessCount": 1,
-      "lastAccessed": 1774306823060,
-      "type": "file"
-    },
-    {
-      "path": "results/phase2/phase2_textsearch_ko_ab.json",
-      "accessCount": 1,
-      "lastAccessed": 1774306823152,
-      "type": "file"
-    },
-    {
       "path": "idea.md",
       "accessCount": 1,
       "lastAccessed": 1774307227887,
-      "type": "file"
-    },
-    {
-      "path": "results/phase5/phase5_final_report.md",
-      "accessCount": 1,
-      "lastAccessed": 1774307868942,
       "type": "file"
     },
     {
@@ -323,12 +335,6 @@
       "path": "docs/plan",
       "accessCount": 1,
       "lastAccessed": 1774316311505,
-      "type": "directory"
-    },
-    {
-      "path": "docs/plan/phase3_native_bm25.md",
-      "accessCount": 1,
-      "lastAccessed": 1774316317821,
       "type": "directory"
     },
     {
@@ -389,6 +395,54 @@
       "path": "extensions/korean_bigram/korean_bigram.c",
       "accessCount": 1,
       "lastAccessed": 1774336006104,
+      "type": "file"
+    },
+    {
+      "path": "results/phase1/phase1_analyzer_comparison.json",
+      "accessCount": 1,
+      "lastAccessed": 1774338129814,
+      "type": "file"
+    },
+    {
+      "path": "docs/plan/phase1_morphological_analyzers.md",
+      "accessCount": 1,
+      "lastAccessed": 1774338130388,
+      "type": "file"
+    },
+    {
+      "path": "experiments/phase1_morphological/phase1_analyzer_comparison.py",
+      "accessCount": 1,
+      "lastAccessed": 1774338130783,
+      "type": "file"
+    },
+    {
+      "path": "results/phase3/phase3_bm25_comparison.json",
+      "accessCount": 1,
+      "lastAccessed": 1774338140801,
+      "type": "file"
+    },
+    {
+      "path": "experiments/phase3_native_bm25/phase3_bm25_comparison.py",
+      "accessCount": 1,
+      "lastAccessed": 1774338141234,
+      "type": "file"
+    },
+    {
+      "path": "results/phase4/phase4_comparison.json",
+      "accessCount": 1,
+      "lastAccessed": 1774338147771,
+      "type": "file"
+    },
+    {
+      "path": "docs/plan/phase4_bm25_vs_neural.md",
+      "accessCount": 1,
+      "lastAccessed": 1774338148242,
+      "type": "file"
+    },
+    {
+      "path": "results/phase5/phase5_summary.json",
+      "accessCount": 1,
+      "lastAccessed": 1774338159457,
       "type": "file"
     }
   ],
