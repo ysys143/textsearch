@@ -6,15 +6,22 @@
 
 단순 검색 품질(NDCG)뿐 아니라 **인덱스 구축 비용**, **쿼리 latency/throughput**, **온라인 문서 추가 비용**을 함께 고려한다.
 
-> **Dense 단독 제외**: BGE-M3 dense 단독은 Phase 4에서 이미 측정 완료(NDCG=0.7915).
-> Phase 5는 BM25 기반 세팅 및 BM25+dense 하이브리드의 **운영 비용 최적화**에 집중한다.
+> **전제**: Hybrid(BM25+dense)는 필수 — Phase 4에서 EZIS 0.9493(hybrid) vs 0.8060(dense 단독)으로 확인됨.
+> Dense(BGE-M3)가 표준, BM25는 정확도를 올리는 보조 신호.
+> Phase 5의 질문은 hybrid 채택 여부가 아니라, **hybrid 내 BM25 컴포넌트의 최적 구성**.
 
-> **전제**: Dense(BGE-M3) 검색이 표준이고, BM25는 정확도를 올리는 보조 신호.
-> Hybrid(BM25+dense)는 선택이 아니라 **필수** — Phase 4에서 EZIS 0.9493(hybrid) vs 0.8060(dense 단독)으로 확인됨.
-> Phase 5의 질문은 hybrid 채택 여부가 아니라, **hybrid 인프라에서 BM25 컴포넌트를 어떻게 구성하는 것이 최적인가?**
+### Production 요구사항
 
-핵심 질문: "hybrid의 BM25 컴포넌트로 pgvector-sparse / pl/pgsql / pg_textsearch 중 무엇이 최적인가?
-latency, incremental update, 운영 복잡도를 종합적으로 고려한 production 최적 구성은?"
+| # | 요구사항 | 설명 |
+|---|---------|------|
+| R1 | **Incremental update** | 문서 추가 시 full rebuild 없이 인덱스 갱신 |
+| R2 | **App에서 tokenizer/사전 관리 불필요** | 형태소 분석기와 단어사전을 어플리케이션이 유지보수하지 않음 |
+| R3 | **DB-managed reverse index** | document 테이블 INSERT → DB가 reverse index를 자동 관리 (pgvector HNSW와 동일 패턴) |
+| R4 | **Document-index 일관성** | DB 레벨에서 문서와 인덱스 간 일관성 보장 |
+| R5 | **기성 솔루션 우선** | 가능하면 확장 설치만으로 해결, pl/pgsql 직접 작성은 폴백 |
+
+핵심 질문: "위 요구사항을 모두 충족하는 BM25 구성이 존재하는가?
+pg_textsearch(기성)가 OR-query 개선으로 recall을 회복할 수 있는가? 불가능하면 pl/pgsql(직접 구현)이 production-ready한 수준인가?"
 
 ## 의존성
 
@@ -132,8 +139,34 @@ rebuild 주기(매 100건? 500건? 1000건?)에 따른 NDCG 유지 곡선 측정
 
 ---
 
+## 핵심 산출물: Production 요구사항 적합성 평가표
+
+실험 완료 후 아래 표를 실측치 기반으로 채워 최종 판단한다.
+
+| 요구사항 | pgvector-sparse (5-A) | pl/pgsql+MeCab (5-B) | pg_textsearch+MeCab (5-T) |
+|---------|----------------------|---------------------|--------------------------|
+| R1 Incremental update | ? (staleness 정량화) | ? (trigger 검증) | ? (USING bm25 자동) |
+| R2 App tokenizer 불필요 | ? (kiwi Python-side) | ? (DB-side MeCab) | ? (DB-side MeCab) |
+| R3 DB-managed index | ? (app이 벡터 계산) | ? (trigger 기반) | ? (확장이 관리) |
+| R4 Document-index 일관성 | ? | ? | ? |
+| R5 기성 솔루션 | ? | ? (직접 구현) | ? (확장 설치) |
+| NDCG@10 (MIRACL) | 0.6326 | 0.6412 | ? (OR-query 후 재측정) |
+| Latency p50 | 4ms | ? (stats 분리 후) | ? (OR-query 후) |
+| QPS@8 concurrent | ? | ? | ? |
+| Hybrid 통합 latency | ? | ? | ? |
+
+→ 요구사항 R1~R5 전부 충족 + NDCG/latency 최선인 세팅을 **Phase 6 baseline BM25 컴포넌트**로 확정.
+
+## 판단 시나리오
+
+- **5-T 성공** (pg_textsearch OR-query로 R@10 > 0.7): pg_textsearch 채택 — 기성 솔루션 + sub-ms + incremental
+- **5-T 실패** (recall 회복 불가): pl/pgsql+MeCab(5-B2) 채택 — 직접 구현이지만 R1~R4 충족
+- **5-B2도 부적합** (latency/scale 문제): pgvector-sparse + 정기 rebuild 정책으로 타협
+
+---
+
 ## 출력
 
 - `results/phase5/phase5_production_pg.json` — 실험별 측정 결과
-- `results/phase5/phase5_production_report.md` — 세팅별 운영 적합성 평가
+- `results/phase5/phase5_production_report.md` — 요구사항 적합성 평가표 (위 표 완성본)
 - `experiments/phase5_production/phase5_production_bench.py` — 벤치마크 스크립트
