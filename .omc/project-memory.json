@@ -147,8 +147,8 @@
   "hotPaths": [
     {
       "path": "docs/plan/phase5_production_pg.md",
-      "accessCount": 25,
-      "lastAccessed": 1774320468092,
+      "accessCount": 27,
+      "lastAccessed": 1774320643858,
       "type": "file"
     },
     {
@@ -176,6 +176,12 @@
       "type": "file"
     },
     {
+      "path": "src/bm25_module.py",
+      "accessCount": 4,
+      "lastAccessed": 1774320659602,
+      "type": "file"
+    },
+    {
       "path": "experiments/phase5_system_comparison/phase5_final_report.py",
       "accessCount": 3,
       "lastAccessed": 1774308177245,
@@ -200,9 +206,9 @@
       "type": "file"
     },
     {
-      "path": "src/bm25_module.py",
+      "path": "experiments/phase2_tsvector/phase2_textsearch_ko_ab.py",
       "accessCount": 2,
-      "lastAccessed": 1774316811837,
+      "lastAccessed": 1774320660488,
       "type": "file"
     },
     {
