@@ -152,6 +152,12 @@
       "type": "file"
     },
     {
+      "path": "experiments/phase5_production/phase5_production_bench.py",
+      "accessCount": 10,
+      "lastAccessed": 1774325677125,
+      "type": "file"
+    },
+    {
       "path": "docs/plan/phase6_system_comparison.md",
       "accessCount": 7,
       "lastAccessed": 1774315323786,
@@ -177,8 +183,8 @@
     },
     {
       "path": "src/bm25_module.py",
-      "accessCount": 4,
-      "lastAccessed": 1774320659602,
+      "accessCount": 5,
+      "lastAccessed": 1774320928242,
       "type": "file"
     },
     {
@@ -194,6 +200,12 @@
       "type": "directory"
     },
     {
+      "path": "experiments/phase2_tsvector/phase2_textsearch_ko_ab.py",
+      "accessCount": 3,
+      "lastAccessed": 1774320930432,
+      "type": "file"
+    },
+    {
       "path": "docs/plan/phase5_system_comparison.md",
       "accessCount": 2,
       "lastAccessed": 1774307527024,
@@ -206,9 +218,9 @@
       "type": "file"
     },
     {
-      "path": "experiments/phase2_tsvector/phase2_textsearch_ko_ab.py",
+      "path": "experiments/phase4_bm25_vs_neural/phase4_comparison.py",
       "accessCount": 2,
-      "lastAccessed": 1774320660488,
+      "lastAccessed": 1774320953750,
       "type": "file"
     },
     {
@@ -282,6 +294,18 @@
       "accessCount": 1,
       "lastAccessed": 1774316989822,
       "type": "directory"
+    },
+    {
+      "path": "experiments/phase4_bm25_vs_neural",
+      "accessCount": 1,
+      "lastAccessed": 1774320948075,
+      "type": "directory"
+    },
+    {
+      "path": "results/phase5/phase5_production_report.md",
+      "accessCount": 1,
+      "lastAccessed": 1774326358488,
+      "type": "file"
     }
   ],
   "userDirectives": []
