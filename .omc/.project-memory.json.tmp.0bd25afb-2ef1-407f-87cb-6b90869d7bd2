@@ -200,12 +200,6 @@
       "type": "file"
     },
     {
-      "path": "docs/plan/phase8_system_comparison.md",
-      "accessCount": 5,
-      "lastAccessed": 1774329230004,
-      "type": "file"
-    },
-    {
       "path": "experiments/phase5_system_comparison/phase5_final_report.py",
       "accessCount": 3,
       "lastAccessed": 1774308177245,
@@ -228,6 +222,12 @@
       "accessCount": 3,
       "lastAccessed": 1774328624284,
       "type": "directory"
+    },
+    {
+      "path": "docs/plan/phase8_system_comparison.md",
+      "accessCount": 3,
+      "lastAccessed": 1774328866673,
+      "type": "file"
     },
     {
       "path": "docs/plan/phase5_system_comparison.md",
@@ -326,9 +326,9 @@
       "type": "directory"
     },
     {
-      "path": "docs/plan/phase7_pgsearch_fork.md",
+      "path": "docs/plan/phase6_textsearch_fork.md",
       "accessCount": 1,
-      "lastAccessed": 1774329163895,
+      "lastAccessed": 1774329084087,
       "type": "file"
     }
   ],
