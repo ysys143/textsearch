@@ -165,8 +165,58 @@ rebuild 주기(매 100건? 500건? 1000건?)에 따른 NDCG 유지 곡선 측정
 
 ---
 
+## 보고서 구성
+
+`results/phase5/phase5_production_report.md`에 아래 내용을 포함한다.
+
+### Part 1: 기성 솔루션의 한국어 실패 분석
+
+pg_textsearch(Timescale)와 pg_bm25(ParadeDB)는 "production-grade BM25"를 표방하고 등장했다.
+그러나 한국어 환경에서 두 솔루션 모두 pl/pgsql 직접 구현(NDCG=0.6412) 대비 처참한 결과를 보였다.
+
+| 솔루션 | 표방 | MIRACL NDCG@10 | 실패 원인 |
+|--------|------|---------------|---------|
+| pg_textsearch + MeCab | BM25/WAND, sub-ms | 0.3374 | ? (AND 매칭? tsvector 정보 손실? WAND 공격적 pruning?) |
+| ParadeDB pg_search | Tantivy BM25 | 0.2275 | ? (korean_lindera 품질? 커스텀 토크나이저 불가?) |
+
+각 솔루션별로:
+- **근본 원인 분석**: 코드 레벨에서 왜 실패하는지 (쿼리 매칭 방식, 토크나이저 아키텍처, 인덱스 구조)
+- **해결 가능성**: 어떤 수정으로 개선할 수 있는지 (OR-query, 파라미터 튜닝, 소스 수정 등)
+- **해결된 솔루션의 성능**: 수정 후 NDCG/latency 실측
+- **유지보수 가능성**: 수정이 upstream 업데이트에 안전한가, 포크 유지가 필요한가
+
+### Part 2: 요구사항 적합성 평가표
+
+위 "핵심 산출물" 섹션의 R1~R5 비교표를 실측치로 완성.
+
+### Part 3: pl/pgsql BM25 스케일링 분석
+
+pl/pgsql 직접 구현이 폴백이라면, TB급 프로덕션 환경에서 실제로 사용 가능한지 검토.
+
+| 검토 항목 | 분석 내용 |
+|----------|---------|
+| **inverted_index 테이블 크기** | 10k/100k/1M docs 기준 행 수 및 디스크 사용량 추정 |
+| **GIN/btree 인덱스 효율** | term lookup O(log n) — 1M, 10M terms에서 실제 latency |
+| **stats 테이블 분리 후 쿼리 복잡도** | full scan 제거 시 쿼리 플랜 분석 (EXPLAIN ANALYZE) |
+| **concurrent 성능** | connection pool 기반 QPS@16/32/64 — DB CPU 병목 지점 |
+| **파티셔닝 가능성** | inverted_index를 term range 기반 파티셔닝 시 이점 |
+| **materialized view / BRIN** | 대규모에서 corpus 통계 캐싱 전략 |
+| **비교 대상** | Elasticsearch 단일 노드의 동일 규모 성능과 대비 |
+
+### Part 4: 최종 권고
+
+실험 결과 + 스케일링 분석을 종합하여 production 환경별 권고안 도출.
+
+| 환경 | 권고 BM25 구성 | 이유 |
+|------|--------------|------|
+| Managed PG (RDS, Cloud SQL) | ? | textsearch_ko 설치 불가 시 대안 포함 |
+| Self-hosted PG (10k~100k docs) | ? | |
+| Self-hosted PG (1M+ docs, TB급) | ? | 스케일링 한계 도달 시 ES 권고 여부 포함 |
+
+---
+
 ## 출력
 
 - `results/phase5/phase5_production_pg.json` — 실험별 측정 결과
-- `results/phase5/phase5_production_report.md` — 요구사항 적합성 평가표 (위 표 완성본)
+- `results/phase5/phase5_production_report.md` — 위 Part 1~4 포함 종합 보고서
 - `experiments/phase5_production/phase5_production_bench.py` — 벤치마크 스크립트
