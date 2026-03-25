@@ -130,17 +130,30 @@ def build_vocab(conn_main, texts: List[str], batch_size: int = 500) -> Dict[str,
     return {term: idx + 1 for idx, (term, _) in enumerate(term_counts.most_common())}
 
 
-def text_to_bm25vector(conn_main, text: str, vocab: Dict[str, int]) -> Optional[str]:
+def text_to_bm25vector(
+    conn_main, text: str, vocab: Dict[str, int], real_tf: bool = False
+) -> Optional[str]:
     if not text or not text.strip():
         return None
     with conn_main.cursor() as cur:
-        cur.execute(
-            "SELECT tsvector_to_array(to_tsvector('public.korean', %s))",
-            (text,),
-        )
-        row = cur.fetchone()
-        terms = row[0] if row and row[0] else []
-    counts = Counter(t for t in terms if t in vocab)
+        if real_tf:
+            # Real TF: positions array length from tsvector
+            cur.execute(
+                "SELECT lexeme, array_length(positions, 1)"
+                " FROM unnest(to_tsvector('public.korean', %s))",
+                (text,),
+            )
+            rows = cur.fetchall()
+            counts = {r[0]: r[1] for r in rows if r[0] in vocab}
+        else:
+            # TF=1: unique lexemes only
+            cur.execute(
+                "SELECT tsvector_to_array(to_tsvector('public.korean', %s))",
+                (text,),
+            )
+            row = cur.fetchone()
+            terms = row[0] if row and row[0] else []
+            counts = Counter(t for t in terms if t in vocab)
     if not counts:
         return None
     vec_str = ",".join(
@@ -166,7 +179,8 @@ def setup_table(conn_phase6, table: str, create_extension: bool = False):
 
 
 def insert_corpus(
-    conn_phase6, conn_main, docs: List[dict], vocab: Dict[str, int], table: str
+    conn_phase6, conn_main, docs: List[dict], vocab: Dict[str, int], table: str,
+    real_tf: bool = False
 ) -> int:
     """Tokenize docs via main DB and insert bm25vectors into phase6 DB."""
     inserted = 0
@@ -175,7 +189,7 @@ def insert_corpus(
     BATCH_SIZE = 200
 
     for doc in docs:
-        vec = text_to_bm25vector(conn_main, doc["text"], vocab)
+        vec = text_to_bm25vector(conn_main, doc["text"], vocab, real_tf=real_tf)
         if vec is None:
             skipped += 1
             continue
@@ -224,7 +238,8 @@ def create_index(conn_phase6, table: str):
 # ---------------------------------------------------------------------------
 
 def run_evaluation(
-    conn_phase6, conn_main, queries: List[dict], vocab: Dict[str, int], table: str
+    conn_phase6, conn_main, queries: List[dict], vocab: Dict[str, int], table: str,
+    real_tf: bool = False
 ) -> dict:
     """Run NDCG@10, Recall@10, MRR, latency on all valid queries."""
     idx = f"{table}_emb_idx"
@@ -232,7 +247,7 @@ def run_evaluation(
     skipped_no_vec, skipped_no_relevant = 0, 0
 
     for q in queries:
-        q_vec = text_to_bm25vector(conn_main, q["text"], vocab)
+        q_vec = text_to_bm25vector(conn_main, q["text"], vocab, real_tf=real_tf)
         if q_vec is None:
             skipped_no_vec += 1
             continue
@@ -285,9 +300,13 @@ def write_report(
     vocab_size: int,
     miracl_metrics: dict,
     ezis_metrics: dict,
+    real_tf: bool = False,
 ) -> str:
     os.makedirs(output_dir, exist_ok=True)
-    path = os.path.join(output_dir, "phase6_1_full_eval_report.md")
+    phase_label = "6-2" if real_tf else "6-1"
+    tf_note = "real-TF (positions from unnest(tsvector))" if real_tf else "TF=1 (tsvector_to_array unique lexemes)"
+    fname = f"phase6_{'2' if real_tf else '1'}_full_eval_report.md"
+    path = os.path.join(output_dir, fname)
 
     m_ndcg = miracl_metrics.get("ndcg_at_10", 0.0)
     m_p50 = miracl_metrics.get("latency_p50_ms", 0.0)
@@ -295,7 +314,7 @@ def write_report(
     e_p50 = ezis_metrics.get("latency_p50_ms", 0.0) if "error" not in ezis_metrics else None
 
     lines = [
-        "# Phase 6-1: VectorChord-BM25 + textsearch_ko Full Evaluation",
+        f"# Phase {phase_label}: VectorChord-BM25 + textsearch_ko Full Evaluation ({tf_note})",
         "",
         f"**Generated:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
         f"**Vocab size:** {vocab_size} terms",
@@ -348,7 +367,7 @@ def write_report(
         "|-------|--------|---------|-------------|-------------|",
         f"| 5T | pg_textsearch AND (<@>) | {PHASE5_PGSEARCH_AND_MIRACL:.4f} | {delta(m_ndcg, PHASE5_PGSEARCH_AND_MIRACL)} | {PHASE5_PGSEARCH_P50_MS}ms |",
         f"| 5B v2 | pl/pgsql BM25 v2 + MeCab | {PHASE5_PLPGSQL_V2_MIRACL:.4f} | {delta(m_ndcg, PHASE5_PLPGSQL_V2_MIRACL)} | {PHASE5_PLPGSQL_V2_P50_MS}ms |",
-        f"| **6-1** | **VectorChord-BM25 + textsearch_ko** | **{m_ndcg:.4f}** | — | **{m_p50:.2f}ms** |",
+        f"| **{phase_label}** | **VectorChord-BM25 + textsearch_ko** | **{m_ndcg:.4f}** | — | **{m_p50:.2f}ms** |",
         "",
         "### EZIS",
         "",
@@ -359,19 +378,18 @@ def write_report(
         lines += [
             f"| 5T | pg_textsearch AND (<@>) | {PHASE5_PGSEARCH_AND_EZIS:.4f} | {delta(e_ndcg, PHASE5_PGSEARCH_AND_EZIS)} |",
             f"| 5B v2 | pl/pgsql BM25 v2 + MeCab | {PHASE5_PLPGSQL_V2_EZIS:.4f} | {delta(e_ndcg, PHASE5_PLPGSQL_V2_EZIS)} |",
-            f"| **6-1** | **VectorChord-BM25 + textsearch_ko** | **{e_ndcg:.4f}** | — |",
+            f"| **{phase_label}** | **VectorChord-BM25 + textsearch_ko** | **{e_ndcg:.4f}** | — |",
         ]
     else:
         lines += [
             f"| 5T | pg_textsearch AND | {PHASE5_PGSEARCH_AND_EZIS:.4f} | - |",
             f"| 5B v2 | pl/pgsql BM25 v2 | {PHASE5_PLPGSQL_V2_EZIS:.4f} | - |",
-            "| **6-1** | **VectorChord-BM25 + textsearch_ko** | error | — |",
+            f"| **{phase_label}** | **VectorChord-BM25 + textsearch_ko** | error | — |",
         ]
 
     lines += [
         "",
-        "**Note:** Phase 6-1 uses TF=1 (tsvector_to_array returns unique lexemes only).",
-        "Phase 6-2 will test real TF via `array_length(positions, 1)` from unnest(tsvector).",
+        f"**TF mode:** {tf_note}",
         "",
         "---",
         "",
@@ -414,10 +432,12 @@ def main():
     parser.add_argument("--main-db-url", default="postgresql://postgres:postgres@localhost:5432/dev")
     parser.add_argument("--output-dir", default="results/phase6")
     parser.add_argument("--skip-insert", action="store_true", help="Skip corpus insert (table already populated)")
+    parser.add_argument("--real-tf", action="store_true", help="Use real TF from tsvector positions (Phase 6-2)")
     args = parser.parse_args()
 
     print("=" * 60)
-    print("Phase 6-1: VectorChord-BM25 Full Evaluation (10K corpus)")
+    tf_label = "real-TF (Phase 6-2)" if args.real_tf else "TF=1 (Phase 6-1)"
+    print(f"Phase 6: VectorChord-BM25 Full Evaluation — {tf_label}")
     print("=" * 60)
 
     conn_phase6 = connect(args.db_url, "phase6 DB (VectorChord-BM25)")
@@ -445,14 +465,14 @@ def main():
     print(f"  Vocab size: {len(vocab)} terms")
 
     # --- MIRACL ---
-    MIRACL_TABLE = "t6_miracl_10k"
+    MIRACL_TABLE = "t6_miracl_10k_realtf" if args.real_tf else "t6_miracl_10k"
     if not args.skip_insert:
         print("\n[3/6] Setting up phase6 DB (extensions + MIRACL table)...")
         setup_table(conn_phase6, MIRACL_TABLE, create_extension=True)
 
         print(f"\n[4/6] Inserting {len(docs)} MIRACL docs into VectorChord-BM25...")
         t0 = time.perf_counter()
-        inserted = insert_corpus(conn_phase6, conn_main, docs, vocab, MIRACL_TABLE)
+        inserted = insert_corpus(conn_phase6, conn_main, docs, vocab, MIRACL_TABLE, real_tf=args.real_tf)
         elapsed = time.perf_counter() - t0
         print(f"  Throughput: {inserted / elapsed:.1f} docs/sec ({elapsed:.1f}s)")
         create_index(conn_phase6, MIRACL_TABLE)
@@ -463,7 +483,7 @@ def main():
             print(f"  Existing rows: {cur.fetchone()[0]}")
 
     print(f"\n[5/6] Evaluating MIRACL ({len(valid_queries)} queries)...")
-    miracl_metrics = run_evaluation(conn_phase6, conn_main, valid_queries, vocab, MIRACL_TABLE)
+    miracl_metrics = run_evaluation(conn_phase6, conn_main, valid_queries, vocab, MIRACL_TABLE, real_tf=args.real_tf)
     if "error" in miracl_metrics:
         print(f"  [ERROR] {miracl_metrics['error']}")
     else:
@@ -480,16 +500,16 @@ def main():
     ezis_valid = [q for q in ezis_queries if any(r in ezis_doc_ids for r in q["relevant_ids"])]
     print(f"  Valid queries: {len(ezis_valid)}/{len(ezis_queries)}")
 
-    EZIS_TABLE = "t6_ezis"
+    EZIS_TABLE = "t6_ezis_realtf" if args.real_tf else "t6_ezis"
     ezis_texts = [d["text"] for d in ezis_docs]
     print("  Building EZIS vocab...")
     ezis_vocab = build_vocab(conn_main, ezis_texts, batch_size=97)
 
     setup_table(conn_phase6, EZIS_TABLE)
-    insert_corpus(conn_phase6, conn_main, ezis_docs, ezis_vocab, EZIS_TABLE)
+    insert_corpus(conn_phase6, conn_main, ezis_docs, ezis_vocab, EZIS_TABLE, real_tf=args.real_tf)
     create_index(conn_phase6, EZIS_TABLE)
 
-    ezis_metrics = run_evaluation(conn_phase6, conn_main, ezis_valid, ezis_vocab, EZIS_TABLE)
+    ezis_metrics = run_evaluation(conn_phase6, conn_main, ezis_valid, ezis_vocab, EZIS_TABLE, real_tf=args.real_tf)
     if "error" in ezis_metrics:
         print(f"  [ERROR] {ezis_metrics['error']}")
     else:
@@ -499,10 +519,11 @@ def main():
         print(f"  p50 latency: {ezis_metrics['latency_p50_ms']:.2f} ms")
 
     # Write report
-    report_path = write_report(args.output_dir, len(docs), len(vocab), miracl_metrics, ezis_metrics)
+    report_path = write_report(args.output_dir, len(docs), len(vocab), miracl_metrics, ezis_metrics, real_tf=args.real_tf)
 
     # Save JSON
-    json_path = os.path.join(args.output_dir, "phase6_1_metrics.json")
+    json_fname = "phase6_2_metrics.json" if args.real_tf else "phase6_1_metrics.json"
+    json_path = os.path.join(args.output_dir, json_fname)
     with open(json_path, "w") as f:
         json.dump({
             "miracl": {"corpus_size": len(docs), "vocab_size": len(vocab), **miracl_metrics},
