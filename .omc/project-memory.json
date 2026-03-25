@@ -135,21 +135,27 @@
   },
   "hotPaths": [
     {
+      "path": "experiments/phase6_vectorchord/phase6_feasibility.py",
+      "accessCount": 21,
+      "lastAccessed": 1774418673184,
+      "type": "file"
+    },
+    {
       "path": "experiments/common/bm25_module.py",
       "accessCount": 7,
       "lastAccessed": 1774417779280,
       "type": "file"
     },
     {
-      "path": "experiments/phase3_native_bm25/phase3_bm25_comparison.py",
-      "accessCount": 4,
-      "lastAccessed": 1774417139409,
+      "path": "docker-compose.yml",
+      "accessCount": 5,
+      "lastAccessed": 1774418188345,
       "type": "file"
     },
     {
-      "path": "docker-compose.yml",
-      "accessCount": 3,
-      "lastAccessed": 1774417800702,
+      "path": "experiments/phase3_native_bm25/phase3_bm25_comparison.py",
+      "accessCount": 4,
+      "lastAccessed": 1774417139409,
       "type": "file"
     },
     {
@@ -174,6 +180,12 @@
       "path": "docs/plan/phase6_vectorchord_bm25.md",
       "accessCount": 2,
       "lastAccessed": 1774417200245,
+      "type": "file"
+    },
+    {
+      "path": "results/phase6/phase6_0_feasibility_report.md",
+      "accessCount": 2,
+      "lastAccessed": 1774418591356,
       "type": "file"
     },
     {
@@ -330,12 +342,6 @@
       "path": "experiments/phase6_vectorchord/__init__.py",
       "accessCount": 1,
       "lastAccessed": 1774417813165,
-      "type": "file"
-    },
-    {
-      "path": "experiments/phase6_vectorchord/phase6_feasibility.py",
-      "accessCount": 1,
-      "lastAccessed": 1774417921229,
       "type": "file"
     }
   ],
