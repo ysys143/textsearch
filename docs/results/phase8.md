@@ -143,6 +143,8 @@ textsearch_ko (MeCab) + pg_textsearch BM25 + pgvector HNSW + DB-side RRF
 
 외부 시스템 대비 전체적으로 경쟁력 있는 품질, 본 실험 설정에서 latency 2~5배 우위, 운영 복잡도 최소.
 
+> **참고**: pg_textsearch를 개발·유지하는 Timescale이 DiskANN 기반 벡터 인덱스 [pgvectorscale](https://github.com/timescale/pgvectorscale)도 공개하고 있어, BM25(pg_textsearch) + Dense(pgvectorscale)를 동일 벤더 스택으로 구성할 수 있다. 대규모 벡터 검색에서 pgvector HNSW의 메모리 한계를 넘어야 할 때 유력한 확장 경로.
+
 ---
 
 ## 상세 결과
@@ -185,6 +187,7 @@ textsearch_ko (MeCab) + pg_textsearch BM25 + pgvector HNSW + DB-side RRF
 | **textsearch_ko** (ysys143) | textsearch_ko fork — 추가 한국어 토크나이저 지원 | [github.com/ysys143/textsearch_ko](https://github.com/ysys143/textsearch_ko) |
 | **pg_textsearch** | Timescale BM25 확장 — `<@>` 연산자, BM25 인덱스 | [github.com/timescale/pg_textsearch](https://github.com/timescale/pg_textsearch) |
 | **pgvector** | PostgreSQL 벡터 유사도 검색 — HNSW/IVFFlat 인덱스 | [github.com/pgvector/pgvector](https://github.com/pgvector/pgvector) |
+| **pgvectorscale** | Timescale DiskANN 기반 벡터 인덱스 — pg_textsearch와 동일 팀, 시너지 우수 | [github.com/timescale/pgvectorscale](https://github.com/timescale/pgvectorscale) |
 
 ### 외부 시스템
 
