@@ -130,6 +130,18 @@ def load_data() -> Tuple[List[Dict], List[Dict], List[Dict], List[Dict]]:
     return miracl_docs, miracl_queries, ezis_docs, ezis_queries
 
 
+def load_miracl_from_db(db_url: str) -> List[Dict]:
+    """Load all MIRACL docs from text_embedding table on main DB."""
+    conn = psycopg2.connect(db_url)
+    with conn.cursor() as cur:
+        cur.execute("SELECT id, text FROM text_embedding ORDER BY id")
+        rows = cur.fetchall()
+    conn.close()
+    docs = [{"id": str(r[0]), "text": r[1]} for r in rows]
+    print(f"[Data] MIRACL (DB): {len(docs)} docs loaded from text_embedding")
+    return docs
+
+
 # ---------------------------------------------------------------------------
 # DB setup helpers
 # ---------------------------------------------------------------------------
@@ -961,6 +973,8 @@ def main():
     parser.add_argument("--output-dir", default="results/phase5")
     parser.add_argument("--experiments", default="all",
                         help="Comma-separated: 5T,5B,5A,5C or 'all'")
+    parser.add_argument("--miracl-10k", action="store_true",
+                        help="Load 10K MIRACL docs from text_embedding table (--db-url)")
     args = parser.parse_args()
 
     out_dir = Path(args.output_dir)
@@ -969,6 +983,8 @@ def main():
     exps = args.experiments.lower().split(",") if args.experiments != "all" else ["5t", "5b", "5a", "5c"]
 
     miracl_docs, miracl_queries, ezis_docs, ezis_queries = load_data()
+    if args.miracl_10k:
+        miracl_docs = load_miracl_from_db(args.db_url)
 
     all_results = {}
 
