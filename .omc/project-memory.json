@@ -160,8 +160,8 @@
     },
     {
       "path": "docker-compose.yml",
-      "accessCount": 11,
-      "lastAccessed": 1774439009997,
+      "accessCount": 12,
+      "lastAccessed": 1774439501127,
       "type": "file"
     },
     {
@@ -204,6 +204,12 @@
       "path": "results/phase6/phase6_2_full_eval_report.md",
       "accessCount": 3,
       "lastAccessed": 1774425614763,
+      "type": "file"
+    },
+    {
+      "path": "docs/plan/phase9_system_comparison.md",
+      "accessCount": 3,
+      "lastAccessed": 1774439559589,
       "type": "file"
     },
     {
@@ -258,12 +264,6 @@
       "path": "results/phase6/phase6_1_full_eval_report.md",
       "accessCount": 2,
       "lastAccessed": 1774425486365,
-      "type": "file"
-    },
-    {
-      "path": "docs/plan/phase9_system_comparison.md",
-      "accessCount": 2,
-      "lastAccessed": 1774439010526,
       "type": "file"
     },
     {

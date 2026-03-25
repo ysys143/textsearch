@@ -31,8 +31,8 @@
 | **Phase 4** | BM25 vs Neural Sparse | 형태소+BM25 조합이 neural sparse를 이길 수 있는가? | [done] | [phase4_bm25_vs_neural.md](phase4_bm25_vs_neural.md) |
 | **Phase 5** | Production PG 최적 세팅 | 지속적 문서 추가 환경에서 latency/throughput/비용 고려 시 최적 세팅은? | [done] | [phase5_production_pg.md](phase5_production_pg.md) |
 | **Phase 6** | VectorChord-BM25 + pg_tokenizer | Block-WeakAnd BM25 + 한국어 토크나이저 연결, 기성 확장 조합으로 해결 시도 | [done] | [phase6_vectorchord_bm25.md](phase6_vectorchord_bm25.md) |
-| **Phase 7** | PostgreSQL 스케일링 비교 | pg_textsearch(GIN) vs VectorChord-BM25 vs pl/pgsql — 1K/10K/100K 규모별 latency/throughput | [next] | [phase7_scaling_comparison.md](phase7_scaling_comparison.md) |
-| **Phase 8** | 외부 시스템 비교 | PostgreSQL 최선 세팅 vs Elasticsearch vs Qdrant vs Weaviate — BM25 동등 조건 비교 | [planned] | [phase8_system_comparison.md](phase8_system_comparison.md) |
+| **Phase 7** | PostgreSQL 스케일링 + 하이브리드 | pg_textsearch AND/OR vs VectorChord vs pl/pgsql 스케일링 + BM25/Dense/RRF/Bayesian 하이브리드 벤치마크 | [done] | [phase7_scaling_comparison.md](phase7_scaling_comparison.md) |
+| **Phase 8** | 외부 시스템 비교 | PostgreSQL 최선 스택 vs Elasticsearch vs Qdrant(1.15.x) vs Vespa — 한국어 하이브리드 검색 동등 조건 비교 | [next] | [phase8_system_comparison.md](phase8_system_comparison.md) |
 
 ## 실험 순서 및 의존성
 
@@ -44,8 +44,8 @@ Phase 0 (데이터)
                     └── Phase 4 (BM25 vs Neural, Phase 3 최선 세팅 사용)
                             └── Phase 5 (Production PG 최적화 — 운영 비용 측정)
                                     └── Phase 6 (VectorChord-BM25 + pg_tokenizer — 기성 확장 조합)
-                                            └── [완료] → Phase 7 (스케일링 비교 — pg_textsearch + VectorChord + pl/pgsql)
-                                                    └── Phase 8 (외부 시스템 비교 — ES/Qdrant/Weaviate)
+                                            └── [완료] → Phase 7 (스케일링 + 하이브리드 — pg_textsearch + VectorChord + pl/pgsql + DB-side RRF)
+                                                    └── [next] Phase 8 (외부 시스템 비교 — ES/Qdrant 1.15.x/Vespa)
 ```
 
 Phase 1은 Phase 2, 3의 인풋 — 반드시 먼저 완료.
@@ -68,8 +68,9 @@ Phase 1은 Phase 2, 3의 인풋 — 반드시 먼저 완료.
 - DB: PostgreSQL 18 + pgvector 0.8.2 (`pgvector/pgvector:pg18`, port 5432)
 - ParadeDB: `paradedb/paradedb:latest` (port 5433) — Phase 3
 - Elasticsearch: 8.11.0 (port 9200) — Phase 8
-- Qdrant: latest (port 6333) — Phase 8
-- Weaviate: latest (port 8080) — Phase 8
+- Qdrant: v1.15.x (port 6333) — Phase 8 (multilingual tokenizer, 한국어 Unicode 경계 지원)
+- Vespa: latest (port 8080/19071) — Phase 8 (Weaviate 대체 — 한국어 형태소 분석 지원 확인 필요)
+- Weaviate 제외: 내장 한국어 형태소 분석기 없음
 - Python: 3.12 via uv venv
 - Hardware: macOS Apple Silicon (CPU-only inference)
 - DB URL: `postgresql://postgres:postgres@localhost:5432/dev`
