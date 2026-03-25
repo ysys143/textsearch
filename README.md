@@ -27,7 +27,7 @@ pg_textsearch 같은 확장이 PostgreSQL에 BM25를 구현해주긴 한다. 하
 
 ### 형태소 분석기가 한국어 BM25의 성패를 가른다
 
-Phase 1에서 MeCab, Kiwi, Okt 세 가지 형태소 분석기를 비교했다. MeCab이 속도와 품질 모두에서 1위였고, 이후 모든 실험의 기본 토크나이저가 됐다.
+Phase 1에서 MeCab, Kiwi, Okt 세 가지 형태소 분석기를 비교했다. MeCab이 적절한 품질과 월등한 처리속도를 보여주었고, 이후 모든 실험의 기본 토크나이저가 됐다.
 
 Phase 8에서 형태소 분석기의 중요성이 더 분명해졌다. MeCab이나 nori처럼 형태소 분석을 하는 시스템(PostgreSQL, Elasticsearch)은 MIRACL BM25에서 NDCG 0.61~0.64를 달성했다. 반면 ICU 유니코드 경계 분리만 하는 Vespa는 0.41, Qdrant의 charabia 토크나이저는 사실상 0에 가까운 점수를 받았다. 토크나이저 하나가 품질 차이의 대부분을 설명한다.
 
