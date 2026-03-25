@@ -75,7 +75,7 @@ services:
     container_name: textsearch-vespa
     profiles: [phase8-vespa]
     ports:
-      - "8080:8080"
+      - "8090:8080"
       - "19071:19071"
     volumes:
       - vespadatadata:/opt/vespa/var

@@ -93,7 +93,7 @@ schema doc {
       index {
         hnsw {
           max-links-per-node: 16
-          nearest-neighbor-count: 200
+          neighbors-to-explore-at-insert: 200
         }
       }
     }
@@ -214,7 +214,8 @@ def wait_for_ready(vespa_url: str, timeout: int = 120) -> bool:
     while time.time() < deadline:
         try:
             resp = requests.get(f"{vespa_url}/ApplicationStatus", timeout=5)
-            if resp.status_code == 200:
+            if resp.status_code in (200, 404):
+                # 404 = container up but no app deployed yet — ready to deploy
                 return True
         except Exception:
             pass
