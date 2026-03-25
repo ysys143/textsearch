@@ -259,9 +259,10 @@ via SQL CTE 함수: p7_bayesian_miracl, p7_bayesian_ezis
 
 ### Phase 8 예정
 
-- **pg_search (ParadeDB fork)**: 차세대 PostgreSQL 전문검색 비교
-- **Meilisearch 통합**: 외부 검색 엔진 벤치마크
-- **재순위 (Re-ranking)**: 쿼리당 재순위 지연 측정
+- **Elasticsearch 8.x (nori)**: 한국어 형태소 기반 BM25 + knn + RRF 직접 비교
+- **Qdrant 1.15.x**: MeCab sparse vector IDF + HNSW Dense + prefetch RRF
+- **Vespa (ICU tokenizer)**: BM25 + HNSW + linear hybrid score 비교
+- **비교 조건**: 동일 BGE-M3 임베딩, 동일 데이터셋(MIRACL 10K / EZIS 97), 동일 topk=10
 
 ---
 
@@ -276,4 +277,4 @@ via SQL CTE 함수: p7_bayesian_miracl, p7_bayesian_ezis
 - [INFO] 100K 코퍼스는 10K 문서 복제 기반 — 실제 어휘 다양성 포함 독립 코퍼스 검증 필요
 - [INFO] Dense/RRF latency는 임베딩 추론 제외 수치 — 온라인 추론 포함 end-to-end 측정 필요
 
-**한계 및 다음 단계**: 이 결과만으로 Elasticsearch 전면 대체를 결론내리기는 이르며, Phase 8(pg_search 포크 비교)과 Phase 9(ES/Qdrant 직접 비교)가 필요합니다.
+**한계 및 다음 단계**: 이 결과만으로 Elasticsearch 전면 대체를 결론내리기는 이르며, Phase 8에서 ES/Qdrant 1.15.x/Vespa와 동등 조건 직접 비교가 필요합니다.

@@ -34,12 +34,12 @@ services:
     working_dir: /app
     command: sleep infinity
 
-  # Phase 9: Start ONE search engine at a time for fair latency comparison
+  # Phase 8: Start ONE search engine at a time for fair latency comparison
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
     container_name: textsearch-es
-    profiles: [phase9-es]
+    profiles: [phase8-es]
     environment:
       - discovery.type=single-node
       - xpack.security.enabled=false
@@ -55,9 +55,9 @@ services:
           memory: 6g
 
   qdrant:
-    image: qdrant/qdrant:latest
+    image: qdrant/qdrant:v1.15.0
     container_name: textsearch-qdrant
-    profiles: [phase9-qdrant]
+    profiles: [phase8-qdrant]
     ports:
       - "6333:6333"
       - "6334:6334"
@@ -68,25 +68,19 @@ services:
         limits:
           memory: 2g
 
-  weaviate:
-    image: semitechnologies/weaviate:latest
-    container_name: textsearch-weaviate
-    profiles: [phase9-weaviate]
-    environment:
-      - QUERY_DEFAULTS_LIMIT=25
-      - AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED=true
-      - PERSISTENCE_DATA_PATH=/var/lib/weaviate
-      - DEFAULT_VECTORIZER_MODULE=none
-      - ENABLE_MODULES=
+  vespa:
+    image: vespaengine/vespa:latest
+    container_name: textsearch-vespa
+    profiles: [phase8-vespa]
     ports:
       - "8080:8080"
-      - "50051:50051"
+      - "19071:19071"
     volumes:
-      - weaviatedata:/var/lib/weaviate
+      - vespadatadata:/opt/vespa/var
     deploy:
       resources:
         limits:
-          memory: 2g
+          memory: 4g
 
   # Phase 2: ParadeDB — native pg_bm25 (Tantivy-powered BM25 inside PostgreSQL)
   # Answers: "pg에서 한국어 BM25를 구현하는 최선의 방법"
@@ -152,7 +146,7 @@ volumes:
   pgdata:
   esdata:
   qdrantdata:
-  weaviatedata:
+  vespadatadata:
   paradedbdata:
   pgroongarata:
   pg_phase6_data:
