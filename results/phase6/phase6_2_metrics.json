@@ -5,8 +5,8 @@
     "ndcg_at_10": 0.6415067158330563,
     "recall_at_10": 0.8021438394677832,
     "mrr": 0.6193699232431626,
-    "latency_p50_ms": 0.8231249994423706,
-    "latency_p95_ms": 1.446834001399111,
+    "latency_p50_ms": 0.9713750005175825,
+    "latency_p95_ms": 1.9992919987998903,
     "queries_evaluated": 213,
     "queries_skipped_no_vec": 0,
     "queries_skipped_no_results": 0
@@ -17,8 +17,8 @@
     "ndcg_at_10": 0.9238167302189145,
     "recall_at_10": 0.9923664122137404,
     "mrr": 0.9012722646310433,
-    "latency_p50_ms": 0.5326249993231613,
-    "latency_p95_ms": 0.715582998964237,
+    "latency_p50_ms": 0.6112500013841782,
+    "latency_p95_ms": 0.807167001767084,
     "queries_evaluated": 131,
     "queries_skipped_no_vec": 0,
     "queries_skipped_no_results": 0

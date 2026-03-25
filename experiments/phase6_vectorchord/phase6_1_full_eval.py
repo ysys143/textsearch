@@ -34,12 +34,12 @@ EZIS_DOCS_PATH = "data/ezis/chunks.json"
 EZIS_QUERIES_PATH = "data/ezis/queries.json"
 
 # Baselines — Phase 5 production (source: results/phase5/phase5_production_pg.json)
-PHASE5_PGSEARCH_AND_MIRACL = 0.3437   # pg_textsearch AND (<@>), p50=0.62ms
+PHASE5_PGSEARCH_AND_MIRACL = 0.6401   # pg_textsearch AND (<@>), 10K corpus, p50=0.5ms
 PHASE5_PGSEARCH_AND_EZIS   = 0.9238
-PHASE5_PGSEARCH_P50_MS     = 0.62
-PHASE5_PLPGSQL_V2_MIRACL   = 0.3491   # pl/pgsql BM25 v2 (real-TF fixed), p50=2.7ms
+PHASE5_PGSEARCH_P50_MS     = 0.5
+PHASE5_PLPGSQL_V2_MIRACL   = 0.6414   # pl/pgsql BM25 v2 (real-TF), 10K corpus, p50=11.3ms
 PHASE5_PLPGSQL_V2_EZIS     = 0.9290
-PHASE5_PLPGSQL_V2_P50_MS   = 2.7
+PHASE5_PLPGSQL_V2_P50_MS   = 11.3
 
 
 # ---------------------------------------------------------------------------

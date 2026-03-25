@@ -1,6 +1,6 @@
 # Phase 6-1: VectorChord-BM25 + textsearch_ko Full Evaluation (TF=1 (tsvector_to_array unique lexemes))
 
-**Generated:** 2026-03-25 16:28:23
+**Generated:** 2026-03-25 16:49:25
 **Vocab size:** 48915 terms
 
 ---
@@ -12,8 +12,8 @@
 | NDCG@10 | **0.5888** |
 | Recall@10 | 0.7236 |
 | MRR | 0.6034 |
-| Latency p50 | 0.94 ms |
-| Latency p95 | 2.01 ms |
+| Latency p50 | 1.01 ms |
+| Latency p95 | 2.12 ms |
 | Queries evaluated | 213 / 213 |
 
 ---
@@ -37,9 +37,9 @@
 
 | Phase | Method | NDCG@10 | delta vs P6 | p50 latency |
 |-------|--------|---------|-------------|-------------|
-| 5T | pg_textsearch AND (<@>) | 0.3437 | -0.2451 | 0.62ms |
-| 5B v2 | pl/pgsql BM25 v2 + MeCab | 0.3491 | -0.2397 | 2.7ms |
-| **6-1** | **VectorChord-BM25 + textsearch_ko** | **0.5888** | — | **0.94ms** |
+| 5T | pg_textsearch AND (<@>) | 0.6401 | +0.0513 | 0.5ms |
+| 5B v2 | pl/pgsql BM25 v2 + MeCab | 0.6414 | +0.0526 | 11.3ms |
+| **6-1** | **VectorChord-BM25 + textsearch_ko** | **0.5888** | — | **1.01ms** |
 
 ### EZIS
 
