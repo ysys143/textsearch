@@ -30,6 +30,8 @@ except ImportError:
     sys.exit(1)
 
 QUERIES_PATH = "data/miracl/queries_dev.json"
+EZIS_DOCS_PATH = "data/ezis/chunks.json"
+EZIS_QUERIES_PATH = "data/ezis/queries.json"
 
 # Phase 3 MeCab baseline for comparison (from results/phase3/)
 PHASE3_MECAB_NDCG = 0.4732  # Phase 3 MeCab on pgvector-sparse (to be confirmed)
@@ -81,6 +83,17 @@ def load_corpus_from_db(conn_main) -> List[dict]:
 def load_queries() -> List[dict]:
     with open(QUERIES_PATH, encoding="utf-8") as f:
         return json.load(f)
+
+
+def load_ezis() -> Tuple[List[dict], List[dict]]:
+    with open(EZIS_DOCS_PATH, encoding="utf-8") as f:
+        docs = json.load(f)
+    with open(EZIS_QUERIES_PATH, encoding="utf-8") as f:
+        queries = json.load(f)
+    # Normalize id to str
+    for d in docs:
+        d["id"] = str(d["id"])
+    return docs, queries
 
 
 # ---------------------------------------------------------------------------
@@ -137,17 +150,20 @@ def text_to_bm25vector(conn_main, text: str, vocab: Dict[str, int]) -> Optional[
 # Setup phase6 DB
 # ---------------------------------------------------------------------------
 
-def setup_phase6_db(conn_phase6):
-    """Create extensions and corpus table on phase6 DB."""
+def setup_table(conn_phase6, table: str, create_extension: bool = False):
+    """Create (or recreate) a bm25vector corpus table on phase6 DB."""
     with conn_phase6.cursor() as cur:
-        cur.execute("CREATE EXTENSION IF NOT EXISTS vchord_bm25 CASCADE;")
-        cur.execute("DROP TABLE IF EXISTS t6_miracl_10k;")
-        cur.execute("CREATE TABLE t6_miracl_10k (id TEXT PRIMARY KEY, emb bm25vector);")
+        if create_extension:
+            cur.execute("CREATE EXTENSION IF NOT EXISTS vchord_bm25 CASCADE;")
+        cur.execute(f"DROP TABLE IF EXISTS {table};")
+        cur.execute(f"CREATE TABLE {table} (id TEXT PRIMARY KEY, emb bm25vector);")
     conn_phase6.commit()
-    print("  [OK] phase6 DB setup: vchord_bm25 extension + t6_miracl_10k table")
+    print(f"  [OK] Table {table} created")
 
 
-def insert_corpus(conn_phase6, conn_main, docs: List[dict], vocab: Dict[str, int]) -> int:
+def insert_corpus(
+    conn_phase6, conn_main, docs: List[dict], vocab: Dict[str, int], table: str
+) -> int:
     """Tokenize docs via main DB and insert bm25vectors into phase6 DB."""
     inserted = 0
     skipped = 0
@@ -165,7 +181,7 @@ def insert_corpus(conn_phase6, conn_main, docs: List[dict], vocab: Dict[str, int
             with conn_phase6.cursor() as cur:
                 for did, v in batch:
                     cur.execute(
-                        "INSERT INTO t6_miracl_10k (id, emb) VALUES (%s, %s::bm25vector)"
+                        f"INSERT INTO {table} (id, emb) VALUES (%s, %s::bm25vector)"
                         " ON CONFLICT (id) DO NOTHING",
                         (did, v),
                     )
@@ -178,7 +194,7 @@ def insert_corpus(conn_phase6, conn_main, docs: List[dict], vocab: Dict[str, int
         with conn_phase6.cursor() as cur:
             for did, v in batch:
                 cur.execute(
-                    "INSERT INTO t6_miracl_10k (id, emb) VALUES (%s, %s::bm25vector)"
+                    f"INSERT INTO {table} (id, emb) VALUES (%s, %s::bm25vector)"
                     " ON CONFLICT (id) DO NOTHING",
                     (did, v),
                 )
@@ -189,13 +205,12 @@ def insert_corpus(conn_phase6, conn_main, docs: List[dict], vocab: Dict[str, int
     return inserted
 
 
-def create_index(conn_phase6):
-    print("  Creating bm25 index (t6_miracl_10k_emb_idx)...")
+def create_index(conn_phase6, table: str):
+    idx = f"{table}_emb_idx"
+    print(f"  Creating bm25 index ({idx})...")
     with conn_phase6.cursor() as cur:
-        cur.execute("DROP INDEX IF EXISTS t6_miracl_10k_emb_idx;")
-        cur.execute(
-            "CREATE INDEX t6_miracl_10k_emb_idx ON t6_miracl_10k USING bm25 (emb bm25_ops);"
-        )
+        cur.execute(f"DROP INDEX IF EXISTS {idx};")
+        cur.execute(f"CREATE INDEX {idx} ON {table} USING bm25 (emb bm25_ops);")
     conn_phase6.commit()
     print("  Index created.")
 
@@ -205,9 +220,10 @@ def create_index(conn_phase6):
 # ---------------------------------------------------------------------------
 
 def run_evaluation(
-    conn_phase6, conn_main, queries: List[dict], vocab: Dict[str, int]
+    conn_phase6, conn_main, queries: List[dict], vocab: Dict[str, int], table: str
 ) -> dict:
     """Run NDCG@10, Recall@10, MRR, latency on all valid queries."""
+    idx = f"{table}_emb_idx"
     ndcg_scores, recall_scores, mrr_scores, latencies_ms = [], [], [], []
     skipped_no_vec, skipped_no_relevant = 0, 0
 
@@ -220,8 +236,8 @@ def run_evaluation(
         t0 = time.perf_counter()
         with conn_phase6.cursor() as cur:
             cur.execute(
-                "SELECT id FROM t6_miracl_10k"
-                " ORDER BY emb <&> to_bm25query('t6_miracl_10k_emb_idx', %s::bm25vector)"
+                f"SELECT id FROM {table}"
+                f" ORDER BY emb <&> to_bm25query('{idx}', %s::bm25vector)"
                 " LIMIT 10",
                 (q_vec,),
             )
@@ -259,48 +275,73 @@ def run_evaluation(
 # Report
 # ---------------------------------------------------------------------------
 
-def write_report(output_dir: str, corpus_size: int, vocab_size: int, metrics: dict) -> str:
+def write_report(
+    output_dir: str,
+    miracl_corpus_size: int,
+    vocab_size: int,
+    miracl_metrics: dict,
+    ezis_metrics: dict,
+) -> str:
     os.makedirs(output_dir, exist_ok=True)
     path = os.path.join(output_dir, "phase6_1_full_eval_report.md")
 
-    ndcg = metrics.get("ndcg_at_10", 0.0)
-    p50 = metrics.get("latency_p50_ms", 0.0)
-
-    # Compare vs Phase 3 best BM25 (kiwi-cong 0.6326, MeCab on pgvector-sparse from phase3 results)
-    vs_p3 = f"{(ndcg - PHASE3_MECAB_NDCG):+.4f}" if PHASE3_MECAB_NDCG else "N/A"
-    latency_vs_p5 = f"{(p50 - PHASE5_BM25_P50_MS):+.2f}ms vs Phase5 ({PHASE5_BM25_P50_MS}ms p50)"
+    m_ndcg = miracl_metrics.get("ndcg_at_10", 0.0)
+    m_p50 = miracl_metrics.get("latency_p50_ms", 0.0)
+    e_ndcg = ezis_metrics.get("ndcg_at_10", 0.0) if "error" not in ezis_metrics else None
+    e_p50 = ezis_metrics.get("latency_p50_ms", 0.0) if "error" not in ezis_metrics else None
 
     lines = [
         "# Phase 6-1: VectorChord-BM25 + textsearch_ko Full Evaluation",
         "",
         f"**Generated:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
-        f"**Corpus:** {corpus_size} docs (text_embedding, main DB)",
         f"**Vocab size:** {vocab_size} terms",
-        f"**Queries:** {metrics.get('queries_evaluated', 0)} / 213",
         "",
         "---",
         "",
-        "## Results",
+        "## MIRACL-ko Results (10K corpus, 213 queries)",
         "",
-        "| Metric | Value | vs Phase 3 MeCab BM25 |",
-        "|--------|-------|----------------------|",
-        f"| NDCG@10 | **{ndcg:.4f}** | {vs_p3} |",
-        f"| Recall@10 | {metrics.get('recall_at_10', 0):.4f} | - |",
-        f"| MRR | {metrics.get('mrr', 0):.4f} | - |",
-        f"| Latency p50 | {p50:.2f} ms | {latency_vs_p5} |",
-        f"| Latency p95 | {metrics.get('latency_p95_ms', 0):.2f} ms | - |",
+        "| Metric | Value |",
+        "|--------|-------|",
+        f"| NDCG@10 | **{m_ndcg:.4f}** |",
+        f"| Recall@10 | {miracl_metrics.get('recall_at_10', 0):.4f} |",
+        f"| MRR | {miracl_metrics.get('mrr', 0):.4f} |",
+        f"| Latency p50 | {m_p50:.2f} ms |",
+        f"| Latency p95 | {miracl_metrics.get('latency_p95_ms', 0):.2f} ms |",
+        f"| Queries evaluated | {miracl_metrics.get('queries_evaluated', 0)} / 213 |",
         "",
         "---",
         "",
-        "## Context: Phase Comparison",
+        "## EZIS Results (97 docs, 131 queries)",
+        "",
+    ]
+
+    if e_ndcg is not None:
+        lines += [
+            "| Metric | Value |",
+            "|--------|-------|",
+            f"| NDCG@10 | **{e_ndcg:.4f}** |",
+            f"| Recall@10 | {ezis_metrics.get('recall_at_10', 0):.4f} |",
+            f"| MRR | {ezis_metrics.get('mrr', 0):.4f} |",
+            f"| Latency p50 | {e_p50:.2f} ms |",
+            f"| Latency p95 | {ezis_metrics.get('latency_p95_ms', 0):.2f} ms |",
+            f"| Queries evaluated | {ezis_metrics.get('queries_evaluated', 0)} / 131 |",
+        ]
+    else:
+        lines.append(f"_Error: {ezis_metrics.get('error')}_")
+
+    lines += [
+        "",
+        "---",
+        "",
+        "## Phase Comparison (MIRACL-ko)",
         "",
         "| Phase | Method | NDCG@10 | p50 latency |",
         "|-------|--------|---------|-------------|",
         "| 2 | pg_textsearch + MeCab (BM25/WAND) | 0.3374 | - |",
         "| 3 | pgvector-sparse BM25 (kiwi-cong) | 0.6326 | 4.24ms |",
         "| 4 | BGE-M3 dense | 0.7915 | - |",
-        "| 5 | pl/pgsql BM25 v2 | best method | 0.73ms |",
-        f"| **6** | **VectorChord-BM25 + textsearch_ko** | **{ndcg:.4f}** | **{p50:.2f}ms** |",
+        "| 5 | pl/pgsql BM25 v2 (best) | - | 0.73ms |",
+        f"| **6** | **VectorChord-BM25 + textsearch_ko** | **{m_ndcg:.4f}** | **{m_p50:.2f}ms** |",
         "",
         "---",
         "",
@@ -310,8 +351,8 @@ def write_report(output_dir: str, corpus_size: int, vocab_size: int, metrics: di
         "textsearch_ko (MeCab, main DB port 5432)",
         "    -> tsvector_to_array() -> Python vocab -> {id:count}::bm25vector",
         "VectorChord-BM25 (vchord-suite, port 5436)",
-        "    CREATE INDEX t6_miracl_10k_emb_idx USING bm25 (emb bm25_ops)",
-        "    SELECT id ORDER BY emb <&> to_bm25query('t6_miracl_10k_emb_idx', q::bm25vector)",
+        "    CREATE INDEX <table>_emb_idx USING bm25 (emb bm25_ops)",
+        "    SELECT id ORDER BY emb <&> to_bm25query('<table>_emb_idx', q::bm25vector)",
         "```",
         "",
     ]
@@ -373,49 +414,70 @@ def main():
     vocab = build_vocab(conn_main, texts)
     print(f"  Vocab size: {len(vocab)} terms")
 
+    # --- MIRACL ---
+    MIRACL_TABLE = "t6_miracl_10k"
     if not args.skip_insert:
-        # Setup phase6 DB
-        print("\n[3/5] Setting up phase6 DB...")
-        setup_phase6_db(conn_phase6)
+        print("\n[3/6] Setting up phase6 DB (extensions + MIRACL table)...")
+        setup_table(conn_phase6, MIRACL_TABLE, create_extension=True)
 
-        # Insert corpus
-        print(f"\n[4/5] Inserting {len(docs)} docs into VectorChord-BM25...")
-        t_insert_start = time.perf_counter()
-        inserted = insert_corpus(conn_phase6, conn_main, docs, vocab)
-        insert_sec = time.perf_counter() - t_insert_start
-        print(f"  Insert throughput: {inserted / insert_sec:.1f} docs/sec ({insert_sec:.1f}s total)")
-
-        # Create index
-        create_index(conn_phase6)
+        print(f"\n[4/6] Inserting {len(docs)} MIRACL docs into VectorChord-BM25...")
+        t0 = time.perf_counter()
+        inserted = insert_corpus(conn_phase6, conn_main, docs, vocab, MIRACL_TABLE)
+        elapsed = time.perf_counter() - t0
+        print(f"  Throughput: {inserted / elapsed:.1f} docs/sec ({elapsed:.1f}s)")
+        create_index(conn_phase6, MIRACL_TABLE)
     else:
-        print("\n[3-4/5] Skipping insert (--skip-insert flag)")
+        print("\n[3-4/6] Skipping MIRACL insert (--skip-insert)")
         with conn_phase6.cursor() as cur:
-            cur.execute("SELECT COUNT(*) FROM t6_miracl_10k")
-            count = cur.fetchone()[0]
-        print(f"  Existing rows in t6_miracl_10k: {count}")
+            cur.execute(f"SELECT COUNT(*) FROM {MIRACL_TABLE}")
+            print(f"  Existing rows: {cur.fetchone()[0]}")
 
-    # Evaluate
-    print(f"\n[5/5] Evaluating {len(valid_queries)} queries...")
-    metrics = run_evaluation(conn_phase6, conn_main, valid_queries, vocab)
+    print(f"\n[5/6] Evaluating MIRACL ({len(valid_queries)} queries)...")
+    miracl_metrics = run_evaluation(conn_phase6, conn_main, valid_queries, vocab, MIRACL_TABLE)
+    if "error" in miracl_metrics:
+        print(f"  [ERROR] {miracl_metrics['error']}")
+    else:
+        print(f"  NDCG@10:    {miracl_metrics['ndcg_at_10']:.4f}")
+        print(f"  Recall@10:  {miracl_metrics['recall_at_10']:.4f}")
+        print(f"  MRR:        {miracl_metrics['mrr']:.4f}")
+        print(f"  p50 latency: {miracl_metrics['latency_p50_ms']:.2f} ms")
+        print(f"  p95 latency: {miracl_metrics['latency_p95_ms']:.2f} ms")
 
-    if "error" in metrics:
-        print(f"  [ERROR] {metrics['error']}")
-        sys.exit(1)
+    # --- EZIS ---
+    print("\n[6/6] EZIS evaluation (97 docs, 131 queries)...")
+    ezis_docs, ezis_queries = load_ezis()
+    ezis_doc_ids = {d["id"] for d in ezis_docs}
+    ezis_valid = [q for q in ezis_queries if any(r in ezis_doc_ids for r in q["relevant_ids"])]
+    print(f"  Valid queries: {len(ezis_valid)}/{len(ezis_queries)}")
 
-    print(f"\n  NDCG@10:    {metrics['ndcg_at_10']:.4f}")
-    print(f"  Recall@10:  {metrics['recall_at_10']:.4f}")
-    print(f"  MRR:        {metrics['mrr']:.4f}")
-    print(f"  p50 latency: {metrics['latency_p50_ms']:.2f} ms")
-    print(f"  p95 latency: {metrics['latency_p95_ms']:.2f} ms")
-    print(f"  Queries evaluated: {metrics['queries_evaluated']}")
+    EZIS_TABLE = "t6_ezis"
+    ezis_texts = [d["text"] for d in ezis_docs]
+    print("  Building EZIS vocab...")
+    ezis_vocab = build_vocab(conn_main, ezis_texts, batch_size=97)
+
+    setup_table(conn_phase6, EZIS_TABLE)
+    insert_corpus(conn_phase6, conn_main, ezis_docs, ezis_vocab, EZIS_TABLE)
+    create_index(conn_phase6, EZIS_TABLE)
+
+    ezis_metrics = run_evaluation(conn_phase6, conn_main, ezis_valid, ezis_vocab, EZIS_TABLE)
+    if "error" in ezis_metrics:
+        print(f"  [ERROR] {ezis_metrics['error']}")
+    else:
+        print(f"  NDCG@10:    {ezis_metrics['ndcg_at_10']:.4f}")
+        print(f"  Recall@10:  {ezis_metrics['recall_at_10']:.4f}")
+        print(f"  MRR:        {ezis_metrics['mrr']:.4f}")
+        print(f"  p50 latency: {ezis_metrics['latency_p50_ms']:.2f} ms")
 
     # Write report
-    report_path = write_report(args.output_dir, len(docs), len(vocab), metrics)
+    report_path = write_report(args.output_dir, len(docs), len(vocab), miracl_metrics, ezis_metrics)
 
     # Save JSON
     json_path = os.path.join(args.output_dir, "phase6_1_metrics.json")
     with open(json_path, "w") as f:
-        json.dump({"corpus_size": len(docs), "vocab_size": len(vocab), **metrics}, f, indent=2)
+        json.dump({
+            "miracl": {"corpus_size": len(docs), "vocab_size": len(vocab), **miracl_metrics},
+            "ezis": {"corpus_size": len(ezis_docs), "vocab_size": len(ezis_vocab), **ezis_metrics},
+        }, f, indent=2)
 
     print(f"\n  Report: {report_path}")
     print(f"  JSON:   {json_path}")
