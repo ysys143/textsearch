@@ -133,6 +133,193 @@
       ]
     }
   },
-  "hotPaths": [],
+  "hotPaths": [
+    {
+      "path": "experiments/common/bm25_module.py",
+      "accessCount": 7,
+      "lastAccessed": 1774417779280,
+      "type": "file"
+    },
+    {
+      "path": "experiments/phase3_native_bm25/phase3_bm25_comparison.py",
+      "accessCount": 4,
+      "lastAccessed": 1774417139409,
+      "type": "file"
+    },
+    {
+      "path": "extensions/textsearch_ko",
+      "accessCount": 2,
+      "lastAccessed": 1774417130755,
+      "type": "directory"
+    },
+    {
+      "path": "vendor/pg_search_original/tokenizers/src/manager.rs",
+      "accessCount": 2,
+      "lastAccessed": 1774417133504,
+      "type": "file"
+    },
+    {
+      "path": "docs/plan/phase6_vectorchord_bm25.md",
+      "accessCount": 2,
+      "lastAccessed": 1774417200245,
+      "type": "file"
+    },
+    {
+      "path": "docker-compose.yml",
+      "accessCount": 2,
+      "lastAccessed": 1774417774054,
+      "type": "file"
+    },
+    {
+      "path": "vendor/pg_search_original/README.md",
+      "accessCount": 1,
+      "lastAccessed": 1774417113976,
+      "type": "file"
+    },
+    {
+      "path": "vendor/pg_search_original/pg_search/README.md",
+      "accessCount": 1,
+      "lastAccessed": 1774417114199,
+      "type": "file"
+    },
+    {
+      "path": "vendor/pg_search_original",
+      "accessCount": 1,
+      "lastAccessed": 1774417114736,
+      "type": "directory"
+    },
+    {
+      "path": "vendor/pg_search_original/tokenizers/src",
+      "accessCount": 1,
+      "lastAccessed": 1774417117322,
+      "type": "directory"
+    },
+    {
+      "path": "extensions/textsearch_ko/README.md",
+      "accessCount": 1,
+      "lastAccessed": 1774417118129,
+      "type": "file"
+    },
+    {
+      "path": "vendor/pg_search_original/pg_search",
+      "accessCount": 1,
+      "lastAccessed": 1774417118274,
+      "type": "directory"
+    },
+    {
+      "path": "extensions/textsearch_ko/textsearch_ko--1.0.sql",
+      "accessCount": 1,
+      "lastAccessed": 1774417118399,
+      "type": "file"
+    },
+    {
+      "path": "extensions/textsearch_ko/ts_mecab_ko.sql",
+      "accessCount": 1,
+      "lastAccessed": 1774417118640,
+      "type": "file"
+    },
+    {
+      "path": "extensions/textsearch_ko/ts_mecab_ko.h",
+      "accessCount": 1,
+      "lastAccessed": 1774417123234,
+      "type": "file"
+    },
+    {
+      "path": "vendor/pg_search_original/tokenizers/src/lib.rs",
+      "accessCount": 1,
+      "lastAccessed": 1774417123498,
+      "type": "file"
+    },
+    {
+      "path": "experiments/common",
+      "accessCount": 1,
+      "lastAccessed": 1774417124280,
+      "type": "directory"
+    },
+    {
+      "path": "experiments/phase3_native_bm25",
+      "accessCount": 1,
+      "lastAccessed": 1774417127252,
+      "type": "directory"
+    },
+    {
+      "path": "extensions/textsearch_ko/ts_mecab_ko.c",
+      "accessCount": 1,
+      "lastAccessed": 1774417127561,
+      "type": "file"
+    },
+    {
+      "path": "vendor/pg_search_original/pg_search/src/api/tokenize.rs",
+      "accessCount": 1,
+      "lastAccessed": 1774417129254,
+      "type": "file"
+    },
+    {
+      "path": "vendor/pg_search_original/tests/tests/bm25_search.rs",
+      "accessCount": 1,
+      "lastAccessed": 1774417129671,
+      "type": "file"
+    },
+    {
+      "path": "vendor/pg_search_original/pg_search/sql/pg_search--0.22.1--0.22.2.sql",
+      "accessCount": 1,
+      "lastAccessed": 1774417136081,
+      "type": "file"
+    },
+    {
+      "path": "vendor/pg_search_original/tokenizers/src/lindera.rs",
+      "accessCount": 1,
+      "lastAccessed": 1774417136497,
+      "type": "file"
+    },
+    {
+      "path": "extensions/textsearch_ko/textsearch_ko.control",
+      "accessCount": 1,
+      "lastAccessed": 1774417137795,
+      "type": "file"
+    },
+    {
+      "path": "vendor/pg_search_original/macros/src/generate_tokenizer_sql.rs",
+      "accessCount": 1,
+      "lastAccessed": 1774417140261,
+      "type": "file"
+    },
+    {
+      "path": "vendor/pg_search_original/pg_search/src/api/operator.rs",
+      "accessCount": 1,
+      "lastAccessed": 1774417146101,
+      "type": "file"
+    },
+    {
+      "path": "vendor/pg_search_original/pg_search/src/api/operator/eqeqeq.rs",
+      "accessCount": 1,
+      "lastAccessed": 1774417149432,
+      "type": "file"
+    },
+    {
+      "path": "vendor/pg_tokenizer_original/docs/04-usage.md",
+      "accessCount": 1,
+      "lastAccessed": 1774417611389,
+      "type": "file"
+    },
+    {
+      "path": "vendor/pg_tokenizer_original/docs/05-text-analyzer.md",
+      "accessCount": 1,
+      "lastAccessed": 1774417611826,
+      "type": "file"
+    },
+    {
+      "path": "vendor/pg_tokenizer_original/docs/06-model.md",
+      "accessCount": 1,
+      "lastAccessed": 1774417637601,
+      "type": "file"
+    },
+    {
+      "path": "vendor/pg_tokenizer_original/docs/03-examples.md",
+      "accessCount": 1,
+      "lastAccessed": 1774417637842,
+      "type": "file"
+    }
+  ],
   "userDirectives": []
 }
