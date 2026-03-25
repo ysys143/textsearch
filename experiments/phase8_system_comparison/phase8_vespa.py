@@ -258,13 +258,15 @@ def feed_documents(vespa_url: str, docs: List[dict],
 # ---------------------------------------------------------------------------
 
 def search_bm25(vespa_url: str, query_text: str, k: int = 10) -> List[str]:
-    params = {
+    body = {
         "yql": f"select doc_id from doc where userQuery() limit {k}",
         "query": query_text,
+        "type": "weakAnd",
+        "model.defaultIndex": "text",
         "ranking": "bm25_rank",
         "hits": k,
     }
-    resp = requests.get(f"{vespa_url}/search/", params=params, timeout=30)
+    resp = requests.post(f"{vespa_url}/search/", json=body, timeout=30)
     if resp.status_code != 200:
         return []
     hits = resp.json().get("root", {}).get("children", [])
@@ -289,9 +291,12 @@ def search_dense(vespa_url: str, query_emb: List[float], k: int = 10) -> List[st
 def search_hybrid(vespa_url: str, query_text: str,
                   query_emb: List[float], k: int = 10) -> List[str]:
     body = {
-        "yql": (f"select doc_id from doc where userQuery() or "
-                f"{{targetHits:{TOPK}}}nearestNeighbor(dense_vec, q_dense) limit {k}"),
+        "yql": (f"select doc_id from doc where "
+                f"{{targetHits:{TOPK}}}nearestNeighbor(dense_vec, q_dense) or "
+                f"userQuery() limit {k}"),
         "query": query_text,
+        "type": "weakAnd",
+        "model.defaultIndex": "text",
         "ranking": "hybrid_rank",
         "hits": k,
         "input.query(q_dense)": query_emb,

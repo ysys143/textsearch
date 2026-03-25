@@ -1,5 +1,5 @@
 {
-  "generated": "2026-03-25T21:45:04.215561",
+  "generated": "2026-03-25T21:52:16.663813",
   "system": "vespa",
   "tokenizer": "icu_default (non-morphological)",
   "results": [
@@ -8,48 +8,48 @@
       "dataset": "MIRACL",
       "method": "BM25",
       "n_queries": 213,
-      "ndcg_at_10": 0.0,
-      "recall_at_10": 0.0,
-      "mrr": 0.0,
-      "latency_p50": 3.37,
-      "latency_p95": 5.39,
-      "latency_p99": 6.56
+      "ndcg_at_10": 0.4093,
+      "recall_at_10": 0.4816,
+      "mrr": 0.4597,
+      "latency_p50": 2.83,
+      "latency_p95": 3.24,
+      "latency_p99": 3.63
     },
     {
       "system": "vespa",
       "dataset": "MIRACL",
       "method": "Dense",
       "n_queries": 213,
-      "ndcg_at_10": 0.7851,
-      "recall_at_10": 0.9083,
-      "mrr": 0.7947,
-      "latency_p50": 4.07,
-      "latency_p95": 5.15,
-      "latency_p99": 6.42
+      "ndcg_at_10": 0.7898,
+      "recall_at_10": 0.913,
+      "mrr": 0.7994,
+      "latency_p50": 3.4,
+      "latency_p95": 3.85,
+      "latency_p99": 4.19
     },
     {
       "system": "vespa",
       "dataset": "MIRACL",
       "method": "Hybrid",
       "n_queries": 213,
-      "ndcg_at_10": 0.0,
-      "recall_at_10": 0.0,
-      "mrr": 0.0,
-      "latency_p50": 2.74,
-      "latency_p95": 3.91,
-      "latency_p99": 4.38
+      "ndcg_at_10": 0.4463,
+      "recall_at_10": 0.5391,
+      "mrr": 0.4977,
+      "latency_p50": 4.14,
+      "latency_p95": 4.9,
+      "latency_p99": 6.3
     },
     {
       "system": "vespa",
       "dataset": "EZIS",
       "method": "BM25",
       "n_queries": 131,
-      "ndcg_at_10": 0.0,
-      "recall_at_10": 0.0,
-      "mrr": 0.0,
-      "latency_p50": 3.67,
-      "latency_p95": 4.52,
-      "latency_p99": 5.6
+      "ndcg_at_10": 0.8091,
+      "recall_at_10": 0.9427,
+      "mrr": 0.7678,
+      "latency_p50": 3.06,
+      "latency_p95": 3.44,
+      "latency_p99": 3.6
     },
     {
       "system": "vespa",
@@ -59,21 +59,21 @@
       "ndcg_at_10": 0.8041,
       "recall_at_10": 0.9351,
       "mrr": 0.7624,
-      "latency_p50": 4.3,
-      "latency_p95": 5.59,
-      "latency_p99": 5.96
+      "latency_p50": 3.13,
+      "latency_p95": 3.79,
+      "latency_p99": 5.34
     },
     {
       "system": "vespa",
       "dataset": "EZIS",
       "method": "Hybrid",
       "n_queries": 131,
-      "ndcg_at_10": 0.0,
-      "recall_at_10": 0.0,
-      "mrr": 0.0,
-      "latency_p50": 2.64,
-      "latency_p95": 3.21,
-      "latency_p99": 4.8
+      "ndcg_at_10": 0.8125,
+      "recall_at_10": 0.9427,
+      "mrr": 0.7723,
+      "latency_p50": 3.69,
+      "latency_p95": 4.19,
+      "latency_p99": 4.48
     }
   ]
 }

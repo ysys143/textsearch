@@ -97,7 +97,7 @@ def build_comparison_table(all_results: List[dict], dataset: str,
 
 def generate_report(all_results: List[dict], output_dir: str) -> str:
     datasets = ["MIRACL", "EZIS"]
-    methods  = ["BM25", "Dense", "Hybrid"]
+    methods  = ["BM25", "BM25-MeCab", "Dense", "Hybrid", "Hybrid-MeCab"]
 
     lines = [
         "# Phase 8: 시스템 비교 — 한국어 하이브리드 검색",
@@ -138,10 +138,16 @@ def generate_report(all_results: List[dict], output_dir: str) -> str:
         "## 비고",
         "",
         "- **Dense latency**: 모든 시스템에서 retrieval-only (BGE-M3 인퍼런스 ~200ms 제외)",
-        "- **Qdrant BM25-MeCab**: python-mecab-ko 외부 토크나이징 후 SparseVectorParams(modifier=IDF)",
-        "- **Qdrant Text-builtin**: MatchText 페이로드 필터 (ranked BM25 아님, 스코어 없음)",
+        "- **Qdrant BM25 한계**: self-hosted Qdrant에는 BM25 구현 없음. "
+        "`qdrant/bm25` 서버모델은 Cloud 전용, `TextIndexParams`는 unranked 필터, "
+        "sparse vector IDF는 BM25 아님 (문서 길이 정규화 k1/b 미적용)",
+        "- **Qdrant BM25-MeCab (참고)**: MeCab 외부 토크나이징 + SparseVectorParams(modifier=IDF) — "
+        "TF×IDF일 뿐 진짜 BM25가 아니므로 품질 저하 (MIRACL NDCG 0.36)",
+        "- **Qdrant Hybrid-MeCab**: prefetch RRF (sparse IDF + dense) — "
+        "sparse 품질 한계로 PG/ES hybrid 대비 열위",
         "- **ES Hybrid**: `retriever.rrf` (rank_window_size=60, rank_constant=60)",
         "- **PG Hybrid**: DB-side SQL CTE RRF (k=60, topk=60)",
+        "- **Vespa BM25**: ICU 토크나이저 (비형태소) — 한국어 형태소 분석 없이 단어 경계 분리만 수행",
         "",
     ]
 
