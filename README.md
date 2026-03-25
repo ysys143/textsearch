@@ -68,18 +68,20 @@ textsearch/
 │   │   ├── phase3_native_bm25.md
 │   │   ├── phase4_bm25_vs_neural.md
 │   │   ├── phase5_production_pg.md
-│   │   ├── phase6_vectorchord_bm25.md  [next]
-│   │   ├── phase7_textsearch_fork.md   [planned]
-│   │   ├── phase8_pgsearch_fork.md     [planned]
+│   │   ├── phase6_vectorchord_bm25.md  [done]
+│   │   ├── phase7_scaling.md           [done]
+│   │   ├── phase8_pgsearch_fork.md     [next]
 │   │   └── phase9_system_comparison.md [planned]
 │   │
 │   ├── results/                    # 실험 결과 분석
 │   │   ├── README.md               # 결과 요약
-│   │   ├── phase1_morphological_analyzers.md
-│   │   ├── phase2_tsvector_korean.md
-│   │   ├── phase3_native_bm25.md
-│   │   ├── phase4_bm25_vs_neural.md
-│   │   └── phase5_production_pg.md
+│   │   ├── phase1/
+│   │   ├── phase2/
+│   │   ├── phase3/
+│   │   ├── phase4/
+│   │   ├── phase5/
+│   │   ├── phase6/
+│   │   └── phase7/
 │   │
 │   └── source-analysis/            # PG 확장 소스 분석
 │       ├── bm25_implementations_comparison.md
@@ -94,7 +96,8 @@ textsearch/
 │   ├── phase3_native_bm25/         # Native BM25 구현 비교
 │   ├── phase4_bm25_vs_neural/      # BM25 vs Neural Sparse
 │   ├── phase5_production/          # Production 최적화
-│   └── phase5_system_comparison/   # 시스템 비교 (ES/Qdrant)
+│   ├── phase6_vectorchord/         # VectorChord-BM25 스케일링
+│   └── phase7_scaling/             # pg_textsearch 스케일링 + 하이브리드
 │
 ├── extensions/                     # 우리 코드 (포크/커스텀 PG 확장)
 │   ├── textsearch_ko/              # MeCab 한국어 토크나이저 (ysys143 포크)
@@ -215,26 +218,39 @@ python3 experiments/phase5_production/phase5_production_benchmark.py
 # 결과: results/phase5_results.json
 ```
 
+#### Phase 6: VectorChord-BM25 스케일링
+
+```bash
+uv run python3 experiments/phase6_vectorchord/phase6_3_scaling.py
+```
+
+#### Phase 7: pg_textsearch 스케일링 + 하이브리드
+
+```bash
+uv run python3 experiments/phase7_scaling/phase7_scaling.py
+uv run python3 experiments/phase7_scaling/phase7_hybrid.py
+```
+
 ## 실험 의존성 맵
 
 ```
 Phase 0 (데이터 준비)
     ↓
 Phase 1 (형태소 분석기 벤치)
-    ├─→ Phase 2 (tsvector 통합, Phase 1 최선 토크나이저 사용)
-    ├─→ Phase 3 (Native BM25, Phase 1 최선 토크나이저 사용)
+    ├─→ Phase 2 (tsvector 통합)
+    ├─→ Phase 3 (Native BM25)
     │       ↓
-    │   Phase 4 (BM25 vs Neural, Phase 3 최선 구성 사용)
+    │   Phase 4 (BM25 vs Neural)
     │       ↓
     │   Phase 5 (Production 최적화)
     │       ↓
-    │   Phase 6 (VectorChord-BM25 + pg_tokenizer) [NEXT]
-    │       ├─→ [성공] → Phase 9 (시스템 비교)
-    │       └─→ [실패] → Phase 7 (pg_textsearch 포크)
-    │               ↓
-    │           Phase 8 (pg_search 포크)
-    │               ↓
-    │           Phase 9 (시스템 비교)
+    │   Phase 6 (VectorChord-BM25 스케일링) [DONE]
+    │       ↓
+    │   Phase 7 (pg_textsearch 스케일링 + 하이브리드) [DONE]
+    │       ↓
+    │   Phase 8 (pg_search 포크 비교) [NEXT]
+    │       ↓
+    │   Phase 9 (최종 시스템 비교)
 ```
 
 ## 현재 상태
@@ -247,10 +263,10 @@ Phase 1 (형태소 분석기 벤치)
 | **Phase 3** | PostgreSQL Native BM25 | done | 100% |
 | **Phase 4** | BM25 vs Neural 검색 | done | 100% |
 | **Phase 5** | Production 최적화 | done | 100% |
-| **Phase 6** | VectorChord-BM25 + pg_tokenizer | next | 0% |
-| **Phase 7** | pg_textsearch 포크 (fallback) | planned | 0% |
-| **Phase 8** | pg_search 포크 (fallback) | planned | 0% |
-| **Phase 9** | 최종 시스템 비교 (PG vs ES vs Qdrant vs Weaviate) | planned | 0% |
+| **Phase 6** | VectorChord-BM25 스케일링 | done | 100% |
+| **Phase 7** | pg_textsearch 스케일링 + 하이브리드 벤치마크 | done | 100% |
+| **Phase 8** | pg_search (ParadeDB) 포크 비교 | next | 0% |
+| **Phase 9** | 최종 시스템 비교 (PG vs ES vs Qdrant) | planned | 0% |
 
 ## Phase 5 결론 — Production 권장 구성
 
@@ -342,4 +358,4 @@ MIT
 
 ---
 
-**Last Updated**: 2026-03-24 | **Phase 5 완료** | **Phase 6 시작 예정**
+**Last Updated**: 2026-03-25 | **Phase 7 완료** | **Phase 8 시작 예정**
