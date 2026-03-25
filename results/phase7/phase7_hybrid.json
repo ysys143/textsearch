@@ -1,5 +1,5 @@
 {
-  "generated": "2026-03-25T20:13:45.950470",
+  "generated": "2026-03-25T20:20:07.058488",
   "rrf_k": 60,
   "topk": 60,
   "bayesian_alpha": 0.5,
@@ -11,9 +11,9 @@
       "ndcg_at_10": 0.6385,
       "recall_at_10": 0.7974,
       "mrr": 0.6172,
-      "latency_p50": 0.49,
-      "latency_p95": 0.69,
-      "latency_p99": 0.84
+      "latency_p50": 0.44,
+      "latency_p95": 0.6,
+      "latency_p99": 0.74
     },
     {
       "dataset": "MIRACL",
@@ -22,20 +22,20 @@
       "ndcg_at_10": 0.7904,
       "recall_at_10": 0.913,
       "mrr": 0.801,
-      "latency_p50": 1.22,
-      "latency_p95": 1.5,
-      "latency_p99": 1.93
+      "latency_p50": 1.2,
+      "latency_p95": 1.58,
+      "latency_p99": 1.79
     },
     {
       "dataset": "MIRACL",
       "method": "RRF",
       "n_queries": 213,
-      "ndcg_at_10": 0.7661,
-      "recall_at_10": 0.8875,
-      "mrr": 0.7813,
-      "latency_p50": 1.95,
-      "latency_p95": 2.45,
-      "latency_p99": 2.76
+      "ndcg_at_10": 0.7683,
+      "recall_at_10": 0.8932,
+      "mrr": 0.7834,
+      "latency_p50": 1.79,
+      "latency_p95": 2.38,
+      "latency_p99": 2.7
     },
     {
       "dataset": "MIRACL",
@@ -44,9 +44,9 @@
       "ndcg_at_10": 0.7272,
       "recall_at_10": 0.8706,
       "mrr": 0.7218,
-      "latency_p50": 8.84,
-      "latency_p95": 11.93,
-      "latency_p99": 13.44
+      "latency_p50": 9.55,
+      "latency_p95": 12.76,
+      "latency_p99": 14.33
     },
     {
       "dataset": "EZIS",
@@ -55,9 +55,9 @@
       "ndcg_at_10": 0.9162,
       "recall_at_10": 0.9847,
       "mrr": 0.8936,
-      "latency_p50": 0.44,
-      "latency_p95": 0.52,
-      "latency_p99": 0.6
+      "latency_p50": 0.47,
+      "latency_p95": 0.53,
+      "latency_p99": 0.55
     },
     {
       "dataset": "EZIS",
@@ -66,20 +66,20 @@
       "ndcg_at_10": 0.8041,
       "recall_at_10": 0.9351,
       "mrr": 0.7624,
-      "latency_p50": 0.6,
-      "latency_p95": 0.68,
-      "latency_p99": 0.84
+      "latency_p50": 0.63,
+      "latency_p95": 0.75,
+      "latency_p99": 0.85
     },
     {
       "dataset": "EZIS",
       "method": "RRF",
       "n_queries": 131,
-      "ndcg_at_10": 0.8867,
+      "ndcg_at_10": 0.8641,
       "recall_at_10": 0.9695,
-      "mrr": 0.8595,
-      "latency_p50": 1.11,
-      "latency_p95": 1.3,
-      "latency_p99": 1.44
+      "mrr": 0.829,
+      "latency_p50": 0.92,
+      "latency_p95": 1.09,
+      "latency_p99": 1.35
     },
     {
       "dataset": "EZIS",
@@ -88,9 +88,9 @@
       "ndcg_at_10": 0.9249,
       "recall_at_10": 0.9847,
       "mrr": 0.9033,
-      "latency_p50": 14.09,
-      "latency_p95": 16.3,
-      "latency_p99": 16.91
+      "latency_p50": 13.87,
+      "latency_p95": 15.01,
+      "latency_p99": 15.27
     }
   ]
 }

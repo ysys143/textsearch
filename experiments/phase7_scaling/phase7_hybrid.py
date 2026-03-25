@@ -27,7 +27,7 @@ import math
 import os
 import time
 from datetime import datetime
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional
 
 import psycopg2
 import psycopg2.extras
@@ -105,19 +105,6 @@ def search_bm25(conn, query_text: str, table: str, bm25_idx: str,
         return [r[0] for r in cur.fetchall()]
 
 
-def search_bm25_with_scores(conn, query_text: str, table: str, bm25_idx: str,
-                             k: int = TOPK) -> List[Tuple[str, float]]:
-    """Returns (id, bm25_dist) — dist is negative; more negative = more relevant."""
-    with conn.cursor() as cur:
-        cur.execute(
-            f"""SELECT id, text <@> to_bm25query(%s, %s) as bm25_dist
-                FROM {table}
-                ORDER BY bm25_dist LIMIT %s""",
-            (query_text, bm25_idx, k)
-        )
-        return [(r[0], r[1]) for r in cur.fetchall()]
-
-
 def search_dense(conn, query_emb: List[float], table: str,
                  k: int = 10) -> List[str]:
     with conn.cursor() as cur:
@@ -126,19 +113,6 @@ def search_dense(conn, query_emb: List[float], table: str,
             (query_emb, k)
         )
         return [r[0] for r in cur.fetchall()]
-
-
-def search_dense_with_scores(conn, query_emb: List[float], table: str,
-                              k: int = TOPK) -> List[Tuple[str, float]]:
-    """Returns (id, cosine_dist) — dist in [0,2]; smaller = more relevant."""
-    with conn.cursor() as cur:
-        cur.execute(
-            f"""SELECT id, dense_vec <=> %s as cosine_dist
-                FROM {table}
-                ORDER BY cosine_dist LIMIT %s""",
-            (query_emb, k)
-        )
-        return [(r[0], r[1]) for r in cur.fetchall()]
 
 
 def search_rrf(conn, query_text: str, query_emb: List[float],
