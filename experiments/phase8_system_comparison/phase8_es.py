@@ -171,6 +171,20 @@ def search_bm25(es: Elasticsearch, index_name: str,
     return [hit["_id"] for hit in resp["hits"]["hits"]]
 
 
+def search_bm25_and(es: Elasticsearch, index_name: str,
+                    query_text: str, k: int = 10) -> List[str]:
+    resp = es.search(
+        index=index_name,
+        body={
+            "query": {"match": {"text": {"query": query_text, "analyzer": "korean",
+                                         "operator": "and"}}},
+            "size": k,
+            "_source": False,
+        }
+    )
+    return [hit["_id"] for hit in resp["hits"]["hits"]]
+
+
 def search_dense(es: Elasticsearch, index_name: str,
                  query_emb: List[float], k: int = 10) -> List[str]:
     resp = es.search(
@@ -240,7 +254,8 @@ def bench_dataset(es: Elasticsearch, dataset_name: str,
     print(f"\n  === {dataset_name} | index={index_name} | {len(queries)} queries ===")
 
     methods = [
-        ("BM25",   lambda t, e: search_bm25(es, index_name, t)),
+        ("BM25",     lambda t, e: search_bm25(es, index_name, t)),
+        ("BM25-AND", lambda t, e: search_bm25_and(es, index_name, t)),
         ("Dense",  lambda t, e: search_dense(es, index_name, e) if e else []),
         ("Hybrid", lambda t, e: search_hybrid(es, index_name, t, e) if e else []),
     ]
