@@ -13,23 +13,57 @@ textsearch_ko (MeCab) + pg_textsearch BM25 + pgvector HNSW + DB-side RRF
 
 ## 왜 이 실험을 했나
 
-한국어 검색은 영어와 다르다. "먹었다"를 "먹"으로 분리해야 "먹는", "먹고"와 같은 문서를 찾을 수 있다. 이 형태소 분석이 안 되면 BM25 품질이 반토막 난다 (NDCG 0.64 → 0.36).
+한국어 검색은 영어와 다르다. 영어에서 "running"을 "run"으로 줄이는 스테밍은 간단하지만, 한국어에서 "먹었다"를 "먹-"으로 분리하려면 형태소 분석기가 필요하다. 이게 없으면 "먹는", "먹고", "먹었던" 같은 활용형을 같은 문서로 연결할 수 없고, BM25 검색 품질이 반토막 난다.
 
-PostgreSQL 안에서 형태소 분석 + BM25 + 벡터 검색 + 하이브리드 융합을 전부 처리할 수 있다면, 별도 검색 엔진 없이 단일 DB로 운영할 수 있다. 이게 실제로 가능한지, 품질과 속도가 충분한지를 검증하는 것이 목표였다.
+Elasticsearch는 nori라는 한국어 형태소 분석기를 내장하고 있어서 이 문제를 바로 해결해준다. 반면 PostgreSQL의 기본 full-text search는 한국어를 지원하지 않는다. textsearch_ko라는 확장을 설치하면 MeCab 형태소 분석을 tsvector에 연결할 수 있고, pg_textsearch 확장을 쓰면 BM25 스코어링까지 가능해진다.
+
+여기에 pgvector로 밀집 벡터 검색을 더하고, SQL CTE 함수로 BM25 + Dense 결과를 RRF(Reciprocal Rank Fusion)로 합치면, PostgreSQL 하나로 하이브리드 검색 파이프라인이 완성된다. 별도 검색 엔진 없이 단일 DB만으로 운영할 수 있다는 뜻이다.
+
+이 프로젝트는 이게 실제로 얼마나 잘 되는지를 8단계에 걸쳐 측정했다. Phase 1에서 형태소 분석기를 고르고, Phase 3에서 PostgreSQL 안에 BM25를 구현하는 방법을 비교하고, Phase 7에서 하이브리드 검색을 완성한 뒤, Phase 8에서 Elasticsearch, Qdrant, Vespa와 동등 조건으로 붙여봤다.
 
 ## 실험에서 알게 된 것
 
-**형태소 분석기가 한국어 BM25의 성패를 가른다.**
-MeCab/nori(형태소)를 쓰면 NDCG 0.61~0.64, ICU/charabia(비형태소)를 쓰면 0.36~0.41. 토크나이저 하나가 품질 차이의 대부분을 설명한다.
+### 형태소 분석기가 한국어 BM25의 성패를 가른다
 
-**같은 데이터에서 BM25와 Dense가 역전된다.**
-일반 위키(MIRACL)에서는 Dense(0.79)가 BM25(0.64)보다 낫고, 기술 매뉴얼(EZIS)에서는 BM25(0.92)가 Dense(0.80)보다 낫다. 도메인을 모르면 하이브리드가 안전한 선택이다.
+Phase 1에서 MeCab, Kiwi, Okt 세 가지 형태소 분석기를 비교했다. MeCab이 속도와 품질 모두에서 1위였고, 이후 모든 실험의 기본 토크나이저가 됐다.
 
-**PostgreSQL이 외부 시스템보다 느리지 않다.**
-DB-side RRF가 1.79ms인데, ES는 5.18ms, Qdrant는 4.54ms, Vespa는 4.14ms. 네트워크 왕복이 없는 DB-side 실행이 빠를 수밖에 없다.
+Phase 8에서 형태소 분석기의 중요성이 더 분명해졌다. MeCab이나 nori처럼 형태소 분석을 하는 시스템(PostgreSQL, Elasticsearch)은 MIRACL BM25에서 NDCG 0.61~0.64를 달성했다. 반면 ICU 유니코드 경계 분리만 하는 Vespa는 0.41, Qdrant의 charabia 토크나이저는 사실상 0에 가까운 점수를 받았다. 토크나이저 하나가 품질 차이의 대부분을 설명한다.
 
-**Qdrant에는 self-hosted BM25가 없다.**
-`qdrant/bm25` 서버모델은 Cloud 전용이고, 텍스트 인덱스(charabia)는 필터 전용이라 스코어가 안 나온다. FastEmbed BM42도 NDCG 0.48로 형태소 BM25의 절반 수준.
+재미있는 건 Elasticsearch의 nori 토크나이저도 AND matching에서는 취약하다는 점이다. nori의 `decompound_mode: mixed`가 복합어를 과도하게 분해해서, 모든 토큰이 존재해야 하는 AND 조건에서는 NDCG가 0.13까지 떨어진다. 같은 AND 조건에서 PostgreSQL의 textsearch_ko는 0.64를 유지했다. ES의 높은 BM25 점수(0.61)는 OR matching 기본값 덕분이었다.
+
+### 도메인에 따라 최적 방법이 뒤집힌다
+
+이 실험의 가장 중요한 설계는 성격이 다른 두 데이터셋을 병행 평가한 것이다.
+
+MIRACL은 한국어 위키피디아에서 추출한 일반 지식 데이터셋이다. 여기서는 Dense 벡터 검색(NDCG 0.79)이 BM25(0.64)를 크게 앞선다. 의미론적 유사도가 정확한 키워드 매칭보다 중요한 도메인이다.
+
+EZIS는 Oracle 데이터베이스 모니터링 매뉴얼에서 만든 기술 문서 QA 셋이다. 여기서는 BM25(0.92)가 Dense(0.80)를 압도한다. "ORA-01555"나 "DBMS_STATS" 같은 정확한 용어 매칭이 의미론적 유사도보다 중요하기 때문이다.
+
+같은 PostgreSQL 스택이, 같은 하이브리드 설정이, 데이터 성격에 따라 반대 결과를 내놓는다. "어떤 방법이 항상 최고"라는 결론은 불가능하다는 뜻이고, 하이브리드(RRF)가 도메인을 모를 때의 안전한 선택인 이유다.
+
+### PostgreSQL이 외부 시스템보다 느리지 않다
+
+직관적으로 전용 검색 엔진이 범용 DB보다 빠를 것 같지만, 측정 결과는 반대였다. PostgreSQL의 DB-side RRF는 BM25 쿼리와 Dense 쿼리를 SQL CTE 안에서 실행하고 결과를 합친다. 애플리케이션과 DB 사이의 왕복이 한 번이다. 반면 ES나 Qdrant는 HTTP/JSON을 통해 요청을 보내고 받는데, 이 네트워크 오버헤드가 쿼리 자체보다 클 수 있다.
+
+MIRACL 10K 기준으로 PostgreSQL RRF는 p50 1.79ms, ES retriever.rrf는 5.18ms, Qdrant prefetch RRF는 4.54ms, Vespa hybrid는 4.14ms였다. 2~3배 차이다. 물론 이건 단일 노드 로컬 환경에서의 warm-cache 측정이고, 분산 환경이나 대규모 데이터에서는 결과가 달라질 수 있다.
+
+한 가지 주의할 점은 Dense 검색의 latency에 BGE-M3 임베딩 추론 시간(~200ms)이 빠져 있다는 것이다. 쿼리 임베딩을 사전 계산해두고 벤치마크했기 때문에 retrieval-only 수치다. 실제 서비스에서는 임베딩 추론 비용을 따로 고려해야 한다.
+
+### Qdrant에는 self-hosted BM25가 없다
+
+Qdrant는 벡터 검색 엔진으로서 매우 우수하다. Dense 검색 품질은 PostgreSQL과 동일하고(같은 BGE-M3 임베딩이니까), 대규모 벡터 데이터에 특화된 기능도 많다. 하지만 한국어 텍스트 검색은 구조적으로 약하다.
+
+`qdrant/bm25`라는 서버사이드 BM25 모델이 있지만 Qdrant Cloud 전용이다. self-hosted에서는 쓸 수 없다. 텍스트 페이로드 인덱스(`TextIndexParams`)는 있지만 이건 boolean 필터라서 스코어가 안 나온다. 외부에서 MeCab으로 토크나이징한 뒤 sparse vector로 넣어봤는데, 이건 TF x IDF일 뿐 진짜 BM25가 아니다. 문서 길이 정규화(k1, b 파라미터)가 빠져 있어서 NDCG가 0.36에 그쳤다.
+
+FastEmbed의 BM42 모델도 시도했다. 트랜스포머 어텐션 기반으로 토큰 중요도를 매기는 방식인데, 한국어 EZIS에서 NDCG 0.48이었다. 형태소 BM25(0.92)의 절반 수준이다. Qdrant로 한국어 하이브리드 검색을 하려면 Dense-only로 가거나, BM25는 다른 시스템에 맡겨야 한다.
+
+### Vespa는 한국어 형태소 분석을 기본 지원하지 않는다
+
+Vespa 자체는 BM25 + ANN hybrid를 잘 지원하는 시스템이다. rank-profile에서 `bm25(text) + closeness(field, dense_vec)` 같은 선형 결합을 선언적으로 정의할 수 있다. 하지만 기본 토크나이저가 ICU(유니코드 경계 분리)라서 한국어 형태소 분석을 안 한다.
+
+`vespa-linguistics-ko`라는 MeCab 기반 한국어 패키지가 있지만, 커스텀 Vespa 빌드가 필요하고 표준 Docker 이미지에는 포함되어 있지 않다. 이번 실험에서는 기본 ICU로 진행했는데, MIRACL BM25가 NDCG 0.41로 형태소 시스템(0.61~0.64)보다 상당히 낮았다. EZIS 기술 문서에서는 0.81로 그나마 선방했는데, 영문 약어(DBMS, ORA 등)가 많아서 형태소 분석 없이도 매칭이 된 것으로 보인다.
+
+Hybrid에서는 더 심각한 문제가 드러났다. ICU BM25가 노이즈를 생성해서 `0.1*bm25 + closeness` 선형 결합 결과가 Dense-only(0.79)보다 나쁜 NDCG 0.45를 기록했다. BM25 레그가 약하면 하이브리드가 오히려 품질을 깎는다.
 
 ## 주요 수치
 
