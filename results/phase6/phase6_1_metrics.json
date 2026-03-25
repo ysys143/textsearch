@@ -1,12 +1,26 @@
 {
-  "corpus_size": 10000,
-  "vocab_size": 48915,
-  "ndcg_at_10": 0.5887792848939579,
-  "recall_at_10": 0.7236001869804686,
-  "mrr": 0.6034317013190252,
-  "latency_p50_ms": 1.620916000319994,
-  "latency_p95_ms": 5.274416000247584,
-  "queries_evaluated": 213,
-  "queries_skipped_no_vec": 0,
-  "queries_skipped_no_results": 0
+  "miracl": {
+    "corpus_size": 10000,
+    "vocab_size": 48915,
+    "ndcg_at_10": 0.5887792848939579,
+    "recall_at_10": 0.7236001869804686,
+    "mrr": 0.6034317013190252,
+    "latency_p50_ms": 0.9229159986716695,
+    "latency_p95_ms": 1.9970419998571742,
+    "queries_evaluated": 213,
+    "queries_skipped_no_vec": 0,
+    "queries_skipped_no_results": 0
+  },
+  "ezis": {
+    "corpus_size": 97,
+    "vocab_size": 1670,
+    "ndcg_at_10": 0.9023500117658255,
+    "recall_at_10": 0.9847328244274809,
+    "mrr": 0.8757724463831335,
+    "latency_p50_ms": 0.7047919989418006,
+    "latency_p95_ms": 0.9658749986556359,
+    "queries_evaluated": 131,
+    "queries_skipped_no_vec": 0,
+    "queries_skipped_no_results": 0
+  }
 }
