@@ -136,8 +136,8 @@
   "hotPaths": [
     {
       "path": "experiments/phase6_vectorchord/phase6_1_full_eval.py",
-      "accessCount": 42,
-      "lastAccessed": 1774426118805,
+      "accessCount": 43,
+      "lastAccessed": 1774434427078,
       "type": "file"
     },
     {
@@ -148,8 +148,8 @@
     },
     {
       "path": "experiments/phase5_production/phase5_production_bench.py",
-      "accessCount": 17,
-      "lastAccessed": 1774430277774,
+      "accessCount": 18,
+      "lastAccessed": 1774434434985,
       "type": "file"
     },
     {
