@@ -415,6 +415,24 @@
       "accessCount": 1,
       "lastAccessed": 1774421546742,
       "type": "directory"
+    },
+    {
+      "path": "docs/plan/phase7_textsearch_fork.md",
+      "accessCount": 1,
+      "lastAccessed": 1774425746407,
+      "type": "file"
+    },
+    {
+      "path": "docs/plan/phase8_pgsearch_fork.md",
+      "accessCount": 1,
+      "lastAccessed": 1774425746529,
+      "type": "file"
+    },
+    {
+      "path": "docs/plan/phase9_system_comparison.md",
+      "accessCount": 1,
+      "lastAccessed": 1774425767863,
+      "type": "file"
     }
   ],
   "userDirectives": []
