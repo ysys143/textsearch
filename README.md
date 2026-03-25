@@ -21,7 +21,7 @@ Elasticsearch는 nori라는 한국어 형태소 분석기를 내장하고 있어
 
 pg_textsearch 같은 확장이 PostgreSQL에 BM25를 구현해주긴 한다. 하지만 BM25 확장이 존재하는 것과 한국어가 잘 되는 것은 별개 문제다. 핵심은 MeCab 같은 외부 형태소 분석기를 PostgreSQL 토크나이저로 실제로 잘 붙일 수 있는가였다. textsearch_ko가 MeCab을 tsvector 파이프라인에 연결해주고, pg_textsearch가 그 tsvector 위에 BM25 인덱스를 만들어주는 이 조합이 실제로 동작하는지, 품질이 충분한지를 확인하는 것이 이 실험의 핵심이었다.
 
-8단계에 걸쳐 측정했다. Phase 1에서 형태소 분석기를 고르고, Phase 2에서 PostgreSQL tsvector에 연결하고, Phase 3에서 BM25 구현 방법을 비교하고, Phase 7에서 하이브리드 검색을 완성한 뒤, Phase 8에서 Elasticsearch, Qdrant, Vespa와 동등 조건으로 붙여봤다.
+8단계에 걸쳐 측정했다. Phase 1에서 형태소 분석기를 고르고, Phase 2에서 PostgreSQL tsvector에 연결하고, Phase 3에서 BM25 구현 방법을 비교했다. Phase 4에서 BM25와 Neural sparse(SPLADE-ko) 검색을 대결시켰고, Phase 5에서 incremental 업데이트와 동시성 등 프로덕션 환경을 시뮬레이션했다. Phase 6에서 VectorChord-BM25의 스케일링 특성을 1K/10K/100K 규모로 확인한 뒤, Phase 7에서 pg_textsearch 기반 하이브리드 검색(RRF, Bayesian)을 완성했다. 마지막으로 Phase 8에서 Elasticsearch, Qdrant, Vespa와 동등 조건으로 붙여봤다.
 
 ## 실험에서 알게 된 것
 
