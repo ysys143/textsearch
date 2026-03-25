@@ -51,7 +51,7 @@ MIRACL 10K 기준으로 PostgreSQL RRF는 p50 1.79ms, ES retriever.rrf는 5.18ms
 
 ### Qdrant에는 self-hosted BM25가 없다
 
-Qdrant는 벡터 검색 엔진으로서 매우 우수하다. Dense 검색 품질은 PostgreSQL과 동일하고(같은 BGE-M3 임베딩이니까), 대규모 벡터 데이터에 특화된 기능도 많다. 하지만 한국어 텍스트 검색은 구조적으로 약하다.
+Qdrant는 벡터 검색 전용 엔진으로서 구조적으로 가장 우수하다. 양자화, 필터링, 멀티테넌시, 대규모 분산 등 벡터 검색에 필요한 기능이 가장 풍부하고, 의미론적 검색(semantic search) 시나리오에서 가장 성숙한 도구다. 하지만 한국어 텍스트 검색은 구조적으로 약하다.
 
 `qdrant/bm25`라는 서버사이드 BM25 모델이 있지만 Qdrant Cloud 전용이다. self-hosted에서는 쓸 수 없다. 텍스트 페이로드 인덱스(`TextIndexParams`)는 있지만 이건 boolean 필터라서 스코어가 안 나온다. 외부에서 MeCab으로 토크나이징한 뒤 sparse vector로 넣어봤는데, 이건 TF x IDF일 뿐 진짜 BM25가 아니다. 문서 길이 정규화(k1, b 파라미터)가 빠져 있어서 NDCG가 0.36에 그쳤다.
 
