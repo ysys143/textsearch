@@ -37,9 +37,9 @@ EZIS_QUERIES_PATH = "data/ezis/queries.json"
 PHASE5_PGSEARCH_AND_MIRACL = 0.3437   # pg_textsearch AND (<@>), p50=0.62ms
 PHASE5_PGSEARCH_AND_EZIS   = 0.9238
 PHASE5_PGSEARCH_P50_MS     = 0.62
-PHASE5_PLPGSQL_V2_MIRACL   = 0.3355   # pl/pgsql BM25 v2 (stats optimized), p50=3.15ms
-PHASE5_PLPGSQL_V2_EZIS     = 0.8926
-PHASE5_PLPGSQL_V2_P50_MS   = 3.15
+PHASE5_PLPGSQL_V2_MIRACL   = 0.3491   # pl/pgsql BM25 v2 (real-TF fixed), p50=2.7ms
+PHASE5_PLPGSQL_V2_EZIS     = 0.9290
+PHASE5_PLPGSQL_V2_P50_MS   = 2.7
 
 
 # ---------------------------------------------------------------------------

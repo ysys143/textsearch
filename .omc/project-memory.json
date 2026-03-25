@@ -136,8 +136,8 @@
   "hotPaths": [
     {
       "path": "experiments/phase6_vectorchord/phase6_1_full_eval.py",
-      "accessCount": 38,
-      "lastAccessed": 1774420516976,
+      "accessCount": 40,
+      "lastAccessed": 1774423691507,
       "type": "file"
     },
     {
@@ -148,8 +148,14 @@
     },
     {
       "path": "experiments/common/bm25_module.py",
-      "accessCount": 11,
-      "lastAccessed": 1774420868221,
+      "accessCount": 13,
+      "lastAccessed": 1774421561183,
+      "type": "file"
+    },
+    {
+      "path": "experiments/phase5_production/phase5_production_bench.py",
+      "accessCount": 9,
+      "lastAccessed": 1774423663275,
       "type": "file"
     },
     {
@@ -219,6 +225,12 @@
       "type": "file"
     },
     {
+      "path": "experiments/common",
+      "accessCount": 2,
+      "lastAccessed": 1774421533587,
+      "type": "directory"
+    },
+    {
       "path": "vendor/pg_search_original/README.md",
       "accessCount": 1,
       "lastAccessed": 1774417113976,
@@ -265,12 +277,6 @@
       "accessCount": 1,
       "lastAccessed": 1774417123498,
       "type": "file"
-    },
-    {
-      "path": "experiments/common",
-      "accessCount": 1,
-      "lastAccessed": 1774417124280,
-      "type": "directory"
     },
     {
       "path": "experiments/phase3_native_bm25",
@@ -367,6 +373,30 @@
       "accessCount": 1,
       "lastAccessed": 1774419913885,
       "type": "directory"
+    },
+    {
+      "path": "experiments/phase5_system_comparison/phase5_system_comparison.py",
+      "accessCount": 1,
+      "lastAccessed": 1774421536571,
+      "type": "file"
+    },
+    {
+      "path": "experiments/phase6_vectorchord",
+      "accessCount": 1,
+      "lastAccessed": 1774421546742,
+      "type": "directory"
+    },
+    {
+      "path": "results/phase5/phase5_production_report.md",
+      "accessCount": 1,
+      "lastAccessed": 1774421566013,
+      "type": "file"
+    },
+    {
+      "path": "results/phase5/phase5_production_pg.json",
+      "accessCount": 1,
+      "lastAccessed": 1774421613909,
+      "type": "file"
     }
   ],
   "userDirectives": []

@@ -335,13 +335,12 @@ def setup_inverted_index(conn, src_table: str, inv_table: str = "inverted_index"
             FROM (
                 SELECT
                     id,
-                    unnested AS term,
-                    COUNT(*) AS cnt
+                    (ts_row).lexeme AS term,
+                    array_length((ts_row).positions, 1) AS cnt
                 FROM (
-                    SELECT id, unnest(tsvector_to_array(to_tsvector('{config}', text))) AS unnested
+                    SELECT id, unnest(to_tsvector('{config}', text)) AS ts_row
                     FROM {src_table}
                 ) sub
-                GROUP BY id, unnested
             ) agg
         """)
         build_sec = round(time.perf_counter() - t0, 2)
