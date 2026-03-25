@@ -10,7 +10,7 @@
 | 시스템 | BM25 토크나이저 | Dense | Hybrid | 비고 |
 |--------|--------------|-------|--------|------|
 | **PostgreSQL** | textsearch_ko MeCab (형태소) | pgvector HNSW | DB-side RRF SQL CTE | Phase 7 확정 스택 |
-| **Elasticsearch 8.17** | nori (형태소, MeCab 계열) | dense_vector knn | `retriever.rrf` (서버사이드) | Trial/Platinum 라이선스 필요 |
+| **Elasticsearch 8.17** | nori (형태소, MeCab 계열) | dense_vector knn | `retriever.rrf` (서버사이드) 또는 Python-side RRF | 서버사이드 RRF만 Trial 라이선스, Python RRF로 대체 가능 |
 | **Qdrant 1.15** | 없음 (self-hosted BM25 불가) | HNSW cosine | sparse IDF + dense prefetch RRF | BM25-MeCab은 TF×IDF, 진짜 BM25 아님 |
 | **Vespa 8.663** | ICU (비형태소, Unicode 경계) | HNSW angular | 0.1×bm25 + closeness | 한국어 형태소 분석 미지원 |
 
@@ -131,7 +131,7 @@ Qdrant는 Dense-only 시스템으로 우수. 한국어 lexical search 필요 시
 | 요구사항 | 추천 시스템 | 근거 |
 |---------|-----------|------|
 | **한국어 하이브리드 (품질 + 속도)** | **PostgreSQL** | NDCG 0.77+, p50 1.79ms, 형태소 BM25 + Dense RRF |
-| **한국어 BM25 최고 품질** | **Elasticsearch** | EZIS NDCG 0.93, nori 형태소, 기술 문서 강세 |
+| **한국어 BM25 최고 품질** | **Elasticsearch** | EZIS NDCG 0.93, nori 형태소, 기술 문서 강세, 무료 라이선스로 충분 (RRF는 Python-side) |
 | **Dense-only (벡터 검색)** | Qdrant 또는 PG | 동일 품질, Qdrant는 대규모 벡터 특화 |
 | **비용 최소화** | PostgreSQL | 단일 DB, 추가 인프라 불필요, 가장 빠른 latency |
 
@@ -160,4 +160,4 @@ textsearch_ko (MeCab) + pg_textsearch BM25 + pgvector HNSW + DB-side RRF
 - [O] Qdrant self-hosted는 한국어 lexical search 구조적 한계 확인
 - [O] Vespa ICU 토크나이저는 한국어에 부적합 확인
 - [INFO] 모든 latency는 warm-cache, retrieval-only (BGE-M3 인퍼런스 ~200ms 제외)
-- [INFO] ES retriever.rrf는 Trial/Platinum 라이선스 필요
+- [INFO] ES `retriever.rrf` 서버사이드 API는 Trial/Platinum 라이선스 필요, Python-side RRF로 동일 품질 대체 가능
