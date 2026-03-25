@@ -13,6 +13,8 @@ PostgreSQL이 Elasticsearch를 대체할 수 있는가? — 한국어 텍스트 
 - **데이터 성격에 따른 역전**: 일반 위키피디아(neural 유리) vs 기술 매뉴얼(BM25 유리) — 동일한 방법이 모든 도메인에서 최적이 아님
 - **pg_textsearch BM25 (`<@>`) 최속**: 모든 스케일(1K~100K)에서 VectorChord-BM25, pl/pgsql보다 빠름 (p50 0.4~0.62ms, 인덱스 크기도 최소)
 - **RRF(DB-side)가 실용적 하이브리드 default**: 튜닝 불필요, MIRACL NDCG 0.77 / EZIS 0.86, p50 1~2ms
+- **형태소 분석기가 한국어 BM25의 핵심**: MeCab/nori(형태소) NDCG 0.61~0.64 vs ICU/charabia(비형태소) 0.36~0.41
+- **PostgreSQL 스택이 외부 시스템 대비 경쟁력 확인** (Phase 8): ES/Qdrant/Vespa 대비 품질 동등, latency 2~5배 우위
 
 ## 주요 결과
 
@@ -70,18 +72,15 @@ textsearch/
 │   │   ├── phase5_production_pg.md
 │   │   ├── phase6_vectorchord_bm25.md  [done]
 │   │   ├── phase7_scaling.md           [done]
-│   │   ├── phase8_pgsearch_fork.md     [next]
-│   │   └── phase9_system_comparison.md [planned]
+│   │   └── phase8_system_comparison.md [done]
 │   │
 │   ├── results/                    # 실험 결과 분석
 │   │   ├── README.md               # 결과 요약
-│   │   ├── phase1/
-│   │   ├── phase2/
-│   │   ├── phase3/
-│   │   ├── phase4/
-│   │   ├── phase5/
-│   │   ├── phase6/
-│   │   └── phase7/
+│   │   ├── phase7_pg_best_stack.md
+│   │   ├── phase8_system_comparison.md
+│   │   ├── phase8_compare_es.md
+│   │   ├── phase8_compare_qdrant.md
+│   │   └── phase8_compare_vespa.md
 │   │
 │   └── source-analysis/            # PG 확장 소스 분석
 │       ├── bm25_implementations_comparison.md
@@ -97,7 +96,8 @@ textsearch/
 │   ├── phase4_bm25_vs_neural/      # BM25 vs Neural Sparse
 │   ├── phase5_production/          # Production 최적화
 │   ├── phase6_vectorchord/         # VectorChord-BM25 스케일링
-│   └── phase7_scaling/             # pg_textsearch 스케일링 + 하이브리드
+│   ├── phase7_scaling/             # pg_textsearch 스케일링 + 하이브리드
+│   └── phase8_system_comparison/  # ES/Qdrant/Vespa 외부 시스템 비교
 │
 ├── extensions/                     # 우리 코드 (포크/커스텀 PG 확장)
 │   ├── textsearch_ko/              # MeCab 한국어 토크나이저 (ysys143 포크)
@@ -113,7 +113,7 @@ textsearch/
 │   ├── phase1/ ~ phase5/           # Phase별 결과
 │   └── legacy/                     # 초기 탐색 결과 보관
 │
-├── docker-compose.yml              # 인프라 (PG, ES, Qdrant, Weaviate)
+├── docker-compose.yml              # 인프라 (PG, ES, Qdrant, Vespa)
 └── README.md                       # 이 파일
 ```
 
@@ -231,6 +231,28 @@ uv run python3 experiments/phase7_scaling/phase7_scaling.py
 uv run python3 experiments/phase7_scaling/phase7_hybrid.py
 ```
 
+#### Phase 8: 외부 시스템 비교 (ES / Qdrant / Vespa)
+
+```bash
+# 쿼리/문서 임베딩 내보내기 (PG → JSON)
+uv run python3 experiments/phase8_system_comparison/export_embeddings.py
+
+# Elasticsearch 8.17 (nori)
+docker compose --profile phase8-es up -d
+uv run python3 experiments/phase8_system_comparison/phase8_es.py
+
+# Qdrant 1.15 (MeCab sparse + HNSW dense)
+docker compose --profile phase8-qdrant up -d
+uv run python3 experiments/phase8_system_comparison/phase8_qdrant.py
+
+# Vespa (ICU + HNSW)
+docker compose --profile phase8-vespa up -d
+uv run python3 experiments/phase8_system_comparison/phase8_vespa.py --vespa-url http://localhost:8090
+
+# 통합 리포트
+uv run python3 experiments/phase8_system_comparison/phase8_report.py
+```
+
 ## 실험 의존성 맵
 
 ```
@@ -248,9 +270,7 @@ Phase 1 (형태소 분석기 벤치)
     │       ↓
     │   Phase 7 (pg_textsearch 스케일링 + 하이브리드) [DONE]
     │       ↓
-    │   Phase 8 (pg_search 포크 비교) [NEXT]
-    │       ↓
-    │   Phase 9 (최종 시스템 비교)
+    │   Phase 8 (외부 시스템 비교: ES/Qdrant/Vespa) [DONE]
 ```
 
 ## 현재 상태
@@ -265,32 +285,33 @@ Phase 1 (형태소 분석기 벤치)
 | **Phase 5** | Production 최적화 | done | 100% |
 | **Phase 6** | VectorChord-BM25 스케일링 | done | 100% |
 | **Phase 7** | pg_textsearch 스케일링 + 하이브리드 벤치마크 | done | 100% |
-| **Phase 8** | pg_search (ParadeDB) 포크 비교 | next | 0% |
-| **Phase 9** | 최종 시스템 비교 (PG vs ES vs Qdrant) | planned | 0% |
+| **Phase 8** | 외부 시스템 비교 (ES 8.17 / Qdrant 1.15 / Vespa) | done | 100% |
 
-## Phase 5 결론 — Production 권장 구성
+## 최종 결론 — Phase 8 확정 스택
 
-### BM25 컴포넌트: pl/pgsql v2
+### PostgreSQL 하이브리드 검색 (Phase 7 확정, Phase 8 외부 비교 검증)
 
-**선택 이유**:
-- R1. Incremental 업데이트 지원 (trigger 기반)
-- R2. 애플리케이션 토크나이저 불필요 (DB-side MeCab)
-- R3. DB-managed 인덱스 (자동 관리)
-- R4. Document-index 일관성 (query-time IDF)
-- R5 제외 (직접 구현이지만 유지보수 가능)
+```
+textsearch_ko (MeCab) + pg_textsearch BM25 (<@> AND) + pgvector HNSW + DB-side RRF
+```
 
-**성능**:
-- MIRACL NDCG@10: **0.3355**
-- EZIS NDCG@10: **0.8926**
-- p50 Latency: **3.15ms**
-- QPS@8 concurrent: **252.5 ops/s**
+| 메트릭 | MIRACL (일반 위키) | EZIS (기술 문서) |
+|--------|:---:|:---:|
+| BM25 NDCG@10 | 0.6385 | 0.9162 |
+| Dense NDCG@10 | 0.7904 | 0.8041 |
+| **Hybrid RRF NDCG@10** | **0.7683** | **0.8641** |
+| Hybrid p50 | 1.79ms | 0.92ms |
 
-### Hybrid 검색: Bayesian BM25 + BGE-M3 Dense
+### Phase 8: 외부 시스템 비교 결과
 
-**최우수 조합**:
-- MIRACL NDCG@10: 0.7476
-- EZIS NDCG@10: **0.9493** (최고)
-- p50 Latency: 379ms
+| 시스템 | MIRACL Hybrid | EZIS Hybrid | Hybrid p50 |
+|--------|:---:|:---:|:---:|
+| **PostgreSQL** | **0.7683** | 0.8641 | **1.79ms** |
+| ES 8.17 (nori) | 0.7501 | **0.8769** | 5.18ms |
+| Qdrant 1.15 | 0.6924 | 0.8394 | 4.54ms |
+| Vespa (ICU) | 0.4463 | 0.8125 | 4.14ms |
+
+상세: [docs/results/phase8_system_comparison.md](docs/results/phase8_system_comparison.md)
 
 ## 확장 및 기여
 
@@ -328,8 +349,9 @@ psql -d dev -c "SELECT to_tsvector('korean', '한국어 텍스트 검색');"
 | `transformers` | SPLADE-ko 모델 |
 | `psycopg2-binary` | PostgreSQL 클라이언트 |
 | `pgvector` | pgvector 확장 클라이언트 |
-| `elasticsearch` | Elasticsearch 클라이언트 (Phase 9) |
-| `qdrant-client` | Qdrant 클라이언트 (Phase 9) |
+| `elasticsearch` | Elasticsearch 클라이언트 (Phase 8) |
+| `qdrant-client` | Qdrant 클라이언트 (Phase 8) |
+| `fastembed` | FastEmbed BM42/BM25 sparse 임베딩 (Phase 8) |
 
 ## 시스템 요구사항
 
@@ -358,4 +380,4 @@ MIT
 
 ---
 
-**Last Updated**: 2026-03-25 | **Phase 7 완료** | **Phase 8 시작 예정**
+**Last Updated**: 2026-03-25 | **Phase 8 완료** | PostgreSQL 스택(textsearch_ko + pg_textsearch + pgvector + RRF) 유지 권장

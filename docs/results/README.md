@@ -97,4 +97,4 @@ textsearch_ko (MeCab 형태소) + pg_textsearch BM25 (`<@>` AND)
 | Qdrant 1.15 | 0.6924 | 0.8394 | 4.54ms | Self-hosted BM25 없음 |
 | Vespa 8.663 | 0.4463 | 0.8125 | 4.14ms | ICU 비형태소 |
 
-상세: [phase8_system_comparison.md](phase8_system_comparison.md) | [ES](phase8_es.md) | [Qdrant](phase8_qdrant.md) | [Vespa](phase8_vespa.md)
+상세: [phase8_system_comparison.md](phase8_system_comparison.md) | [ES](phase8_compare_es.md) | [Qdrant](phase8_compare_qdrant.md) | [Vespa](phase8_compare_vespa.md)

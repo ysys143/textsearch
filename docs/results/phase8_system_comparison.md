@@ -163,9 +163,9 @@ textsearch_ko (MeCab) + pg_textsearch BM25 + pgvector HNSW + DB-side RRF
 
 | 시스템 | 문서 |
 |--------|------|
-| Elasticsearch 8.17 | [phase8_es.md](phase8_es.md) |
-| Qdrant 1.15 | [phase8_qdrant.md](phase8_qdrant.md) |
-| Vespa 8.663 | [phase8_vespa.md](phase8_vespa.md) |
+| Elasticsearch 8.17 | [phase8_compare_es.md](phase8_compare_es.md) |
+| Qdrant 1.15 | [phase8_compare_qdrant.md](phase8_compare_qdrant.md) |
+| Vespa 8.663 | [phase8_compare_vespa.md](phase8_compare_vespa.md) |
 
 ## 한계 및 주의사항
 
