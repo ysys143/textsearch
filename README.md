@@ -43,9 +43,9 @@ EZIS는 Oracle 데이터베이스 모니터링 매뉴얼에서 만든 기술 문
 
 같은 PostgreSQL 스택이, 같은 하이브리드 설정이, 데이터 성격에 따라 반대 결과를 내놓는다. "어떤 방법이 항상 최고"라는 결론은 불가능하다는 뜻이고, 하이브리드(RRF)가 도메인을 모를 때의 안전한 선택인 이유다.
 
-### PostgreSQL이 외부 시스템보다 느리지 않다
+### PostgreSQL이 전문 검색엔진 / 벡터DB보다 느리지 않다
 
-직관적으로 전용 검색 엔진이 범용 DB보다 빠를 것 같지만, 측정 결과는 반대였다. PostgreSQL의 DB-side RRF는 BM25 쿼리와 Dense 쿼리를 SQL CTE 안에서 실행하고 결과를 합친다. 애플리케이션과 DB 사이의 왕복이 한 번이다. 반면 ES나 Qdrant는 HTTP/JSON을 통해 요청을 보내고 받는데, 이 네트워크 오버헤드가 쿼리 자체보다 클 수 있다.
+직관적으로 전용 검색 엔진이 범용 DB보다 빠를 것 같지만, 측정 결과는 반대였다. 
 
 MIRACL 10K 기준으로 PostgreSQL RRF는 p50 1.79ms, ES retriever.rrf는 5.18ms, Qdrant prefetch RRF는 4.54ms, Vespa hybrid는 4.14ms였다. 2~3배 차이다. 물론 이건 단일 노드 로컬 환경에서의 warm-cache 측정이고, 분산 환경이나 대규모 데이터에서는 결과가 달라질 수 있다.
 
