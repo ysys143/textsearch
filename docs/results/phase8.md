@@ -143,7 +143,9 @@ textsearch_ko (MeCab) + pg_textsearch BM25 + pgvector HNSW + DB-side RRF
 
 외부 시스템 대비 전체적으로 경쟁력 있는 품질, 본 실험 설정에서 latency 2~5배 우위, 운영 복잡도 최소.
 
-> **참고**: pg_textsearch를 개발·유지하는 Timescale이 DiskANN 기반 벡터 인덱스 [pgvectorscale](https://github.com/timescale/pgvectorscale)도 공개하고 있어, BM25(pg_textsearch) + Dense(pgvectorscale)를 동일 벤더 스택으로 구성할 수 있다. 대규모 벡터 검색에서 pgvector HNSW의 메모리 한계를 넘어야 할 때 유력한 확장 경로.
+> **Timescale 스택**: pg_textsearch를 개발·유지하는 Timescale이 DiskANN 기반 벡터 인덱스 [pgvectorscale](https://github.com/timescale/pgvectorscale)도 공개하고 있어, BM25(pg_textsearch) + Dense(pgvectorscale)를 동일 벤더 스택으로 구성할 수 있다. 대규모 벡터 검색에서 pgvector HNSW의 메모리 한계를 넘어야 할 때 유력한 확장 경로.
+>
+> **VectorChord 스택**: [VectorChord](https://github.com/tensorchord/VectorChord)도 DiskANN + Block-WeakAnd BM25를 제공하며, Phase 6-7에서 준수한 성능 확인 (100K p50 3.58ms). 다만 인덱스 구조가 neural sparse search(SPLADE, miniCOIL 등 모델 기반 sparse vector)에 더 특화되어 있고, pg_textsearch가 전통적 BM25 용도에서 더 가벼움. Neural sparse search는 모델이 토큰 가중치를 직접 생성하므로 document statistics(IDF 등)가 불필요하며, 이 경우 pgvector 기본 sparse vector 지원으로도 충분.
 
 ---
 
@@ -189,6 +191,7 @@ textsearch_ko (MeCab) + pg_textsearch BM25 + pgvector HNSW + DB-side RRF
 | **pgvector** | PostgreSQL 벡터 유사도 검색 — HNSW/IVFFlat 인덱스 | [github.com/pgvector/pgvector](https://github.com/pgvector/pgvector) |
 | **pgvectorscale** | Timescale DiskANN 기반 벡터 인덱스 — pg_textsearch와 동일 팀, 시너지 우수 | [github.com/timescale/pgvectorscale](https://github.com/timescale/pgvectorscale) |
 | **TimescaleDB** | PostgreSQL 시계열 확장 — metric 저장·분석에 준수한 성능, 같은 PG 인스턴스에서 검색+모니터링 통합 가능 | [timescale.com](https://www.timescale.com/) |
+| **VectorChord** | DiskANN 기반 벡터 인덱스 + Block-WeakAnd BM25 — neural sparse search 특화 (아래 참고) | [github.com/tensorchord/VectorChord](https://github.com/tensorchord/VectorChord) |
 
 ### 외부 시스템
 
