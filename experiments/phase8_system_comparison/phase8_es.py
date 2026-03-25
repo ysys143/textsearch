@@ -40,6 +40,8 @@ MIRACL_QUERIES_PATH = "data/miracl/queries_dev.json"
 EZIS_QUERIES_PATH   = "data/ezis/queries.json"
 EMB_MIRACL_PATH     = "data/phase8/query_embs_miracl.json"
 EMB_EZIS_PATH       = "data/phase8/query_embs_ezis.json"
+DOC_EMB_MIRACL_PATH = "data/phase8/doc_embs_miracl.json"
+DOC_EMB_EZIS_PATH   = "data/phase8/doc_embs_ezis.json"
 N_MIRACL = 213
 TOPK     = 60
 WARMUP   = 5
@@ -189,6 +191,7 @@ def search_dense(es: Elasticsearch, index_name: str,
 
 def search_hybrid(es: Elasticsearch, index_name: str,
                   query_text: str, query_emb: List[float], k: int = 10) -> List[str]:
+    """ES 8.14+ retriever.rrf: server-side RRF fusion."""
     resp = es.search(
         index=index_name,
         body={
@@ -302,17 +305,18 @@ def main():
     es = Elasticsearch(args.es_url, request_timeout=60)
     print(f"  ES version: {es.info()['version']['number']}")
 
-    # Load data
+    # Load query embeddings
     miracl_queries = load_queries(MIRACL_QUERIES_PATH, limit=N_MIRACL)
     ezis_queries   = load_queries(EZIS_QUERIES_PATH)
-    miracl_embs    = load_embeddings(EMB_MIRACL_PATH)
-    ezis_embs      = load_embeddings(EMB_EZIS_PATH)
+    miracl_q_embs  = load_embeddings(EMB_MIRACL_PATH)
+    ezis_q_embs    = load_embeddings(EMB_EZIS_PATH)
 
-    # Load corpus from query data (id + text fields)
-    miracl_docs = [{"id": q["query_id"], "text": q["text"]} for q in
-                   load_queries(MIRACL_QUERIES_PATH)]
-    # Load actual corpus docs separately if available
+    # Load document embeddings (separate from query embeddings)
+    miracl_d_embs  = load_embeddings(DOC_EMB_MIRACL_PATH)
+    ezis_d_embs    = load_embeddings(DOC_EMB_EZIS_PATH)
+
     miracl_corpus_path = "data/miracl/corpus_10k.json"
+    miracl_docs = []
     if os.path.exists(miracl_corpus_path):
         with open(miracl_corpus_path, encoding="utf-8") as f:
             miracl_docs = json.load(f)
@@ -328,19 +332,20 @@ def main():
     all_results = []
 
     # MIRACL
-    print("\n--- Setting up MIRACL index ---")
-    idx_miracl = "p8_es_miracl"
-    t_build = setup_index(es, idx_miracl, miracl_docs, miracl_embs)
-    print(f"  Index built in {t_build}s")
-    all_results += bench_dataset(es, "MIRACL", miracl_queries, miracl_embs, idx_miracl)
+    if miracl_docs:
+        print("\n--- Setting up MIRACL index ---")
+        idx_miracl = "p8_es_miracl"
+        t_build = setup_index(es, idx_miracl, miracl_docs, miracl_d_embs)
+        print(f"  Index built in {t_build}s")
+        all_results += bench_dataset(es, "MIRACL", miracl_queries, miracl_q_embs, idx_miracl)
 
     # EZIS
     if ezis_docs:
         print("\n--- Setting up EZIS index ---")
         idx_ezis = "p8_es_ezis"
-        t_build = setup_index(es, idx_ezis, ezis_docs, ezis_embs)
+        t_build = setup_index(es, idx_ezis, ezis_docs, ezis_d_embs)
         print(f"  Index built in {t_build}s")
-        all_results += bench_dataset(es, "EZIS", ezis_queries, ezis_embs, idx_ezis)
+        all_results += bench_dataset(es, "EZIS", ezis_queries, ezis_q_embs, idx_ezis)
 
     # Save JSON
     os.makedirs(args.output_dir, exist_ok=True)

@@ -37,13 +37,15 @@ services:
   # Phase 8: Start ONE search engine at a time for fair latency comparison
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.17.0
     container_name: textsearch-es
     profiles: [phase8-es]
+    command: >
+      bash -c "elasticsearch-plugin install --batch analysis-nori || true && exec /usr/local/bin/docker-entrypoint.sh"
     environment:
       - discovery.type=single-node
       - xpack.security.enabled=false
-      - ES_JAVA_OPTS=-Xms1g -Xmx1g
+      - ES_JAVA_OPTS=-Xms2g -Xmx2g
     ports:
       - "9200:9200"
       - "9300:9300"
@@ -52,7 +54,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 2g
+          memory: 4g
 
   qdrant:
     image: qdrant/qdrant:v1.15.0

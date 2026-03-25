@@ -49,6 +49,8 @@ MIRACL_QUERIES_PATH = "data/miracl/queries_dev.json"
 EZIS_QUERIES_PATH   = "data/ezis/queries.json"
 EMB_MIRACL_PATH     = "data/phase8/query_embs_miracl.json"
 EMB_EZIS_PATH       = "data/phase8/query_embs_ezis.json"
+DOC_EMB_MIRACL_PATH = "data/phase8/doc_embs_miracl.json"
+DOC_EMB_EZIS_PATH   = "data/phase8/doc_embs_ezis.json"
 N_MIRACL = 213
 TOPK     = 60
 WARMUP   = 5
@@ -386,11 +388,15 @@ def main():
         if not deploy_application(args.config_url):
             return
 
-    # Load data
+    # Load query embeddings
     miracl_queries = load_queries(MIRACL_QUERIES_PATH, limit=N_MIRACL)
     ezis_queries   = load_queries(EZIS_QUERIES_PATH)
-    miracl_embs    = load_embeddings(EMB_MIRACL_PATH)
-    ezis_embs      = load_embeddings(EMB_EZIS_PATH)
+    miracl_q_embs  = load_embeddings(EMB_MIRACL_PATH)
+    ezis_q_embs    = load_embeddings(EMB_EZIS_PATH)
+
+    # Load document embeddings
+    miracl_d_embs  = load_embeddings(DOC_EMB_MIRACL_PATH)
+    ezis_d_embs    = load_embeddings(DOC_EMB_EZIS_PATH)
 
     miracl_corpus_path = "data/miracl/corpus_10k.json"
     miracl_docs = []
@@ -411,10 +417,10 @@ def main():
     # MIRACL
     if miracl_docs:
         print("\n--- Feeding MIRACL documents ---")
-        t_feed = feed_documents(args.vespa_url, miracl_docs, miracl_embs)
+        t_feed = feed_documents(args.vespa_url, miracl_docs, miracl_d_embs)
         print(f"  Fed {len(miracl_docs)} docs in {t_feed}s")
         all_results += bench_dataset(args.vespa_url, "MIRACL",
-                                     miracl_queries, miracl_embs)
+                                     miracl_queries, miracl_q_embs)
 
     # EZIS — requires re-deploying or using separate schema namespace
     # For simplicity, reuse same schema and re-feed (small corpus)
@@ -427,10 +433,10 @@ def main():
             timeout=60,
         )
         time.sleep(2)
-        t_feed = feed_documents(args.vespa_url, ezis_docs, ezis_embs)
+        t_feed = feed_documents(args.vespa_url, ezis_docs, ezis_d_embs)
         print(f"  Fed {len(ezis_docs)} docs in {t_feed}s")
         all_results += bench_dataset(args.vespa_url, "EZIS",
-                                     ezis_queries, ezis_embs)
+                                     ezis_queries, ezis_q_embs)
 
     os.makedirs(args.output_dir, exist_ok=True)
     json_path = os.path.join(args.output_dir, "phase8_vespa.json")

@@ -1,0 +1,103 @@
+{
+  "generated": "2026-03-25T21:33:22.519015",
+  "system": "qdrant",
+  "mecab_available": true,
+  "results": [
+    {
+      "system": "qdrant",
+      "dataset": "MIRACL",
+      "method": "BM25-MeCab",
+      "n_queries": 213,
+      "ndcg_at_10": 0.3574,
+      "recall_at_10": 0.5251,
+      "mrr": 0.3643,
+      "latency_p50": 1.79,
+      "latency_p95": 2.07,
+      "latency_p99": 2.35
+    },
+    {
+      "system": "qdrant",
+      "dataset": "MIRACL",
+      "method": "Text-builtin",
+      "n_queries": 213,
+      "ndcg_at_10": 0.0012,
+      "recall_at_10": 0.0012,
+      "mrr": 0.0023,
+      "latency_p50": 1.6,
+      "latency_p95": 1.88,
+      "latency_p99": 1.99
+    },
+    {
+      "system": "qdrant",
+      "dataset": "MIRACL",
+      "method": "Dense",
+      "n_queries": 213,
+      "ndcg_at_10": 0.7904,
+      "recall_at_10": 0.913,
+      "mrr": 0.801,
+      "latency_p50": 3.16,
+      "latency_p95": 3.63,
+      "latency_p99": 3.98
+    },
+    {
+      "system": "qdrant",
+      "dataset": "MIRACL",
+      "method": "Hybrid-MeCab",
+      "n_queries": 213,
+      "ndcg_at_10": 0.6924,
+      "recall_at_10": 0.8584,
+      "mrr": 0.7019,
+      "latency_p50": 4.54,
+      "latency_p95": 5.05,
+      "latency_p99": 5.36
+    },
+    {
+      "system": "qdrant",
+      "dataset": "EZIS",
+      "method": "BM25-MeCab",
+      "n_queries": 131,
+      "ndcg_at_10": 0.7721,
+      "recall_at_10": 0.9733,
+      "mrr": 0.7114,
+      "latency_p50": 2.09,
+      "latency_p95": 2.43,
+      "latency_p99": 2.55
+    },
+    {
+      "system": "qdrant",
+      "dataset": "EZIS",
+      "method": "Text-builtin",
+      "n_queries": 131,
+      "ndcg_at_10": 0.0,
+      "recall_at_10": 0.0,
+      "mrr": 0.0,
+      "latency_p50": 1.72,
+      "latency_p95": 1.94,
+      "latency_p99": 2.0
+    },
+    {
+      "system": "qdrant",
+      "dataset": "EZIS",
+      "method": "Dense",
+      "n_queries": 131,
+      "ndcg_at_10": 0.8041,
+      "recall_at_10": 0.9351,
+      "mrr": 0.7624,
+      "latency_p50": 2.53,
+      "latency_p95": 2.88,
+      "latency_p99": 3.67
+    },
+    {
+      "system": "qdrant",
+      "dataset": "EZIS",
+      "method": "Hybrid-MeCab",
+      "n_queries": 131,
+      "ndcg_at_10": 0.8394,
+      "recall_at_10": 0.9924,
+      "mrr": 0.7886,
+      "latency_p50": 3.69,
+      "latency_p95": 4.1,
+      "latency_p99": 4.21
+    }
+  ]
+}

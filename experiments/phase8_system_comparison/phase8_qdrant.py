@@ -47,15 +47,16 @@ from qdrant_client.models import (
     Distance,
     FieldCondition,
     Filter,
+    Fusion,
+    FusionQuery,
     HnswConfigDiff,
     MatchText,
     Modifier,
-    NamedSparseVector,
-    NamedVector,
     OptimizersConfigDiff,
     PointStruct,
     Prefetch,
     SparseIndexParams,
+    SparseVector,
     SparseVectorParams,
     TextIndexParams,
     TokenizerType,
@@ -74,6 +75,8 @@ MIRACL_QUERIES_PATH = "data/miracl/queries_dev.json"
 EZIS_QUERIES_PATH   = "data/ezis/queries.json"
 EMB_MIRACL_PATH     = "data/phase8/query_embs_miracl.json"
 EMB_EZIS_PATH       = "data/phase8/query_embs_ezis.json"
+DOC_EMB_MIRACL_PATH = "data/phase8/doc_embs_miracl.json"
+DOC_EMB_EZIS_PATH   = "data/phase8/doc_embs_ezis.json"
 N_MIRACL = 213
 TOPK     = 60
 WARMUP   = 5
@@ -139,7 +142,8 @@ def tokenize_mecab(text: str) -> List[str]:
         surface = node.surface.strip()
         if not surface:
             continue
-        pos = node.feature.split(",")[0] if node.feature else ""
+        feat = str(node.feature) if node.feature else ""
+        pos = feat.split(",")[0]
         # Keep nouns (NN*), verbs (VV, VA stems), foreign words (SL)
         if pos.startswith("NN") or pos in ("VV", "VA", "SL", "XR"):
             tokens.append(surface)
@@ -247,16 +251,14 @@ def search_bm25_mecab(client: QdrantClient, name: str,
     indices, values = doc_to_sparse(query_text, vocab)
     if not indices:
         return []
-    results = client.search(
+    results = client.query_points(
         collection_name=name,
-        query_vector=NamedSparseVector(
-            name="bm25_mecab",
-            vector={"indices": indices, "values": values},
-        ),
+        query=SparseVector(indices=indices, values=values),
+        using="bm25_mecab",
         limit=k,
         with_payload=["doc_id"],
     )
-    return [r.payload["doc_id"] for r in results]
+    return [r.payload["doc_id"] for r in results.points]
 
 
 def search_text_builtin(client: QdrantClient, name: str,
@@ -274,13 +276,14 @@ def search_text_builtin(client: QdrantClient, name: str,
 
 def search_dense(client: QdrantClient, name: str,
                  query_emb: List[float], k: int = 10) -> List[str]:
-    results = client.search(
+    results = client.query_points(
         collection_name=name,
-        query_vector=NamedVector(name="dense", vector=query_emb),
+        query=query_emb,
+        using="dense",
         limit=k,
         with_payload=["doc_id"],
     )
-    return [r.payload["doc_id"] for r in results]
+    return [r.payload["doc_id"] for r in results.points]
 
 
 def search_hybrid_mecab(client: QdrantClient, name: str,
@@ -293,7 +296,7 @@ def search_hybrid_mecab(client: QdrantClient, name: str,
         collection_name=name,
         prefetch=[
             Prefetch(
-                query={"indices": indices, "values": values},
+                query=SparseVector(indices=indices, values=values),
                 using="bm25_mecab",
                 limit=TOPK,
             ),
@@ -303,7 +306,7 @@ def search_hybrid_mecab(client: QdrantClient, name: str,
                 limit=TOPK,
             ),
         ],
-        query={"fusion": "rrf"},
+        query=FusionQuery(fusion=Fusion.RRF),
         limit=k,
         with_payload=["doc_id"],
     )
@@ -390,22 +393,26 @@ def main():
 
     miracl_queries = load_queries(MIRACL_QUERIES_PATH, limit=N_MIRACL)
     ezis_queries   = load_queries(EZIS_QUERIES_PATH)
-    miracl_embs    = load_embeddings(EMB_MIRACL_PATH)
-    ezis_embs      = load_embeddings(EMB_EZIS_PATH)
+    miracl_q_embs  = load_embeddings(EMB_MIRACL_PATH)
+    ezis_q_embs    = load_embeddings(EMB_EZIS_PATH)
+
+    # Load document embeddings
+    miracl_d_embs  = load_embeddings(DOC_EMB_MIRACL_PATH)
+    ezis_d_embs    = load_embeddings(DOC_EMB_EZIS_PATH)
 
     miracl_corpus_path = "data/miracl/corpus_10k.json"
     miracl_docs = []
     if os.path.exists(miracl_corpus_path):
         with open(miracl_corpus_path, encoding="utf-8") as f:
             miracl_docs = json.load(f)
-    print(f"  MIRACL corpus: {len(miracl_docs)} docs, embeddings: {len(miracl_embs)}")
+    print(f"  MIRACL corpus: {len(miracl_docs)} docs, doc_embs: {len(miracl_d_embs)}")
 
     ezis_corpus_path = "data/ezis/corpus.json"
     ezis_docs = []
     if os.path.exists(ezis_corpus_path):
         with open(ezis_corpus_path, encoding="utf-8") as f:
             ezis_docs = json.load(f)
-    print(f"  EZIS corpus: {len(ezis_docs)} docs, embeddings: {len(ezis_embs)}")
+    print(f"  EZIS corpus: {len(ezis_docs)} docs, doc_embs: {len(ezis_d_embs)}")
 
     all_results = []
 
@@ -418,10 +425,10 @@ def main():
 
         print("--- Setting up MIRACL collection ---")
         t_build = setup_collection(client, "p8_qdrant_miracl",
-                                   miracl_docs, miracl_embs, miracl_vocab)
+                                   miracl_docs, miracl_d_embs, miracl_vocab)
         print(f"  Collection built in {t_build}s")
         all_results += bench_dataset(
-            client, "MIRACL", miracl_queries, miracl_embs,
+            client, "MIRACL", miracl_queries, miracl_q_embs,
             "p8_qdrant_miracl", miracl_vocab
         )
 
@@ -434,10 +441,10 @@ def main():
 
         print("--- Setting up EZIS collection ---")
         t_build = setup_collection(client, "p8_qdrant_ezis",
-                                   ezis_docs, ezis_embs, ezis_vocab)
+                                   ezis_docs, ezis_d_embs, ezis_vocab)
         print(f"  Collection built in {t_build}s")
         all_results += bench_dataset(
-            client, "EZIS", ezis_queries, ezis_embs,
+            client, "EZIS", ezis_queries, ezis_q_embs,
             "p8_qdrant_ezis", ezis_vocab
         )
 

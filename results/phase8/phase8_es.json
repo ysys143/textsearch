@@ -1,0 +1,78 @@
+{
+  "generated": "2026-03-25T21:36:49.102715",
+  "system": "elasticsearch",
+  "results": [
+    {
+      "system": "elasticsearch",
+      "dataset": "MIRACL",
+      "method": "BM25",
+      "n_queries": 213,
+      "ndcg_at_10": 0.61,
+      "recall_at_10": 0.7818,
+      "mrr": 0.5925,
+      "latency_p50": 2.47,
+      "latency_p95": 4.05,
+      "latency_p99": 13.98
+    },
+    {
+      "system": "elasticsearch",
+      "dataset": "MIRACL",
+      "method": "Dense",
+      "n_queries": 213,
+      "ndcg_at_10": 0.7893,
+      "recall_at_10": 0.913,
+      "mrr": 0.799,
+      "latency_p50": 2.7,
+      "latency_p95": 3.33,
+      "latency_p99": 3.67
+    },
+    {
+      "system": "elasticsearch",
+      "dataset": "MIRACL",
+      "method": "Hybrid",
+      "n_queries": 213,
+      "ndcg_at_10": 0.7501,
+      "recall_at_10": 0.8933,
+      "mrr": 0.7387,
+      "latency_p50": 5.18,
+      "latency_p95": 7.58,
+      "latency_p99": 8.84
+    },
+    {
+      "system": "elasticsearch",
+      "dataset": "EZIS",
+      "method": "BM25",
+      "n_queries": 131,
+      "ndcg_at_10": 0.932,
+      "recall_at_10": 0.9924,
+      "mrr": 0.9108,
+      "latency_p50": 1.63,
+      "latency_p95": 2.1,
+      "latency_p99": 2.75
+    },
+    {
+      "system": "elasticsearch",
+      "dataset": "EZIS",
+      "method": "Dense",
+      "n_queries": 131,
+      "ndcg_at_10": 0.8046,
+      "recall_at_10": 0.9351,
+      "mrr": 0.7629,
+      "latency_p50": 2.06,
+      "latency_p95": 2.49,
+      "latency_p99": 2.64
+    },
+    {
+      "system": "elasticsearch",
+      "dataset": "EZIS",
+      "method": "Hybrid",
+      "n_queries": 131,
+      "ndcg_at_10": 0.8769,
+      "recall_at_10": 0.9847,
+      "mrr": 0.8411,
+      "latency_p50": 3.43,
+      "latency_p95": 4.45,
+      "latency_p99": 6.5
+    }
+  ]
+}
