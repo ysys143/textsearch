@@ -1,6 +1,6 @@
 # Phase 7 Section 2: Hybrid Search Benchmark
 
-**Generated:** 2026-03-25 20:10:15
+**Generated:** 2026-03-25 20:13:45
 **Infrastructure:** MeCab (textsearch_ko) + pg_textsearch BM25 + pgvector HNSW
 **Fusion:** RRF k=60, Bayesian α=0.5 (BM25) / 0.5 (Dense)
 
@@ -21,10 +21,10 @@
 
 | Method | p50 | p95 | p99 |
 |--------|-----|-----|-----|
-| BM25 | 0.5ms | 0.7ms | 0.93ms |
-| Dense | 1.33ms | 1.71ms | 1.82ms |
-| RRF | 2.19ms | 3.13ms | 3.8ms |
-| Bayesian | 9.51ms | 12.5ms | 14.37ms |
+| BM25 | 0.49ms | 0.69ms | 0.84ms |
+| Dense | 1.22ms | 1.5ms | 1.93ms |
+| RRF | 1.95ms | 2.45ms | 2.76ms |
+| Bayesian | 8.84ms | 11.93ms | 13.44ms |
 
 ## EZIS — p7_hybrid_ezis (97)
 
@@ -41,10 +41,10 @@
 
 | Method | p50 | p95 | p99 |
 |--------|-----|-----|-----|
-| BM25 | 0.48ms | 0.73ms | 1.14ms |
-| Dense | 0.67ms | 0.83ms | 0.95ms |
-| RRF | 1.27ms | 1.48ms | 1.57ms |
-| Bayesian | 14.18ms | 15.83ms | 17.01ms |
+| BM25 | 0.44ms | 0.52ms | 0.6ms |
+| Dense | 0.6ms | 0.68ms | 0.84ms |
+| RRF | 1.11ms | 1.3ms | 1.44ms |
+| Bayesian | 14.09ms | 16.3ms | 16.91ms |
 
 ---
 

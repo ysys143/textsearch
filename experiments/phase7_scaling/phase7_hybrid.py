@@ -159,47 +159,16 @@ def search_bayesian(conn, query_text: str, query_emb: List[float],
                     table: str, bm25_idx: str, k: int = 10,
                     alpha: float = BAYESIAN_ALPHA) -> List[str]:
     """
-    Score-based fusion using actual BM25 scores (via to_bm25query) and cosine similarity.
-    bm25_positive = -bm25_dist  (flip: higher = more relevant)
-    cosine_sim    = 1 - cosine_dist
-    Normalize each to [0,1], combine: alpha*bm25_norm + (1-alpha)*cosine_norm
+    Single-roundtrip Bayesian fusion via registered SQL function.
+    p7_bayesian_miracl / p7_bayesian_ezis: BM25 + Dense CTE, normalize+combine server-side.
     """
-    bm25_rows  = search_bm25_with_scores(conn, query_text, table, bm25_idx, k=TOPK)
-    dense_rows = search_dense_with_scores(conn, query_emb, table, k=TOPK)
-
-    # Convert to higher-is-better
-    bm25_pos   = {id_: -dist for id_, dist in bm25_rows}
-    cosine_sim = {id_: 1.0 - dist for id_, dist in dense_rows}
-
-    all_ids = set(bm25_pos) | set(cosine_sim)
-
-    # Fallback for candidates missing in one component
-    worst_bm25   = min(bm25_pos.values())   if bm25_pos   else 0.0
-    worst_cosine = 0.0
-
-    for id_ in all_ids:
-        if id_ not in bm25_pos:
-            bm25_pos[id_] = worst_bm25
-        if id_ not in cosine_sim:
-            cosine_sim[id_] = worst_cosine
-
-    # Min-max normalization within candidate set
-    def minmax_norm(d: Dict[str, float]) -> Dict[str, float]:
-        lo, hi = min(d.values()), max(d.values())
-        if hi == lo:
-            return {k: 0.5 for k in d}
-        return {k: (v - lo) / (hi - lo) for k, v in d.items()}
-
-    bm25_norm   = minmax_norm(bm25_pos)
-    cosine_norm = minmax_norm(cosine_sim)
-
-    beta = 1.0 - alpha
-    combined = {
-        id_: alpha * bm25_norm[id_] + beta * cosine_norm[id_]
-        for id_ in all_ids
-    }
-
-    return [d for d, _ in sorted(combined.items(), key=lambda x: x[1], reverse=True)[:k]]
+    fn = "p7_bayesian_miracl" if "miracl" in table else "p7_bayesian_ezis"
+    with conn.cursor() as cur:
+        cur.execute(
+            f"SELECT id FROM {fn}(%s, %s, %s, %s, %s)",
+            (query_text, query_emb, k, TOPK, alpha)
+        )
+        return [r[0] for r in cur.fetchall()]
 
 
 # ---------------------------------------------------------------------------
