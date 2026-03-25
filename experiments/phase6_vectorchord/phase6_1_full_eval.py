@@ -33,9 +33,13 @@ QUERIES_PATH = "data/miracl/queries_dev.json"
 EZIS_DOCS_PATH = "data/ezis/chunks.json"
 EZIS_QUERIES_PATH = "data/ezis/queries.json"
 
-# Phase 3 MeCab baseline for comparison (from results/phase3/)
-PHASE3_MECAB_NDCG = 0.4732  # Phase 3 MeCab on pgvector-sparse (to be confirmed)
-PHASE5_BM25_P50_MS = 0.73   # Phase 5 BM25 v2 p50 latency
+# Baselines (same tokenizer: textsearch_ko / MeCab)
+# Source: results/phase5/phase5_final_report.md
+PHASE2_PLPGSQL_MECAB_MIRACL = 0.6412   # pl/pgsql BM25 + MeCab (public.korean), MIRACL
+PHASE2_PLPGSQL_MECAB_EZIS   = 0.9290   # same, EZIS
+PHASE3_PGVECTOR_MECAB_MIRACL = 0.5323  # pgvector-sparse BM25 (MeCab), MIRACL
+PHASE3_PGVECTOR_MECAB_EZIS   = 0.9124  # same, EZIS
+PHASE2_PLPGSQL_P50_MS = 10.44          # pl/pgsql BM25 + MeCab latency p50
 
 
 # ---------------------------------------------------------------------------
@@ -329,19 +333,46 @@ def write_report(
     else:
         lines.append(f"_Error: {ezis_metrics.get('error')}_")
 
+    def delta(base: float, val: float) -> str:
+        return f"{val - base:+.4f}"
+
     lines += [
         "",
         "---",
         "",
-        "## Phase Comparison (MIRACL-ko)",
+        "## Phase Comparison — same tokenizer (textsearch_ko / MeCab)",
         "",
-        "| Phase | Method | NDCG@10 | p50 latency |",
+        "### MIRACL-ko",
+        "",
+        "| Phase | Method | NDCG@10 | delta vs P6 | p50 latency |",
+        "|-------|--------|---------|-------------|-------------|",
+        f"| 2 | pl/pgsql BM25 + MeCab | {PHASE2_PLPGSQL_MECAB_MIRACL:.4f} | {delta(m_ndcg, PHASE2_PLPGSQL_MECAB_MIRACL)} | {PHASE2_PLPGSQL_P50_MS}ms |",
+        f"| 3 | pgvector-sparse BM25 (MeCab) | {PHASE3_PGVECTOR_MECAB_MIRACL:.4f} | {delta(m_ndcg, PHASE3_PGVECTOR_MECAB_MIRACL)} | 18.05ms |",
+        f"| **6** | **VectorChord-BM25 + textsearch_ko** | **{m_ndcg:.4f}** | — | **{m_p50:.2f}ms** |",
+        "",
+        "### EZIS",
+        "",
+        "| Phase | Method | NDCG@10 | delta vs P6 |",
         "|-------|--------|---------|-------------|",
-        "| 2 | pg_textsearch + MeCab (BM25/WAND) | 0.3374 | - |",
-        "| 3 | pgvector-sparse BM25 (kiwi-cong) | 0.6326 | 4.24ms |",
-        "| 4 | BGE-M3 dense | 0.7915 | - |",
-        "| 5 | pl/pgsql BM25 v2 (best) | - | 0.73ms |",
-        f"| **6** | **VectorChord-BM25 + textsearch_ko** | **{m_ndcg:.4f}** | **{m_p50:.2f}ms** |",
+    ]
+    if e_ndcg is not None:
+        lines += [
+            f"| 2 | pl/pgsql BM25 + MeCab | {PHASE2_PLPGSQL_MECAB_EZIS:.4f} | {delta(e_ndcg, PHASE2_PLPGSQL_MECAB_EZIS)} |",
+            f"| 3 | pgvector-sparse BM25 (MeCab) | {PHASE3_PGVECTOR_MECAB_EZIS:.4f} | {delta(e_ndcg, PHASE3_PGVECTOR_MECAB_EZIS)} |",
+            f"| **6** | **VectorChord-BM25 + textsearch_ko** | **{e_ndcg:.4f}** | — |",
+        ]
+    else:
+        lines += [
+            f"| 2 | pl/pgsql BM25 + MeCab | {PHASE2_PLPGSQL_MECAB_EZIS:.4f} | - |",
+            f"| 3 | pgvector-sparse BM25 (MeCab) | {PHASE3_PGVECTOR_MECAB_EZIS:.4f} | - |",
+            "| **6** | **VectorChord-BM25 + textsearch_ko** | error | — |",
+        ]
+
+    lines += [
+        "",
+        "**Root cause of Phase 6 gap vs Phase 2:** `tsvector_to_array` returns unique lexemes only",
+        "(TF=1 always). Phase 2 pl/pgsql used `mecabko_analyze()` for actual term frequencies.",
+        "Fix for Phase 6-2: replace `tsvector_to_array` with `mecabko_analyze()` in vectorizer.",
         "",
         "---",
         "",
