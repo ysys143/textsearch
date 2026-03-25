@@ -1,251 +1,117 @@
-# 한국어 텍스트 검색 벤치마크 (textsearch)
+# textsearch — 한국어 텍스트 검색 벤치마크
 
-PostgreSQL이 Elasticsearch를 대체할 수 있는가? — 한국어 텍스트 검색 시스템 비교 연구
+PostgreSQL만으로 Elasticsearch를 대체할 수 있을까? 형태소 분석기부터 하이브리드 검색까지, 8단계 실험으로 직접 측정했다.
 
-## 연구 목표
+## TL;DR
 
-**핵심 질문**: 한국어 텍스트 검색에서 PostgreSQL이 Elasticsearch를 대체할 수 있는가?
+MeCab 형태소 분석 + pg_textsearch BM25 + pgvector HNSW + DB-side RRF 조합이 ES/Qdrant/Vespa 대비 품질은 동등하고, latency는 2~5배 빠르다.
 
-각 계층별(형태소 분석기, FTS 통합, BM25 구현, 검색 엔진)로 최적 방법론을 실험 기반으로 검증합니다.
+```
+textsearch_ko (MeCab) + pg_textsearch BM25 + pgvector HNSW + DB-side RRF
+→ MIRACL NDCG 0.77 @1.79ms / EZIS NDCG 0.86 @0.92ms
+```
 
-### 핵심 통찰
+## 왜 이 실험을 했나
 
-- **데이터 성격에 따른 역전**: 일반 위키피디아(neural 유리) vs 기술 매뉴얼(BM25 유리) — 동일한 방법이 모든 도메인에서 최적이 아님
-- **pg_textsearch BM25 (`<@>`) 최속**: 모든 스케일(1K~100K)에서 VectorChord-BM25, pl/pgsql보다 빠름 (p50 0.4~0.62ms, 인덱스 크기도 최소)
-- **RRF(DB-side)가 실용적 하이브리드 default**: 튜닝 불필요, MIRACL NDCG 0.77 / EZIS 0.86, p50 1~2ms
-- **형태소 분석기가 한국어 BM25의 핵심**: MeCab/nori(형태소) NDCG 0.61~0.64 vs ICU/charabia(비형태소) 0.36~0.41
-- **PostgreSQL 스택이 외부 시스템 대비 경쟁력 확인** (Phase 8): ES/Qdrant/Vespa 대비 품질 동등, latency 2~5배 우위
+한국어 검색은 영어와 다르다. "먹었다"를 "먹"으로 분리해야 "먹는", "먹고"와 같은 문서를 찾을 수 있다. 이 형태소 분석이 안 되면 BM25 품질이 반토막 난다 (NDCG 0.64 → 0.36).
 
-## 주요 결과
+PostgreSQL 안에서 형태소 분석 + BM25 + 벡터 검색 + 하이브리드 융합을 전부 처리할 수 있다면, 별도 검색 엔진 없이 단일 DB로 운영할 수 있다. 이게 실제로 가능한지, 품질과 속도가 충분한지를 검증하는 것이 목표였다.
 
-### Phase 1~5 완료 — 핵심 수치
+## 실험에서 알게 된 것
 
-#### BM25-only 티어
+**형태소 분석기가 한국어 BM25의 성패를 가른다.**
+MeCab/nori(형태소)를 쓰면 NDCG 0.61~0.64, ICU/charabia(비형태소)를 쓰면 0.36~0.41. 토크나이저 하나가 품질 차이의 대부분을 설명한다.
 
-| 방법 | MIRACL NDCG@10 | EZIS NDCG@10 | p50 Latency |
+**같은 데이터에서 BM25와 Dense가 역전된다.**
+일반 위키(MIRACL)에서는 Dense(0.79)가 BM25(0.64)보다 낫고, 기술 매뉴얼(EZIS)에서는 BM25(0.92)가 Dense(0.80)보다 낫다. 도메인을 모르면 하이브리드가 안전한 선택이다.
+
+**PostgreSQL이 외부 시스템보다 느리지 않다.**
+DB-side RRF가 1.79ms인데, ES는 5.18ms, Qdrant는 4.54ms, Vespa는 4.14ms. 네트워크 왕복이 없는 DB-side 실행이 빠를 수밖에 없다.
+
+**Qdrant에는 self-hosted BM25가 없다.**
+`qdrant/bm25` 서버모델은 Cloud 전용이고, 텍스트 인덱스(charabia)는 필터 전용이라 스코어가 안 나온다. FastEmbed BM42도 NDCG 0.48로 형태소 BM25의 절반 수준.
+
+## 주요 수치
+
+### PostgreSQL 내부 비교 (Phase 1~7)
+
+| 방법 | MIRACL NDCG@10 | EZIS NDCG@10 | p50 |
 |------|:---:|:---:|:---:|
-| **pl/pgsql BM25 + MeCab** | 0.6412 | 0.9290 | 10ms |
-| pgvector-sparse (kiwi) | 0.6326 | 0.9455 | 4ms |
-| pg_textsearch + MeCab | 0.3374 | 0.8488 | 0.86ms |
-| pg_search (korean_lindera) | 0.2348 | — | 2ms |
-
-#### Hybrid 검색 (BM25 + 밀집 벡터)
-
-| 방법 | MIRACL NDCG@10 | EZIS NDCG@10 | p50 Latency |
-|------|:---:|:---:|:---:|
-| pg_textsearch BM25 (textsearch_ko) | 0.6385 | 0.9162 | 0.44ms |
+| pg_textsearch BM25 (MeCab) | 0.6385 | 0.9162 | 0.44ms |
 | Dense (BGE-M3 HNSW) | 0.7904 | 0.8041 | 1.2ms |
-| **RRF (BM25+Dense, DB-side)** | 0.7683 | 0.8641 | **1.79ms** |
-| Bayesian (BM25+Dense, DB-side) | 0.7272 | 0.9249 | 9.55ms |
+| RRF hybrid (DB-side) | 0.7683 | 0.8641 | 1.79ms |
+| Bayesian hybrid (DB-side) | 0.7272 | 0.9249 | 9.55ms |
 
-#### Production 권장 구성
+### 외부 시스템 비교 (Phase 8)
 
-- **BM25 컴포넌트**: pg_textsearch BM25 (`<@>`, textsearch_ko MeCab) — 모든 스케일 최속, 인덱스 최소, DB-side 토크나이저
-- **Hybrid default**: RRF (DB-side SQL function) — p7_rrf_miracl/p7_rrf_ezis 등록된 SQL 함수, 튜닝 불필요
-- **Hybrid BM25-도메인**: Bayesian (α=0.5) — 기술 매뉴얼 등 BM25 강세 도메인에서만
+| 시스템 | MIRACL Hybrid | EZIS Hybrid | p50 |
+|--------|:---:|:---:|:---:|
+| PostgreSQL (RRF) | 0.7683 | 0.8641 | 1.79ms |
+| ES 8.17 (nori, retriever.rrf) | 0.7501 | 0.8769 | 5.18ms |
+| Qdrant 1.15 (MeCab sparse + dense) | 0.6924 | 0.8394 | 4.54ms |
+| Vespa (ICU + HNSW) | 0.4463 | 0.8125 | 4.14ms |
+
+상세 분석: [docs/results/phase8_system_comparison.md](docs/results/phase8_system_comparison.md)
 
 ## 데이터셋
 
-| 데이터셋 | 성격 | 쿼리 수 | 코퍼스 크기 | 특징 |
+| 데이터셋 | 성격 | 쿼리 | 코퍼스 | 특징 |
 |---------|------|:---:|:---:|------|
-| **MIRACL-ko** | 일반 위키피디아 | 213 | 10k passages | Neural 방법 유리 |
-| **EZIS Oracle Manual** | 도메인 기술 매뉴얼 | ~120 | ~200 chunks | BM25 방법 유리 |
+| MIRACL-ko | 일반 위키피디아 | 213 | 10K | Dense 유리 |
+| EZIS Oracle Manual | 기술 매뉴얼 | ~120 | ~200 | BM25 유리 |
 
-두 데이터셋을 병행 평가하여 도메인에 따른 방법론 역전 현상을 핵심 인사이트로 도출.
-
-## 프로젝트 구조
-
-```
-textsearch/
-├── data/                           # MIRACL-ko + EZIS 데이터
-│   ├── miracl_ko_passages/
-│   └── ezis_qa/
-│
-├── docs/
-│   ├── plan/                       # Phase 0~9 실험 계획
-│   │   ├── README.md               # 전체 실험 로드맵
-│   │   ├── phase0_data_prep.md
-│   │   ├── phase1_morphological_analyzers.md
-│   │   ├── phase2_tsvector_korean.md
-│   │   ├── phase3_native_bm25.md
-│   │   ├── phase4_bm25_vs_neural.md
-│   │   ├── phase5_production_pg.md
-│   │   ├── phase6_vectorchord_bm25.md  [done]
-│   │   ├── phase7_scaling.md           [done]
-│   │   └── phase8_system_comparison.md [done]
-│   │
-│   ├── results/                    # 실험 결과 분석
-│   │   ├── README.md               # 결과 요약
-│   │   ├── phase7_pg_best_stack.md
-│   │   ├── phase8_system_comparison.md
-│   │   ├── phase8_compare_es.md
-│   │   ├── phase8_compare_qdrant.md
-│   │   └── phase8_compare_vespa.md
-│   │
-│   └── source-analysis/            # PG 확장 소스 분석
-│       ├── bm25_implementations_comparison.md
-│       ├── paradedb_code_analysis.md
-│       └── pg_textsearch_code_analysis.md
-│
-├── experiments/                    # 실험 코드
-│   ├── common/
-│   │   └── bm25_module.py         # BM25 임베더 + pl/pgsql DDL 헬퍼 (실험 공용)
-│   ├── phase1_morphological/       # 형태소 분석기 비교
-│   ├── phase2_tsvector/            # tsvector 한국어 통합
-│   ├── phase3_native_bm25/         # Native BM25 구현 비교
-│   ├── phase4_bm25_vs_neural/      # BM25 vs Neural Sparse
-│   ├── phase5_production/          # Production 최적화
-│   ├── phase6_vectorchord/         # VectorChord-BM25 스케일링
-│   ├── phase7_scaling/             # pg_textsearch 스케일링 + 하이브리드
-│   └── phase8_system_comparison/  # ES/Qdrant/Vespa 외부 시스템 비교
-│
-├── extensions/                     # 우리 코드 (포크/커스텀 PG 확장)
-│   ├── textsearch_ko/              # MeCab 한국어 토크나이저 (ysys143 포크)
-│   └── korean_bigram/              # 한국어 음절 파서 (직접 작성 C 확장)
-│
-├── vendor/                         # 외부 참조 소스 (원본, _original)
-│   ├── textsearch_ko_original/     # i0seph/textsearch_ko
-│   ├── pg_textsearch_original/     # timescale/pg_textsearch
-│   ├── pg_search_original/         # paradedb/paradedb
-│   └── pg_bigm_original/           # pgbigm/pg_bigm
-│
-├── results/                        # 실험 결과 (JSON + MD 요약)
-│   ├── phase1/ ~ phase5/           # Phase별 결과
-│   └── legacy/                     # 초기 탐색 결과 보관
-│
-├── docker-compose.yml              # 인프라 (PG, ES, Qdrant, Vespa)
-└── README.md                       # 이 파일
-```
+성격이 다른 두 데이터셋을 병행 평가해서, "어떤 방법이 항상 최고"라는 착각을 방지했다.
 
 ## 빠른 시작
 
-### 1. 환경 구성
-
 ```bash
-# 저장소 복제
-git clone https://github.com/yourusername/textsearch.git
+# 복제 및 환경 구성
+git clone https://github.com/ysys143/textsearch.git
 cd textsearch
+uv venv && source .venv/bin/activate && uv sync
 
-# Python venv 생성 (Python 3.12+)
-python3 -m venv .venv
-source .venv/bin/activate  # macOS/Linux
-# 또는
-.venv\Scripts\activate     # Windows
-
-# 의존성 설치
-pip install -r requirements.txt
-```
-
-또는 **uv** 사용 (더 빠름):
-
-```bash
-uv venv
-source .venv/bin/activate
-uv pip install -r requirements.txt
-```
-
-### 2. 데이터베이스 시작
-
-```bash
-# PostgreSQL + pgvector 시작 (core 프로필)
+# PostgreSQL + pgvector 시작
 docker compose --profile core up -d
 
-# 상태 확인
-docker compose ps
-
-# 연결 확인
+# 접속 확인 (host=localhost, port=5432, user=postgres, pw=postgres, db=dev)
 psql -h localhost -U postgres -d dev -c "SELECT version();"
 ```
 
-접속 정보:
-- **Host**: localhost
-- **Port**: 5432
-- **User**: postgres
-- **Password**: postgres
-- **Database**: dev
+## 실험 단계
 
-### 3. 데이터 준비 (Phase 0)
+| Phase | 무엇을 했나 | 상태 |
+|:---:|------|:---:|
+| 0 | MIRACL-ko + EZIS 데이터 준비 | done |
+| 1 | 형태소 분석기 비교 (MeCab vs Kiwi vs Okt) | done |
+| 2 | PostgreSQL tsvector 한국어 통합 | done |
+| 3 | PostgreSQL 내부 BM25 구현 비교 | done |
+| 4 | BM25 vs Neural (Dense, SPLADE) | done |
+| 5 | Production 최적화 (incremental, concurrency) | done |
+| 6 | VectorChord-BM25 스케일링 (1K/10K/100K) | done |
+| 7 | pg_textsearch 스케일링 + 하이브리드 (RRF, Bayesian) | done |
+| 8 | 외부 시스템 비교 (ES 8.17 / Qdrant 1.15 / Vespa) | done |
 
-```bash
-# MIRACL-ko + EZIS 데이터 다운로드 및 전처리
-python3 experiments/phase1_morphological/phase1_analyzer_comparison.py --prepare-data
+```
+Phase 0 → Phase 1 → Phase 2 (tsvector)
+                   → Phase 3 (BM25) → Phase 4 (vs Neural) → Phase 5 (Production)
+                     → Phase 6 (VectorChord) → Phase 7 (하이브리드) → Phase 8 (외부 비교)
 ```
 
-### 4. 실험 실행
-
-#### Phase 1: 형태소 분석기 비교
+### Phase 8 실행 예시
 
 ```bash
-# 한국어 형태소 분석기 벤치마크 (MeCab vs Kiwi vs Okt)
-python3 experiments/phase1_morphological/phase1_analyzer_comparison.py
-
-# 결과: results/phase1_results.json
-```
-
-#### Phase 2: PostgreSQL 한국어 FTS 통합
-
-```bash
-# textsearch_ko (MeCab) + tsvector 통합
-python3 experiments/phase2_tsvector/phase2_korean_config.py
-
-# 결과: results/phase2_results.json
-```
-
-#### Phase 3: PostgreSQL Native BM25
-
-```bash
-# pl/pgsql BM25 vs pgvector-sparse vs pg_textsearch
-python3 experiments/phase3_native_bm25/phase3_bm25_benchmark.py
-
-# 결과: results/phase3_results.json
-```
-
-#### Phase 4: BM25 vs Neural 검색
-
-```bash
-# BM25 + BGE-M3 dense + splade-ko sparse 비교
-python3 experiments/phase4_bm25_vs_neural/phase4_hybrid_fusion.py
-
-# 결과: results/phase4_results.json
-```
-
-#### Phase 5: Production 최적화
-
-```bash
-# pl/pgsql v2 (stats 분리) incremental 벤치마크
-python3 experiments/phase5_production/phase5_production_benchmark.py
-
-# 결과: results/phase5_results.json
-```
-
-#### Phase 6: VectorChord-BM25 스케일링
-
-```bash
-uv run python3 experiments/phase6_vectorchord/phase6_3_scaling.py
-```
-
-#### Phase 7: pg_textsearch 스케일링 + 하이브리드
-
-```bash
-uv run python3 experiments/phase7_scaling/phase7_scaling.py
-uv run python3 experiments/phase7_scaling/phase7_hybrid.py
-```
-
-#### Phase 8: 외부 시스템 비교 (ES / Qdrant / Vespa)
-
-```bash
-# 쿼리/문서 임베딩 내보내기 (PG → JSON)
+# 임베딩 내보내기 (PG → JSON)
 uv run python3 experiments/phase8_system_comparison/export_embeddings.py
 
-# Elasticsearch 8.17 (nori)
+# ES 벤치마크
 docker compose --profile phase8-es up -d
 uv run python3 experiments/phase8_system_comparison/phase8_es.py
 
-# Qdrant 1.15 (MeCab sparse + HNSW dense)
+# Qdrant 벤치마크
 docker compose --profile phase8-qdrant up -d
 uv run python3 experiments/phase8_system_comparison/phase8_qdrant.py
 
-# Vespa (ICU + HNSW)
+# Vespa 벤치마크
 docker compose --profile phase8-vespa up -d
 uv run python3 experiments/phase8_system_comparison/phase8_vespa.py --vespa-url http://localhost:8090
 
@@ -253,131 +119,56 @@ uv run python3 experiments/phase8_system_comparison/phase8_vespa.py --vespa-url 
 uv run python3 experiments/phase8_system_comparison/phase8_report.py
 ```
 
-## 실험 의존성 맵
+## 프로젝트 구조
 
 ```
-Phase 0 (데이터 준비)
-    ↓
-Phase 1 (형태소 분석기 벤치)
-    ├─→ Phase 2 (tsvector 통합)
-    ├─→ Phase 3 (Native BM25)
-    │       ↓
-    │   Phase 4 (BM25 vs Neural)
-    │       ↓
-    │   Phase 5 (Production 최적화)
-    │       ↓
-    │   Phase 6 (VectorChord-BM25 스케일링) [DONE]
-    │       ↓
-    │   Phase 7 (pg_textsearch 스케일링 + 하이브리드) [DONE]
-    │       ↓
-    │   Phase 8 (외부 시스템 비교: ES/Qdrant/Vespa) [DONE]
+textsearch/
+├── data/                           # MIRACL-ko + EZIS 데이터
+├── docs/
+│   ├── plan/                       # 실험 계획서 (Phase 0~8)
+│   ├── results/                    # 실험 결과 분석
+│   │   ├── phase7_pg_best_stack.md
+│   │   ├── phase8_system_comparison.md
+│   │   ├── phase8_compare_es.md
+│   │   ├── phase8_compare_qdrant.md
+│   │   └── phase8_compare_vespa.md
+│   └── source-analysis/            # PG 확장 소스 분석
+├── experiments/                    # 실험 코드 (Phase별)
+├── extensions/                     # 커스텀 PG 확장
+│   ├── textsearch_ko/              # MeCab 한국어 토크나이저
+│   └── korean_bigram/              # 한국어 음절 파서
+├── vendor/                         # 외부 참조 소스
+├── results/                        # 실험 결과 JSON
+├── docker-compose.yml              # PG, ES, Qdrant, Vespa
+└── README.md
 ```
 
-## 현재 상태
+## 관련 프로젝트
 
-| Phase | 주제 | 상태 | 진행률 |
-|-------|------|:---:|:---:|
-| **Phase 0** | 데이터 준비 | done | 100% |
-| **Phase 1** | 형태소 분석기 비교 | done | 100% |
-| **Phase 2** | tsvector 한국어 통합 | done | 100% |
-| **Phase 3** | PostgreSQL Native BM25 | done | 100% |
-| **Phase 4** | BM25 vs Neural 검색 | done | 100% |
-| **Phase 5** | Production 최적화 | done | 100% |
-| **Phase 6** | VectorChord-BM25 스케일링 | done | 100% |
-| **Phase 7** | pg_textsearch 스케일링 + 하이브리드 벤치마크 | done | 100% |
-| **Phase 8** | 외부 시스템 비교 (ES 8.17 / Qdrant 1.15 / Vespa) | done | 100% |
+이 벤치마크에서 사용한 PostgreSQL 확장과 외부 시스템:
 
-## 최종 결론 — Phase 8 확정 스택
-
-### PostgreSQL 하이브리드 검색 (Phase 7 확정, Phase 8 외부 비교 검증)
-
-```
-textsearch_ko (MeCab) + pg_textsearch BM25 (<@> AND) + pgvector HNSW + DB-side RRF
-```
-
-| 메트릭 | MIRACL (일반 위키) | EZIS (기술 문서) |
-|--------|:---:|:---:|
-| BM25 NDCG@10 | 0.6385 | 0.9162 |
-| Dense NDCG@10 | 0.7904 | 0.8041 |
-| **Hybrid RRF NDCG@10** | **0.7683** | **0.8641** |
-| Hybrid p50 | 1.79ms | 0.92ms |
-
-### Phase 8: 외부 시스템 비교 결과
-
-| 시스템 | MIRACL Hybrid | EZIS Hybrid | Hybrid p50 |
-|--------|:---:|:---:|:---:|
-| **PostgreSQL** | **0.7683** | 0.8641 | **1.79ms** |
-| ES 8.17 (nori) | 0.7501 | **0.8769** | 5.18ms |
-| Qdrant 1.15 | 0.6924 | 0.8394 | 4.54ms |
-| Vespa (ICU) | 0.4463 | 0.8125 | 4.14ms |
-
-상세: [docs/results/phase8_system_comparison.md](docs/results/phase8_system_comparison.md)
-
-## 확장 및 기여
-
-### PostgreSQL 확장
-
-```bash
-# textsearch_ko (MeCab 한국어 토크나이저) 컴파일
-cd extensions/textsearch_ko
-make clean && make && make install
-
-# Korean 설정 생성
-psql -d dev -c "CREATE TEXT SEARCH CONFIGURATION public.korean \
-  (PARSER = default);"
-
-# 테스트
-psql -d dev -c "SELECT to_tsvector('korean', '한국어 텍스트 검색');"
-```
-
-### 실험 추가
-
-새로운 Phase를 추가하려면:
-
-1. `docs/plan/phase{N}_*.md` 생성 (실험 계획)
-2. `experiments/phase{N}_*/` 디렉토리 생성
-3. 벤치마크 스크립트 작성
-4. 결과를 `docs/results/phase{N}_*.md`에 문서화
-
-## 주요 의존성
-
-| 라이브러리 | 용도 |
-|-----------|------|
-| `kiwipiepy` | 한국어 형태소 분석 (Kiwi) |
-| `python-mecab-ko` | MeCab 한국어 바인딩 |
-| `sentence-transformers` | BGE-M3 임베딩 (Hybrid 검색) |
-| `transformers` | SPLADE-ko 모델 |
-| `psycopg2-binary` | PostgreSQL 클라이언트 |
-| `pgvector` | pgvector 확장 클라이언트 |
-| `elasticsearch` | Elasticsearch 클라이언트 (Phase 8) |
-| `qdrant-client` | Qdrant 클라이언트 (Phase 8) |
-| `fastembed` | FastEmbed BM42/BM25 sparse 임베딩 (Phase 8) |
+| 프로젝트 | 역할 |
+|---------|------|
+| [mecab-ko](https://github.com/hephaex/mecab-ko) | 한국어 형태소 분석기 (MeCab fork) |
+| [textsearch_ko](https://github.com/i0seph/textsearch_ko) | PostgreSQL 한국어 FTS 확장 |
+| [textsearch_ko fork](https://github.com/ysys143/textsearch_ko) | 이 프로젝트에서 사용하는 fork |
+| [pg_textsearch](https://github.com/timescale/pg_textsearch) | Timescale BM25 확장 |
+| [pgvector](https://github.com/pgvector/pgvector) | PostgreSQL 벡터 검색 (HNSW/IVFFlat) |
+| [pgvectorscale](https://github.com/timescale/pgvectorscale) | Timescale DiskANN 벡터 인덱스 |
+| [VectorChord](https://github.com/tensorchord/VectorChord) | DiskANN + Block-WeakAnd BM25 |
+| [BGE-M3](https://huggingface.co/BAAI/bge-m3) | 다국어 1024-dim 임베딩 모델 |
 
 ## 시스템 요구사항
 
-- **Python**: 3.12+
-- **PostgreSQL**: 15+ (pgvector 0.8.2 포함)
-- **Docker**: 24.0+
-- **메모리**: 최소 8GB (4GB PG + 4GB 예비)
-- **디스크**: 50GB+ (인덱스 + 모델)
-- **OS**: macOS, Linux (WSL2 on Windows)
+- Python 3.12+
+- PostgreSQL 15+ (pgvector 0.8.2)
+- Docker 24.0+ (메모리 8GB 이상 권장)
+- macOS 또는 Linux
 
 ## 라이센스
 
 MIT
 
-## 참고 자료
-
-- **MIRACL**: https://huggingface.co/datasets/miracl/miracl
-- **PostgreSQL FTS**: https://www.postgresql.org/docs/current/textsearch.html
-- **pgvector**: https://github.com/pgvector/pgvector
-- **BGE-M3**: https://huggingface.co/BAAI/bge-m3
-- **SPLADE-ko**: https://huggingface.co/sslab-public/splade-ko-doc
-
-## 기여 및 문의
-
-이슈, PR, 제안 환영합니다.
-
 ---
 
-**Last Updated**: 2026-03-25 | **Phase 8 완료** | PostgreSQL 스택(textsearch_ko + pg_textsearch + pgvector + RRF) 유지 권장
+**Last Updated**: 2026-03-25 | Phase 8 완료 | PostgreSQL 스택 유지 권장
