@@ -188,6 +188,7 @@ textsearch_ko (MeCab) + pg_textsearch BM25 + pgvector HNSW + DB-side RRF
 | **pg_textsearch** | Timescale BM25 확장 — `<@>` 연산자, BM25 인덱스 | [github.com/timescale/pg_textsearch](https://github.com/timescale/pg_textsearch) |
 | **pgvector** | PostgreSQL 벡터 유사도 검색 — HNSW/IVFFlat 인덱스 | [github.com/pgvector/pgvector](https://github.com/pgvector/pgvector) |
 | **pgvectorscale** | Timescale DiskANN 기반 벡터 인덱스 — pg_textsearch와 동일 팀, 시너지 우수 | [github.com/timescale/pgvectorscale](https://github.com/timescale/pgvectorscale) |
+| **TimescaleDB** | PostgreSQL 시계열 확장 — metric 저장·분석에 준수한 성능, 같은 PG 인스턴스에서 검색+모니터링 통합 가능 | [timescale.com](https://www.timescale.com/) |
 
 ### 외부 시스템
 
