@@ -19,7 +19,9 @@ Elasticsearch는 nori라는 한국어 형태소 분석기를 내장하고 있어
 
 여기에 pgvector로 밀집 벡터 검색을 더하고, SQL CTE 함수로 BM25 + Dense 결과를 RRF(Reciprocal Rank Fusion)로 합치면, PostgreSQL 하나로 하이브리드 검색 파이프라인이 완성된다. 별도 검색 엔진 없이 단일 DB만으로 운영할 수 있다는 뜻이다.
 
-이 프로젝트는 이게 실제로 얼마나 잘 되는지를 8단계에 걸쳐 측정했다. Phase 1에서 형태소 분석기를 고르고, Phase 3에서 PostgreSQL 안에 BM25를 구현하는 방법을 비교하고, Phase 7에서 하이브리드 검색을 완성한 뒤, Phase 8에서 Elasticsearch, Qdrant, Vespa와 동등 조건으로 붙여봤다.
+pg_textsearch 같은 확장이 PostgreSQL에 BM25를 구현해주긴 한다. 하지만 BM25 확장이 존재하는 것과 한국어가 잘 되는 것은 별개 문제다. 핵심은 MeCab 같은 외부 형태소 분석기를 PostgreSQL 토크나이저로 실제로 잘 붙일 수 있는가였다. textsearch_ko가 MeCab을 tsvector 파이프라인에 연결해주고, pg_textsearch가 그 tsvector 위에 BM25 인덱스를 만들어주는 이 조합이 실제로 동작하는지, 품질이 충분한지를 확인하는 것이 이 실험의 핵심이었다.
+
+8단계에 걸쳐 측정했다. Phase 1에서 형태소 분석기를 고르고, Phase 2에서 PostgreSQL tsvector에 연결하고, Phase 3에서 BM25 구현 방법을 비교하고, Phase 7에서 하이브리드 검색을 완성한 뒤, Phase 8에서 Elasticsearch, Qdrant, Vespa와 동등 조건으로 붙여봤다.
 
 ## 실험에서 알게 된 것
 
