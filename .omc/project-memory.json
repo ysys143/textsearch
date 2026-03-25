@@ -159,6 +159,12 @@
       "type": "file"
     },
     {
+      "path": "results/phase5/phase5_final_report.md",
+      "accessCount": 6,
+      "lastAccessed": 1774425605218,
+      "type": "file"
+    },
+    {
       "path": "docker-compose.yml",
       "accessCount": 5,
       "lastAccessed": 1774418188345,
@@ -180,6 +186,18 @@
       "path": "docs/source-analysis/vectorchord_bm25_analysis.md",
       "accessCount": 3,
       "lastAccessed": 1774417858683,
+      "type": "file"
+    },
+    {
+      "path": "results/phase5/phase5_production_pg.json",
+      "accessCount": 3,
+      "lastAccessed": 1774425514878,
+      "type": "file"
+    },
+    {
+      "path": "results/phase6/phase6_2_full_eval_report.md",
+      "accessCount": 3,
+      "lastAccessed": 1774425614763,
       "type": "file"
     },
     {
@@ -234,6 +252,12 @@
       "path": "results/phase5/phase5_production_report.md",
       "accessCount": 2,
       "lastAccessed": 1774425406120,
+      "type": "file"
+    },
+    {
+      "path": "results/phase6/phase6_1_full_eval_report.md",
+      "accessCount": 2,
+      "lastAccessed": 1774425486365,
       "type": "file"
     },
     {
@@ -391,24 +415,6 @@
       "accessCount": 1,
       "lastAccessed": 1774421546742,
       "type": "directory"
-    },
-    {
-      "path": "results/phase5/phase5_production_pg.json",
-      "accessCount": 1,
-      "lastAccessed": 1774421613909,
-      "type": "file"
-    },
-    {
-      "path": "results/phase6/phase6_1_full_eval_report.md",
-      "accessCount": 1,
-      "lastAccessed": 1774425406857,
-      "type": "file"
-    },
-    {
-      "path": "results/phase6/phase6_2_full_eval_report.md",
-      "accessCount": 1,
-      "lastAccessed": 1774425407010,
-      "type": "file"
     }
   ],
   "userDirectives": []

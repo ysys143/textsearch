@@ -57,7 +57,9 @@
 
 ```
 textsearch_ko (MeCab, main DB port 5432)
-    -> tsvector_to_array() -> Python vocab -> {id:count}::bm25vector
+    -> SELECT lexeme, array_length(positions, 1)
+       FROM unnest(to_tsvector('public.korean', text))
+    -> Python vocab -> {id:count}::bm25vector  (real TF)
 VectorChord-BM25 (vchord-suite, port 5436)
     CREATE INDEX <table>_emb_idx USING bm25 (emb bm25_ops)
     SELECT id ORDER BY emb <&> to_bm25query('<table>_emb_idx', q::bm25vector)

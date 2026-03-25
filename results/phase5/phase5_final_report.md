@@ -1,6 +1,6 @@
 # Phase 5: Korean Text Search Benchmark — Final Report
 
-Generated: 2026-03-23 22:30 (updated 2026-03-24 with splade-ko pgvector sparsevec latency re-measurement)
+Generated: 2026-03-23 22:30 (updated 2026-03-25: Phase 5 production 10K + Phase 6 VectorChord results)
 
 ## MIRACL-ko Results (10k corpus, 213 queries)
 
@@ -13,9 +13,14 @@ Generated: 2026-03-23 22:30 (updated 2026-03-24 with splade-ko pgvector sparseve
 | phase4 | Bayesian BM25+BGE-M3 dense | 0.7476 | 0.8854 | 0.7442 | 379.33ms |
 | phase4 | Hybrid BM25+BGE-M3 sparse (RRF) | 0.7160 | 0.8694 | 0.7060 | 119.08ms |
 | phase4 | splade-ko (yjoonjang/splade-ko-v1) | 0.6962 | 0.8101 | 0.7174 | 104.67ms |
+| **phase6-2** | **VectorChord-BM25 real-TF (textsearch_ko)** | **0.6415** | **0.8021** | **0.6194** | **0.97ms** |
 | phase2 | pl/pgsql BM25 + MeCab (public.korean) | 0.6412 | 0.8012 | 0.6191 | 10.44ms |
+| phase5 | pl/pgsql BM25 v2 real-TF (textsearch_ko) | 0.6414 | 0.8012 | 0.6199 | 11.34ms |
+| phase5 | pg_textsearch AND (<@>) | 0.6401 | 0.8006 | 0.617 | 0.49ms |
 | phase3 | pgvector-sparse BM25 (kiwi-cong) | 0.6326 | 0.7911 | 0.6195 | 4.24ms |
 | phase4 | BM25 kiwi-cong (pgvector) | 0.6326 | 0.7911 | 0.6195 | 5.66ms |
+| phase5 | pg_textsearch OR+WAND (<@>) | 0.6301 | 0.7885 | 0.614 | 0.82ms |
+| phase6-1 | VectorChord-BM25 TF=1 (textsearch_ko) | 0.5888 | 0.7236 | 0.6034 | 1.01ms |
 | phase3 | pgvector-sparse BM25 (Okt) | 0.5520 | 0.7120 | 0.5326 | 5.55ms |
 | phase3 | pgvector-sparse BM25 (Mecab) | 0.5323 | 0.7066 | 0.5104 | 18.05ms |
 | phase2 | pl/pgsql BM25 (pg_catalog.simple) | 0.4071 | 0.4757 | 0.4580 | 11.14ms |
@@ -39,10 +44,14 @@ Generated: 2026-03-23 22:30 (updated 2026-03-24 with splade-ko pgvector sparseve
 | Phase | Method | NDCG@10 | R@10 | MRR |
 |-------|--------|---------|------|-----|
 | phase4 | Bayesian BM25+BGE-M3 dense | 0.9493 | 1.0000 | 0.9313 |
-| phase2 | pl/pgsql BM25 + MeCab (public.korean) | 0.9290 | 0.9924 | 0.9085 |
 | phase1 | kiwi-cong | 0.9455 | 1.0000 | 0.9267 |
 | phase3 | kiwi-cong BM25 | 0.9455 | 1.0000 | 0.9267 |
 | phase4 | BM25 kiwi-cong (in-memory) | 0.9455 | 1.0000 | 0.9267 |
+| phase2 | pl/pgsql BM25 + MeCab (public.korean) | 0.9290 | 0.9924 | 0.9085 |
+| phase5 | pl/pgsql BM25 v2 real-TF (textsearch_ko) | 0.9290 | 0.9924 | 0.9085 |
+| phase5 | pg_textsearch AND (<@>) | 0.9238 | 0.9924 | 0.9013 |
+| **phase6-2** | **VectorChord-BM25 real-TF (textsearch_ko)** | **0.9238** | **0.9924** | **0.9013** |
+| phase6-1 | VectorChord-BM25 TF=1 (textsearch_ko) | 0.9024 | 0.9847 | 0.8758 |
 | phase4 | Bayesian BM25+BGE-M3 sparse | 0.9394 | 1.0000 | 0.9179 |
 | phase1 | kiwi-knlm | 0.9160 | 1.0000 | 0.8874 |
 | phase4 | Hybrid BM25+BGE-M3 sparse (RRF) | 0.9134 | 0.9924 | 0.8860 |
@@ -71,13 +80,16 @@ Generated: 2026-03-23 22:30 (updated 2026-03-24 with splade-ko pgvector sparseve
 
 ### MIRACL-ko
 - **Best method**: BGE-M3 dense (cosine) — NDCG@10=0.7915
-- **Best BM25-only**: pl/pgsql BM25 + MeCab (public.korean) — NDCG@10=0.6412 (beats pgvector-sparse kiwi-cong 0.6326)
-- **Surprise**: pl/pgsql + `to_tsvector('public.korean')` surpasses Phase 3 pgvector-sparse BM25 (kiwi-cong), with no pgvector dependency — pure SQL
+- **Best BM25-only**: 0.6414~0.6415 수렴 — pl/pgsql v2, pg_textsearch AND, VectorChord(Phase 6-2) 모두 동등
+- **Phase 6-2 (VectorChord real-TF)**: NDCG=0.6415, p50=**0.97ms** — pl/pgsql BM25 v2(11.34ms) 대비 **11.7배** 빠름, 동일 정확도
+- **pg_textsearch AND**: NDCG=0.6401, p50=**0.49ms** — BM25보다 약간 낮지만 가장 빠름
+- **Phase 6-1 (TF=1)**: NDCG=0.5888 — tsvector_to_array()의 TF 손실로 0.053 하락 확인
+- **BM25 알고리즘은 동일**: Phase 5 1K→10K corpus 교정 후 모든 BM25 구현이 0.63~0.64로 수렴
 - pgvector-sparse (Phase 3) vs Python BM25 (Phase 1): +82.3% NDCG gain from DB indexing
-- **Latency (4-table redesign)**: 4-table incremental design (bm25idx+bm25df+bm25doclen+bm25stats) eliminated fullscan subqueries → p50 45ms→10.44ms (korean, 4.3×), 34.7ms→11.14ms (simple, 3.1×)
 - **splade-ko latency**: re-measured with pgvector sparsevec exact scan → p50 555ms→104.67ms (5.3×); bottleneck is MPS model inference (~100ms), not DB search
 
 ### EZIS
 - **Best method**: Bayesian BM25+BGE-M3 dense — NDCG@10=0.9493
-- **Best BM25-only**: pl/pgsql BM25 + MeCab (public.korean) — NDCG@10=0.9280 (2nd overall, above all hybrid-free methods except neural)
+- **Best BM25-only**: pl/pgsql BM25 + kiwi-cong — NDCG@10=0.9455 (Phase 1/3)
+- **Phase 6-2 (VectorChord real-TF)**: NDCG=0.9238, p50=0.97ms — pl/pgsql BM25 v2(0.9290)와 0.005 차이, 레이턴시 2.34ms→0.97ms
 - MeCab morphological analysis inside pl/pgsql is the key differentiator for both datasets
