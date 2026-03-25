@@ -136,8 +136,8 @@
   "hotPaths": [
     {
       "path": "experiments/phase6_vectorchord/phase6_1_full_eval.py",
-      "accessCount": 41,
-      "lastAccessed": 1774424952727,
+      "accessCount": 42,
+      "lastAccessed": 1774426118805,
       "type": "file"
     },
     {
@@ -159,15 +159,15 @@
       "type": "file"
     },
     {
-      "path": "results/phase5/phase5_final_report.md",
-      "accessCount": 6,
-      "lastAccessed": 1774425605218,
+      "path": "docker-compose.yml",
+      "accessCount": 8,
+      "lastAccessed": 1774426895220,
       "type": "file"
     },
     {
-      "path": "docker-compose.yml",
-      "accessCount": 5,
-      "lastAccessed": 1774418188345,
+      "path": "results/phase5/phase5_final_report.md",
+      "accessCount": 6,
+      "lastAccessed": 1774425605218,
       "type": "file"
     },
     {

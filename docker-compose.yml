@@ -139,6 +139,7 @@ services:
     environment:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: dev
+    command: postgres -c shared_buffers=32MB -c maintenance_work_mem=32MB -c max_parallel_maintenance_workers=0
     volumes:
       - pg_phase6_data:/var/lib/postgresql
     healthcheck:

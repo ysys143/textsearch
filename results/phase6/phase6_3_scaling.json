@@ -1,0 +1,63 @@
+{
+  "vchord": [
+    {
+      "scale": 1000,
+      "insert_sec": 0.66,
+      "index_build_sec": 0.25,
+      "index_size": "106 MB",
+      "total_size": "106 MB",
+      "latency_p50": 1.1,
+      "latency_p95": 2.12,
+      "latency_p99": 3.28
+    },
+    {
+      "scale": 10000,
+      "insert_sec": 6.1,
+      "index_build_sec": 1.05,
+      "index_size": "395 MB",
+      "total_size": "400 MB",
+      "latency_p50": 1.35,
+      "latency_p95": 2.54,
+      "latency_p99": 3.78
+    },
+    {
+      "scale": 100000,
+      "insert_sec": 63.08,
+      "index_build_sec": 1.2,
+      "index_size": "498 MB",
+      "total_size": "542 MB",
+      "latency_p50": 3.58,
+      "latency_p95": 7.18,
+      "latency_p99": 13.53
+    }
+  ],
+  "plpgsql": [
+    {
+      "scale": 1000,
+      "insert_sec": 0.19,
+      "index_build_sec": 1.63,
+      "inv_index_size": "5896 kB",
+      "latency_p50": 2.31,
+      "latency_p95": 6.39,
+      "latency_p99": 9.11
+    },
+    {
+      "scale": 10000,
+      "insert_sec": 1.54,
+      "index_build_sec": 15.43,
+      "inv_index_size": "49 MB",
+      "latency_p50": 10.35,
+      "latency_p95": 53.13,
+      "latency_p99": 81.19
+    },
+    {
+      "scale": 100000,
+      "insert_sec": 19.0,
+      "index_build_sec": 171.04,
+      "inv_index_size": "501 MB",
+      "latency_p50": 85.58,
+      "latency_p95": 403.71,
+      "latency_p99": 603.12
+    }
+  ]
+}
