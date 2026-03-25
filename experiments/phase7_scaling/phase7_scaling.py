@@ -170,7 +170,10 @@ def scale_corpus(base_docs: List[dict], target_size: int) -> List[dict]:
     return result[:target_size]
 
 
-def measure_latency(fn, queries: List[dict]) -> dict:
+def measure_latency(fn, queries: List[dict], warmup: int = 5) -> dict:
+    # Warm the relevant indexes independently before measuring
+    for q in queries[:warmup]:
+        fn(q["text"])
     latencies = []
     for q in queries:
         t0 = time.perf_counter()
