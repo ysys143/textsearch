@@ -1,4 +1,4 @@
-# Phase 7: pg_textsearch 스케일링 & 하이브리드 검색 벤치마크
+# Phase 7: PostgreSQL 최선 스택 확정 — pg_textsearch 스케일링 & 하이브리드 검색 벤치마크
 
 **생성:** 2026-03-25
 
