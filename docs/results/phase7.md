@@ -17,11 +17,13 @@
 
 #### p50 (50th percentile)
 
-| 스케일 | BM25 AND | BM25+Dense RRF | BM25+Dense Bayes | BM25 OR | VectorChord | pl/pgsql |
-|--------|----------|---------------|-----------------|---------|-------------|---------|
-| 1K     | 0.40ms   | 0.73ms        | 0.73ms          | 1.05ms  | 1.10ms      | 2.31ms  |
-| 10K    | 0.42ms   | 0.72ms        | 0.72ms          | 2.81ms  | 1.35ms      | 10.35ms |
-| 100K   | 0.62ms   | 0.65ms        | 0.65ms          | 22.78ms | 3.58ms      | 85.58ms |
+| 스케일 | BM25 AND | BM25+Dense RRF* | BM25+Dense Bayes* | BM25 OR | VectorChord | pl/pgsql |
+|--------|----------|----------------|------------------|---------|-------------|---------|
+| 1K     | 0.40ms   | 0.73ms         | 0.73ms           | 1.05ms  | 1.10ms      | 2.31ms  |
+| 10K    | 0.42ms   | 0.72ms         | 0.72ms           | 2.81ms  | 1.35ms      | 10.35ms |
+| 100K   | 0.62ms   | 0.65ms         | 0.65ms           | 22.78ms | 3.58ms      | 85.58ms |
+
+> [*] RRF/Bayes 수치는 `phase7_scaling.py` 에서 BM25 AND + Dense 각각 측정 후 단순 합산한 추정값입니다. 실제 SQL CTE 함수 실행 기준은 섹션 2 하이브리드 벤치마크(RRF 1.79ms, Bayesian 9.55ms @MIRACL 10K)를 참조하세요.
 
 #### p95 (95th percentile)
 
@@ -120,7 +122,9 @@ pg_textsearch는 최소 저장 공간 요구량으로 최고 성능을 제공합
 | RRF  | 1.79 | 2.38 | 2.70 |
 | Bayesian | 9.55 | 12.76 | 14.33 |
 
-**분석**: 일반 위키 검색(MIRACL)에서는 밀집 검색이 최고 품질(NDCG 0.79)을 제공합니다. **RRF는 1.79ms에서 0.768 NDCG로 운영 최강 선택**입니다. Bayesian은 9.55ms의 오버헤드로 품질 이점이 없습니다.
+**분석**: 일반 위키 검색(MIRACL)에서는 Dense가 최고 품질(NDCG 0.79)을 제공합니다. **RRF는 1.79ms에서 NDCG 0.768 — 도메인을 모를 때의 튜닝 없는 안정적 선택**입니다. Bayesian은 9.55ms 오버헤드 대비 품질 이점이 없습니다.
+
+> [WARN] **Dense/RRF 지연시간 주의**: 위 수치는 **retrieval-only** 측정값입니다. 쿼리 임베딩(`p7_query_emb` 테이블)을 사전 계산해 벤치마크 시 바로 조회하므로, BGE-M3 온라인 추론 시간(실제 ~200ms+)은 포함되지 않습니다. 프로덕션에서는 임베딩 추론 비용을 별도로 고려해야 합니다.
 
 ### EZIS 벤치마크 (97개 기술 문서)
 
@@ -162,7 +166,7 @@ pg_textsearch는 최소 저장 공간 요구량으로 최고 성능을 제공합
 - **지연시간**: 1.79ms (MIRACL) / 0.92ms (EZIS) — DB 단일 라운드 트립
 - **구현**: `p7_rrf_miracl`, `p7_rrf_ezis` SQL CTE 함수 (Python 병합 없음)
 
-**추천**: 기본 하이브리드 전략. 튜닝 비용 없이 안정적인 품질.
+**추천**: 기본 하이브리드 전략. 튜닝 비용 없이 안정적인 품질. MIRACL에서는 Dense, EZIS에서는 BM25/Bayesian이 각각 1위이며 RRF는 어느 도메인에서도 1위가 아닌 "튜닝 없는 안정적 2등 전략"임에 유의.
 
 #### Bayesian 융합
 
@@ -263,12 +267,13 @@ via SQL CTE 함수: p7_bayesian_miracl, p7_bayesian_ezis
 
 ## 기술 요약
 
-**Phase 7은 pg_textsearch BM25를 PostgreSQL 전문검색의 표준으로 검증했습니다.**
+**Phase 7은 self-hosted PostgreSQL, warm-cache, MIRACL 10K + EZIS 97 범위 내에서 한국어 검색용 PostgreSQL 내부 스택의 최적 조합을 상당히 좁혔습니다.**
 
-- [O] 모든 스케일에서 최고 성능 (0.4~0.62ms)
-- [O] 최소 인덱스 오버헤드 (18MB @100K)
-- [O] 명확한 스케일링 경로 (1K->100K 단 1.5배 증가)
-- [O] RRF 기반 도메인 무관 하이브리드 (NDCG 0.77+ 안정적)
-- [O] DB 측 Fusion (Python 병합 제거, 네트워크 왕복 1회)
+- [O] 실험 범위 내 lexical 최속·최소: pg_textsearch BM25 (0.4~0.62ms, 18MB @100K)
+- [O] 명확한 스케일링 경로 (1K->100K 1.5배 증가)
+- [O] RRF 기반 도메인 무관 하이브리드 (NDCG 0.77+ 안정적, retrieval-only 기준)
+- [O] DB-side Fusion (Python 병합 제거, 네트워크 왕복 1회)
+- [INFO] 100K 코퍼스는 10K 문서 복제 기반 — 실제 어휘 다양성 포함 독립 코퍼스 검증 필요
+- [INFO] Dense/RRF latency는 임베딩 추론 제외 수치 — 온라인 추론 포함 end-to-end 측정 필요
 
-**다음 단계**: Phase 8에서 pg_search 포크 및 외부 검색 엔진과 비교하여 최종 아키텍처 확정.
+**한계 및 다음 단계**: 이 결과만으로 Elasticsearch 전면 대체를 결론내리기는 이르며, Phase 8(pg_search 포크 비교)과 Phase 9(ES/Qdrant 직접 비교)가 필요합니다.
