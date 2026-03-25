@@ -11,8 +11,8 @@ PostgreSQL이 Elasticsearch를 대체할 수 있는가? — 한국어 텍스트 
 ### 핵심 통찰
 
 - **데이터 성격에 따른 역전**: 일반 위키피디아(neural 유리) vs 기술 매뉴얼(BM25 유리) — 동일한 방법이 모든 도메인에서 최적이 아님
-- **Hybrid 검색이 최강**: BM25 + 밀집 벡터(BGE-M3) 융합이 NDCG@10 0.95 달성
-- **PostgreSQL 확장 가능성**: pl/pgsql 기반 BM25로 ~100M 문서까지 확장 가능, 이후 ES 전환 검토
+- **pg_textsearch BM25 (`<@>`) 최속**: 모든 스케일(1K~100K)에서 VectorChord-BM25, pl/pgsql보다 빠름 (p50 0.4~0.62ms, 인덱스 크기도 최소)
+- **RRF(DB-side)가 실용적 하이브리드 default**: 튜닝 불필요, MIRACL NDCG 0.77 / EZIS 0.86, p50 1~2ms
 
 ## 주요 결과
 
@@ -31,15 +31,16 @@ PostgreSQL이 Elasticsearch를 대체할 수 있는가? — 한국어 텍스트 
 
 | 방법 | MIRACL NDCG@10 | EZIS NDCG@10 | p50 Latency |
 |------|:---:|:---:|:---:|
-| **BGE-M3 dense** | 0.7915 | 0.8060 | 253ms |
-| Bayesian BM25 + BGE-M3 | 0.7476 | **0.9493** | 379ms |
-| splade-ko sparse | 0.6962 | 0.8998 | 105ms |
+| pg_textsearch BM25 (textsearch_ko) | 0.6385 | 0.9162 | 0.44ms |
+| Dense (BGE-M3 HNSW) | 0.7904 | 0.8041 | 1.2ms |
+| **RRF (BM25+Dense, DB-side)** | 0.7683 | 0.8641 | **1.79ms** |
+| Bayesian (BM25+Dense, DB-side) | 0.7272 | 0.9249 | 9.55ms |
 
 #### Production 권장 구성
 
-- **BM25 컴포넌트**: pl/pgsql v2 (stats 테이블 분리, incremental update 지원)
-- **Hybrid 최적**: Bayesian BM25 + BGE-M3 밀집 벡터 융합
-- **확장성**: PostgreSQL scale-up으로 ~100M 문서까지 가능
+- **BM25 컴포넌트**: pg_textsearch BM25 (`<@>`, textsearch_ko MeCab) — 모든 스케일 최속, 인덱스 최소, DB-side 토크나이저
+- **Hybrid default**: RRF (DB-side SQL function) — p7_rrf_miracl/p7_rrf_ezis 등록된 SQL 함수, 튜닝 불필요
+- **Hybrid BM25-도메인**: Bayesian (α=0.5) — 기술 매뉴얼 등 BM25 강세 도메인에서만
 
 ## 데이터셋
 
