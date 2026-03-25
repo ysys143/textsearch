@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "lastScanned": 1774306632309,
+  "lastScanned": 1774416907123,
   "projectRoot": "/Users/jaesolshin/Documents/GitHub/textsearch",
   "techStack": {
     "languages": [
@@ -34,7 +34,7 @@
     "scripts": {}
   },
   "conventions": {
-    "namingStyle": "snake_case",
+    "namingStyle": null,
     "importStyle": null,
     "testPattern": null,
     "fileOrganization": null
@@ -43,8 +43,7 @@
     "isMonorepo": false,
     "workspaces": [],
     "mainDirectories": [
-      "docs",
-      "src"
+      "docs"
     ],
     "gitBranches": null
   },
@@ -54,7 +53,7 @@
       "path": "archive",
       "purpose": null,
       "fileCount": 5,
-      "lastAccessed": 1774306632280,
+      "lastAccessed": 1774416907080,
       "keyFiles": [
         "0521.ipynb",
         "docs.json",
@@ -67,7 +66,7 @@
       "path": "benchmark",
       "purpose": null,
       "fileCount": 5,
-      "lastAccessed": 1774306632281,
+      "lastAccessed": 1774416907080,
       "keyFiles": [
         "README.md",
         "__init__.py",
@@ -80,7 +79,7 @@
       "path": "data",
       "purpose": "Data files",
       "fileCount": 1,
-      "lastAccessed": 1774306632281,
+      "lastAccessed": 1774416907081,
       "keyFiles": [
         "EZIS_Oracle_Manual.pdf"
       ]
@@ -88,15 +87,15 @@
     "docs": {
       "path": "docs",
       "purpose": "Documentation",
-      "fileCount": 0,
-      "lastAccessed": 1774306632282,
+      "fileCount": 1,
+      "lastAccessed": 1774416907081,
       "keyFiles": []
     },
     "experiments": {
       "path": "experiments",
       "purpose": null,
-      "fileCount": 1,
-      "lastAccessed": 1774306632282,
+      "fileCount": 2,
+      "lastAccessed": 1774416907081,
       "keyFiles": [
         "__init__.py"
       ]
@@ -104,39 +103,29 @@
     "extensions": {
       "path": "extensions",
       "purpose": null,
-      "fileCount": 0,
-      "lastAccessed": 1774306632283,
+      "fileCount": 1,
+      "lastAccessed": 1774416907082,
       "keyFiles": []
     },
     "results": {
       "path": "results",
       "purpose": null,
-      "fileCount": 0,
-      "lastAccessed": 1774306632283,
+      "fileCount": 1,
+      "lastAccessed": 1774416907082,
       "keyFiles": []
-    },
-    "src": {
-      "path": "src",
-      "purpose": "Source code",
-      "fileCount": 2,
-      "lastAccessed": 1774306632283,
-      "keyFiles": [
-        "__init__.py",
-        "bm25_module.py"
-      ]
     },
     "vendor": {
       "path": "vendor",
       "purpose": "Third-party code",
-      "fileCount": 0,
-      "lastAccessed": 1774306632283,
+      "fileCount": 1,
+      "lastAccessed": 1774416907082,
       "keyFiles": []
     },
     "benchmark/data": {
       "path": "benchmark/data",
       "purpose": "Data files",
       "fileCount": 4,
-      "lastAccessed": 1774306632284,
+      "lastAccessed": 1774416907083,
       "keyFiles": [
         "__init__.py",
         "load_ezis.py",
@@ -144,307 +133,6 @@
       ]
     }
   },
-  "hotPaths": [
-    {
-      "path": "docs/plan/phase5_production_pg.md",
-      "accessCount": 28,
-      "lastAccessed": 1774338160505,
-      "type": "file"
-    },
-    {
-      "path": "results/phase5/phase5_production_report.md",
-      "accessCount": 17,
-      "lastAccessed": 1774338159557,
-      "type": "file"
-    },
-    {
-      "path": "experiments/phase5_production/phase5_production_bench.py",
-      "accessCount": 14,
-      "lastAccessed": 1774333764894,
-      "type": "file"
-    },
-    {
-      "path": "docker-compose.yml",
-      "accessCount": 14,
-      "lastAccessed": 1774338776327,
-      "type": "file"
-    },
-    {
-      "path": "docs/plan/README.md",
-      "accessCount": 10,
-      "lastAccessed": 1774338775895,
-      "type": "file"
-    },
-    {
-      "path": "docs/plan/phase6_system_comparison.md",
-      "accessCount": 7,
-      "lastAccessed": 1774315323786,
-      "type": "file"
-    },
-    {
-      "path": "src/bm25_module.py",
-      "accessCount": 7,
-      "lastAccessed": 1774336005442,
-      "type": "file"
-    },
-    {
-      "path": "docs/plan/phase2_tsvector_korean.md",
-      "accessCount": 7,
-      "lastAccessed": 1774338134706,
-      "type": "file"
-    },
-    {
-      "path": "experiments/phase2_tsvector/phase2_tsvector_comparison.py",
-      "accessCount": 6,
-      "lastAccessed": 1774338134950,
-      "type": "file"
-    },
-    {
-      "path": "docs/plan/phase8_system_comparison.md",
-      "accessCount": 5,
-      "lastAccessed": 1774329230004,
-      "type": "file"
-    },
-    {
-      "path": "docs/plan/phase9_system_comparison.md",
-      "accessCount": 5,
-      "lastAccessed": 1774333657802,
-      "type": "file"
-    },
-    {
-      "path": "",
-      "accessCount": 5,
-      "lastAccessed": 1774339203848,
-      "type": "directory"
-    },
-    {
-      "path": "experiments/phase2_tsvector/phase2_textsearch_ko_ab.py",
-      "accessCount": 4,
-      "lastAccessed": 1774334821981,
-      "type": "file"
-    },
-    {
-      "path": "experiments",
-      "accessCount": 4,
-      "lastAccessed": 1774339106299,
-      "type": "directory"
-    },
-    {
-      "path": "experiments/phase5_system_comparison/phase5_final_report.py",
-      "accessCount": 3,
-      "lastAccessed": 1774308177245,
-      "type": "file"
-    },
-    {
-      "path": "experiments/phase2_tsvector",
-      "accessCount": 3,
-      "lastAccessed": 1774316988666,
-      "type": "directory"
-    },
-    {
-      "path": "docs/plan/phase7_textsearch_fork.md",
-      "accessCount": 3,
-      "lastAccessed": 1774334773560,
-      "type": "file"
-    },
-    {
-      "path": "docs/plan/phase6_vectorchord_bm25.md",
-      "accessCount": 3,
-      "lastAccessed": 1774334838077,
-      "type": "file"
-    },
-    {
-      "path": "experiments/phase4_bm25_vs_neural/phase4_comparison.py",
-      "accessCount": 3,
-      "lastAccessed": 1774338148382,
-      "type": "file"
-    },
-    {
-      "path": "results/phase5/phase5_production_pg.json",
-      "accessCount": 3,
-      "lastAccessed": 1774338160735,
-      "type": "directory"
-    },
-    {
-      "path": "docs/plan/phase5_system_comparison.md",
-      "accessCount": 2,
-      "lastAccessed": 1774307527024,
-      "type": "file"
-    },
-    {
-      "path": "docs/plan/phase8_pgsearch_fork.md",
-      "accessCount": 2,
-      "lastAccessed": 1774333442623,
-      "type": "file"
-    },
-    {
-      "path": "results",
-      "accessCount": 2,
-      "lastAccessed": 1774336545087,
-      "type": "directory"
-    },
-    {
-      "path": "docs/source-analysis/pg_textsearch_code_analysis.md",
-      "accessCount": 2,
-      "lastAccessed": 1774337021316,
-      "type": "file"
-    },
-    {
-      "path": "results/phase2/phase2_tsvector_comparison.json",
-      "accessCount": 2,
-      "lastAccessed": 1774338134306,
-      "type": "file"
-    },
-    {
-      "path": "results/phase2/phase2_textsearch_ko_ab.json",
-      "accessCount": 2,
-      "lastAccessed": 1774338134514,
-      "type": "file"
-    },
-    {
-      "path": "docs/plan/phase3_native_bm25.md",
-      "accessCount": 2,
-      "lastAccessed": 1774338141017,
-      "type": "directory"
-    },
-    {
-      "path": "results/phase5/phase5_final_report.md",
-      "accessCount": 2,
-      "lastAccessed": 1774338159765,
-      "type": "file"
-    },
-    {
-      "path": "results/phase1/phase1_analyzer_comparison.md",
-      "accessCount": 2,
-      "lastAccessed": 1774338180315,
-      "type": "file"
-    },
-    {
-      "path": "docs/source-analysis/bm25_implementations_comparison.md",
-      "accessCount": 1,
-      "lastAccessed": 1774306819553,
-      "type": "file"
-    },
-    {
-      "path": "idea.md",
-      "accessCount": 1,
-      "lastAccessed": 1774307227887,
-      "type": "file"
-    },
-    {
-      "path": "experiments/phase5_system_comparison/phase5_es_qdrant.py",
-      "accessCount": 1,
-      "lastAccessed": 1774314259613,
-      "type": "file"
-    },
-    {
-      "path": "docs/plan",
-      "accessCount": 1,
-      "lastAccessed": 1774316311505,
-      "type": "directory"
-    },
-    {
-      "path": "docs",
-      "accessCount": 1,
-      "lastAccessed": 1774316497300,
-      "type": "directory"
-    },
-    {
-      "path": "experiments/phase3_native_bm25/phase2_5_param_tuning.py",
-      "accessCount": 1,
-      "lastAccessed": 1774316989822,
-      "type": "directory"
-    },
-    {
-      "path": "experiments/phase4_bm25_vs_neural",
-      "accessCount": 1,
-      "lastAccessed": 1774320948075,
-      "type": "directory"
-    },
-    {
-      "path": "docs/plan/phase7_pgsearch_fork.md",
-      "accessCount": 1,
-      "lastAccessed": 1774329163895,
-      "type": "file"
-    },
-    {
-      "path": "vendor/textsearch_ko/ts_mecab_ko.c",
-      "accessCount": 1,
-      "lastAccessed": 1774335122217,
-      "type": "file"
-    },
-    {
-      "path": "vendor/textsearch_ko/textsearch_ko--1.0.sql",
-      "accessCount": 1,
-      "lastAccessed": 1774335122524,
-      "type": "file"
-    },
-    {
-      "path": "vendor/textsearch_ko/textsearch_ko.control",
-      "accessCount": 1,
-      "lastAccessed": 1774335265640,
-      "type": "file"
-    },
-    {
-      "path": "vendor/textsearch_ko/README.md",
-      "accessCount": 1,
-      "lastAccessed": 1774335265775,
-      "type": "file"
-    },
-    {
-      "path": "extensions/korean_bigram/korean_bigram.c",
-      "accessCount": 1,
-      "lastAccessed": 1774336006104,
-      "type": "file"
-    },
-    {
-      "path": "results/phase1/phase1_analyzer_comparison.json",
-      "accessCount": 1,
-      "lastAccessed": 1774338129814,
-      "type": "file"
-    },
-    {
-      "path": "docs/plan/phase1_morphological_analyzers.md",
-      "accessCount": 1,
-      "lastAccessed": 1774338130388,
-      "type": "file"
-    },
-    {
-      "path": "experiments/phase1_morphological/phase1_analyzer_comparison.py",
-      "accessCount": 1,
-      "lastAccessed": 1774338130783,
-      "type": "file"
-    },
-    {
-      "path": "results/phase3/phase3_bm25_comparison.json",
-      "accessCount": 1,
-      "lastAccessed": 1774338140801,
-      "type": "file"
-    },
-    {
-      "path": "experiments/phase3_native_bm25/phase3_bm25_comparison.py",
-      "accessCount": 1,
-      "lastAccessed": 1774338141234,
-      "type": "file"
-    },
-    {
-      "path": "results/phase4/phase4_comparison.json",
-      "accessCount": 1,
-      "lastAccessed": 1774338147771,
-      "type": "file"
-    },
-    {
-      "path": "docs/plan/phase4_bm25_vs_neural.md",
-      "accessCount": 1,
-      "lastAccessed": 1774338148242,
-      "type": "file"
-    },
-    {
-      "path": "results/phase5/phase5_summary.json",
-      "accessCount": 1,
-      "lastAccessed": 1774338159457,
-      "type": "file"
-    }
-  ],
+  "hotPaths": [],
   "userDirectives": []
 }
