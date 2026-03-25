@@ -148,8 +148,8 @@
     },
     {
       "path": "experiments/common/bm25_module.py",
-      "accessCount": 7,
-      "lastAccessed": 1774417779280,
+      "accessCount": 10,
+      "lastAccessed": 1774419910535,
       "type": "file"
     },
     {
@@ -160,9 +160,15 @@
     },
     {
       "path": "experiments/phase3_native_bm25/phase3_bm25_comparison.py",
-      "accessCount": 4,
-      "lastAccessed": 1774417139409,
+      "accessCount": 5,
+      "lastAccessed": 1774419899161,
       "type": "file"
+    },
+    {
+      "path": "experiments",
+      "accessCount": 4,
+      "lastAccessed": 1774419916434,
+      "type": "directory"
     },
     {
       "path": "docs/source-analysis/vectorchord_bm25_analysis.md",
@@ -192,6 +198,24 @@
       "path": "results/phase6/phase6_0_feasibility_report.md",
       "accessCount": 2,
       "lastAccessed": 1774418591356,
+      "type": "file"
+    },
+    {
+      "path": "extensions/textsearch_ko/textsearch_ko--1.0.sql",
+      "accessCount": 2,
+      "lastAccessed": 1774419903169,
+      "type": "file"
+    },
+    {
+      "path": "extensions/textsearch_ko/ts_mecab_ko.sql",
+      "accessCount": 2,
+      "lastAccessed": 1774419903349,
+      "type": "file"
+    },
+    {
+      "path": "experiments/phase2_tsvector/phase2_tsvector_comparison.py",
+      "accessCount": 2,
+      "lastAccessed": 1774419916103,
       "type": "file"
     },
     {
@@ -229,18 +253,6 @@
       "accessCount": 1,
       "lastAccessed": 1774417118274,
       "type": "directory"
-    },
-    {
-      "path": "extensions/textsearch_ko/textsearch_ko--1.0.sql",
-      "accessCount": 1,
-      "lastAccessed": 1774417118399,
-      "type": "file"
-    },
-    {
-      "path": "extensions/textsearch_ko/ts_mecab_ko.sql",
-      "accessCount": 1,
-      "lastAccessed": 1774417118640,
-      "type": "file"
     },
     {
       "path": "extensions/textsearch_ko/ts_mecab_ko.h",
@@ -349,6 +361,12 @@
       "accessCount": 1,
       "lastAccessed": 1774417813165,
       "type": "file"
+    },
+    {
+      "path": "experiments/phase2_tsvector",
+      "accessCount": 1,
+      "lastAccessed": 1774419913885,
+      "type": "directory"
     }
   ],
   "userDirectives": []
