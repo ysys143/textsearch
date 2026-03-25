@@ -43,7 +43,7 @@ services:
     environment:
       - discovery.type=single-node
       - xpack.security.enabled=false
-      - ES_JAVA_OPTS=-Xms4g -Xmx4g
+      - ES_JAVA_OPTS=-Xms1g -Xmx1g
     ports:
       - "9200:9200"
       - "9300:9300"
@@ -52,7 +52,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 6g
+          memory: 2g
 
   qdrant:
     image: qdrant/qdrant:v1.15.0
