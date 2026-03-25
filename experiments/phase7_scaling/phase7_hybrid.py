@@ -143,16 +143,13 @@ def search_dense_with_scores(conn, query_emb: List[float], table: str,
 
 def search_rrf(conn, query_text: str, query_emb: List[float],
                table: str, bm25_idx: str, k: int = 10) -> List[str]:
-    bm25_ids = search_bm25(conn, query_text, table, bm25_idx, k=TOPK)
-    dense_ids = search_dense(conn, query_emb, table, k=TOPK)
-
-    scores: Dict[str, float] = {}
-    for rank, doc_id in enumerate(bm25_ids, start=1):
-        scores[doc_id] = scores.get(doc_id, 0.0) + 1.0 / (RRF_K + rank)
-    for rank, doc_id in enumerate(dense_ids, start=1):
-        scores[doc_id] = scores.get(doc_id, 0.0) + 1.0 / (RRF_K + rank)
-
-    return [d for d, _ in sorted(scores.items(), key=lambda x: x[1], reverse=True)[:k]]
+    fn = "p7_rrf_miracl" if "miracl" in table else "p7_rrf_ezis"
+    with conn.cursor() as cur:
+        cur.execute(
+            f"SELECT id FROM {fn}(%s, %s, %s, %s, %s)",
+            (query_text, query_emb, k, TOPK, RRF_K)
+        )
+        return [r[0] for r in cur.fetchall()]
 
 
 def search_bayesian(conn, query_text: str, query_emb: List[float],
