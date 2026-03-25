@@ -201,6 +201,12 @@
       "type": "file"
     },
     {
+      "path": "docs/plan/phase6_vectorchord_bm25.md",
+      "accessCount": 3,
+      "lastAccessed": 1774425789286,
+      "type": "file"
+    },
+    {
       "path": "extensions/textsearch_ko",
       "accessCount": 2,
       "lastAccessed": 1774417130755,
@@ -210,12 +216,6 @@
       "path": "vendor/pg_search_original/tokenizers/src/manager.rs",
       "accessCount": 2,
       "lastAccessed": 1774417133504,
-      "type": "file"
-    },
-    {
-      "path": "docs/plan/phase6_vectorchord_bm25.md",
-      "accessCount": 2,
-      "lastAccessed": 1774417200245,
       "type": "file"
     },
     {
