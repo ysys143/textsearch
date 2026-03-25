@@ -141,7 +141,7 @@ Qdrant는 Dense-only 시스템으로 우수. 한국어 lexical search 필요 시
 textsearch_ko (MeCab) + pg_textsearch BM25 + pgvector HNSW + DB-side RRF
 ```
 
-외부 시스템 대비 품질 동등 이상, latency 2~5배 우위, 운영 복잡도 최소.
+외부 시스템 대비 전체적으로 경쟁력 있는 품질, 본 실험 설정에서 latency 2~5배 우위, 운영 복잡도 최소.
 
 ---
 
@@ -153,6 +153,16 @@ textsearch_ko (MeCab) + pg_textsearch BM25 + pgvector HNSW + DB-side RRF
 | Qdrant 1.15 | [phase8_qdrant.md](phase8_qdrant.md) |
 | Vespa 8.663 | [phase8_vespa.md](phase8_vespa.md) |
 
+## 한계 및 주의사항
+
+1. **PG baseline 재측정 미실시**: PG 수치는 Phase 7 실측값 재사용. 동일 시점 head-to-head가 아닌 cross-phase 비교.
+2. **BM25 query semantics 불일치**: PG는 AND matching(`<@>`), ES는 OR(`match` 기본), Vespa는 `weakAnd`. 동일 BM25 연산자가 아님.
+3. **Hybrid fusion 방식 차이**: PG/ES/Qdrant는 RRF 계열, Vespa만 `0.1×bm25 + closeness` 선형 결합. 순수 BM25 품질 차이와 fusion 방식 차이를 분리해 증명하기 어려움.
+4. **Latency 측정 조건**: warm-cache, retrieval-only, 단일 노드 로컬, 한 번에 하나의 시스템만 실행. 운영 환경 latency와 다를 수 있음.
+5. **통계적 유의성 미적용**: bootstrap CI, p-value 미산출. EZIS에서 ES(0.932) vs PG(0.916) 같은 작은 차이는 통계적으로 유의하지 않을 수 있음.
+6. **Vespa connection pooling 누락**: `requests.post` 매 호출 시 새 TCP 세션 → latency 과대 측정 가능성.
+7. **Qdrant BM25 표현**: "BM25 불가능"이 아닌 "native self-hosted BM25 없음"이 정확. 외부 토크나이징 + sparse IDF로 ranked lexical approximation은 가능하나 품질이 낮음.
+
 ## 기술 요약
 
 - [O] 한국어 하이브리드 검색에서 PostgreSQL 스택이 외부 시스템 대비 동등 이상 확인
@@ -161,3 +171,27 @@ textsearch_ko (MeCab) + pg_textsearch BM25 + pgvector HNSW + DB-side RRF
 - [O] Vespa ICU 토크나이저는 한국어에 부적합 확인
 - [INFO] 모든 latency는 warm-cache, retrieval-only (BGE-M3 인퍼런스 ~200ms 제외)
 - [INFO] ES `retriever.rrf` 서버사이드 API는 Trial/Platinum 라이선스 필요, Python-side RRF로 동일 품질 대체 가능
+
+---
+
+## 관련 프로젝트
+
+### PostgreSQL 스택 (Phase 7 확정)
+
+| 프로젝트 | 역할 | 링크 |
+|---------|------|------|
+| **mecab-ko** | 한국어 형태소 분석기 (MeCab 한국어 fork) | [github.com/hephaex/mecab-ko](https://github.com/hephaex/mecab-ko) |
+| **textsearch_ko** (i0seph) | PostgreSQL 한국어 FTS 확장 — MeCab 기반 `korean` 텍스트 검색 설정 | [github.com/i0seph/textsearch_ko](https://github.com/i0seph/textsearch_ko) |
+| **textsearch_ko** (ysys143) | textsearch_ko fork — 추가 한국어 토크나이저 지원 | [github.com/ysys143/textsearch_ko](https://github.com/ysys143/textsearch_ko) |
+| **pg_textsearch** | Timescale BM25 확장 — `<@>` 연산자, BM25 인덱스 | [github.com/timescale/pg_textsearch](https://github.com/timescale/pg_textsearch) |
+| **pgvector** | PostgreSQL 벡터 유사도 검색 — HNSW/IVFFlat 인덱스 | [github.com/pgvector/pgvector](https://github.com/pgvector/pgvector) |
+
+### 외부 시스템
+
+| 시스템 | 용도 | 링크 |
+|--------|------|------|
+| **Elasticsearch** | 분산 검색 엔진 — nori 한국어 형태소 분석기 내장 | [elastic.co](https://www.elastic.co/elasticsearch) |
+| **Qdrant** | 벡터 검색 엔진 — HNSW, sparse vector, hybrid prefetch | [qdrant.tech](https://qdrant.tech/) |
+| **Vespa** | 대규모 서빙 엔진 — BM25 + ANN hybrid, ICU 토크나이저 | [vespa.ai](https://vespa.ai/) |
+| **FastEmbed** | 경량 임베딩 라이브러리 — BM25/BM42/SPLADE sparse 지원 | [github.com/qdrant/fastembed](https://github.com/qdrant/fastembed) |
+| **BGE-M3** | 다국어 임베딩 모델 — 1024-dim dense, 본 벤치마크 전체 사용 | [huggingface.co/BAAI/bge-m3](https://huggingface.co/BAAI/bge-m3) |
