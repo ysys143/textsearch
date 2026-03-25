@@ -30,10 +30,9 @@
 | **Phase 3** | PostgreSQL Native BM25 | PostgreSQL 안에서 BM25를 구현하는 최선의 방법은? | [done] | [phase3_native_bm25.md](phase3_native_bm25.md) |
 | **Phase 4** | BM25 vs Neural Sparse | 형태소+BM25 조합이 neural sparse를 이길 수 있는가? | [done] | [phase4_bm25_vs_neural.md](phase4_bm25_vs_neural.md) |
 | **Phase 5** | Production PG 최적 세팅 | 지속적 문서 추가 환경에서 latency/throughput/비용 고려 시 최적 세팅은? | [done] | [phase5_production_pg.md](phase5_production_pg.md) |
-| **Phase 6** | VectorChord-BM25 + pg_tokenizer | Block-WeakAnd BM25 + 한국어 토크나이저 연결, 기성 확장 조합으로 해결 시도 | [next] | [phase6_vectorchord_bm25.md](phase6_vectorchord_bm25.md) |
-| **Phase 7** | pg_textsearch 한국어 포크 | pg_textsearch를 포크하여 AND→OR 매칭 수정 (Phase 6 실패 시 fallback) | [planned] | [phase7_textsearch_fork.md](phase7_textsearch_fork.md) |
-| **Phase 8** | pg_search 한국어 포크 | ParadeDB pg_search를 포크하여 MeCab/Kiwi 토크나이저 연결 (Phase 6 실패 시 fallback) | [planned] | [phase8_pgsearch_fork.md](phase8_pgsearch_fork.md) |
-| **Phase 9** | 시스템 비교 | PostgreSQL(최선 세팅) vs Elasticsearch vs Qdrant vs Weaviate | [planned] | [phase9_system_comparison.md](phase9_system_comparison.md) |
+| **Phase 6** | VectorChord-BM25 + pg_tokenizer | Block-WeakAnd BM25 + 한국어 토크나이저 연결, 기성 확장 조합으로 해결 시도 | [done] | [phase6_vectorchord_bm25.md](phase6_vectorchord_bm25.md) |
+| **Phase 7** | PostgreSQL 스케일링 비교 | pg_textsearch(GIN) vs VectorChord-BM25 vs pl/pgsql — 1K/10K/100K 규모별 latency/throughput | [next] | [phase7_scaling_comparison.md](phase7_scaling_comparison.md) |
+| **Phase 8** | 외부 시스템 비교 | PostgreSQL 최선 세팅 vs Elasticsearch vs Qdrant vs Weaviate — BM25 동등 조건 비교 | [planned] | [phase8_system_comparison.md](phase8_system_comparison.md) |
 
 ## 실험 순서 및 의존성
 
@@ -45,10 +44,8 @@ Phase 0 (데이터)
                     └── Phase 4 (BM25 vs Neural, Phase 3 최선 세팅 사용)
                             └── Phase 5 (Production PG 최적화 — 운영 비용 측정)
                                     └── Phase 6 (VectorChord-BM25 + pg_tokenizer — 기성 확장 조합)
-                                            ├── [성공] → Phase 9 (시스템 비교)
-                                            └── [실패] → Phase 7 (pg_textsearch 포크)
-                                                    └── Phase 8 (pg_search 포크)
-                                                            └── Phase 9 (시스템 비교 — 최선 세팅 사용)
+                                            └── [완료] → Phase 7 (스케일링 비교 — pg_textsearch + VectorChord + pl/pgsql)
+                                                    └── Phase 8 (외부 시스템 비교 — ES/Qdrant/Weaviate)
 ```
 
 Phase 1은 Phase 2, 3의 인풋 — 반드시 먼저 완료.

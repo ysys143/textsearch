@@ -177,6 +177,12 @@
       "type": "file"
     },
     {
+      "path": "docs/plan/phase6_vectorchord_bm25.md",
+      "accessCount": 5,
+      "lastAccessed": 1774428632111,
+      "type": "file"
+    },
+    {
       "path": "experiments",
       "accessCount": 4,
       "lastAccessed": 1774419916434,
@@ -198,12 +204,6 @@
       "path": "results/phase6/phase6_2_full_eval_report.md",
       "accessCount": 3,
       "lastAccessed": 1774425614763,
-      "type": "file"
-    },
-    {
-      "path": "docs/plan/phase6_vectorchord_bm25.md",
-      "accessCount": 3,
-      "lastAccessed": 1774425789286,
       "type": "file"
     },
     {
