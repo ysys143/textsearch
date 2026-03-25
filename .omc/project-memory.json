@@ -153,6 +153,12 @@
       "type": "file"
     },
     {
+      "path": "docs/source-analysis/vectorchord_bm25_analysis.md",
+      "accessCount": 3,
+      "lastAccessed": 1774417858683,
+      "type": "file"
+    },
+    {
       "path": "extensions/textsearch_ko",
       "accessCount": 2,
       "lastAccessed": 1774417130755,
