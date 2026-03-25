@@ -147,6 +147,12 @@
       "type": "file"
     },
     {
+      "path": "docker-compose.yml",
+      "accessCount": 3,
+      "lastAccessed": 1774417800702,
+      "type": "file"
+    },
+    {
       "path": "extensions/textsearch_ko",
       "accessCount": 2,
       "lastAccessed": 1774417130755,
@@ -162,12 +168,6 @@
       "path": "docs/plan/phase6_vectorchord_bm25.md",
       "accessCount": 2,
       "lastAccessed": 1774417200245,
-      "type": "file"
-    },
-    {
-      "path": "docker-compose.yml",
-      "accessCount": 2,
-      "lastAccessed": 1774417774054,
       "type": "file"
     },
     {
@@ -318,6 +318,12 @@
       "path": "vendor/pg_tokenizer_original/docs/03-examples.md",
       "accessCount": 1,
       "lastAccessed": 1774417637842,
+      "type": "file"
+    },
+    {
+      "path": "experiments/phase6_vectorchord/__init__.py",
+      "accessCount": 1,
+      "lastAccessed": 1774417813165,
       "type": "file"
     }
   ],
