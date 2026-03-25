@@ -1,14 +1,19 @@
 """
-Phase 7 Section 2: Hybrid Search Benchmark (BGE-M3 1024-dim)
+Phase 7 Section 2: Hybrid Search Benchmark
 
-Methods measured on p7_hybrid_miracl (10K docs):
-  - BM25 AND   : pg_textsearch <@> operator
-  - Dense      : HNSW cosine (pgvector)
-  - RRF        : BM25_AND(top-60) + Dense(top-60), k=60
-  - BM25_OR    : GIN ts_rank_cd
+Infrastructure: MeCab (textsearch_ko) + pg_textsearch BM25 + pgvector HNSW
 
-NDCG@10, Recall@10, MRR on MIRACL-ko 213 queries.
-Latency p50/p95/p99 (query emb pre-loaded from p7_query_emb).
+Methods:
+  - BM25    : pg_textsearch <@> operator (AND matching)
+  - Dense   : HNSW cosine (pgvector)
+  - RRF     : BM25(top-60) + Dense(top-60) rank fusion, k=60
+  - Bayesian: -bm25_dist + cosine_sim 정규화 후 α*BM25 + β*Dense
+
+Datasets:
+  - MIRACL-ko 10K (p7_hybrid_miracl, 213 queries)
+  - EZIS       97 (p7_hybrid_ezis,   131 queries)
+
+Metrics: NDCG@10, Recall@10, MRR, latency p50/p95/p99
 
 Usage:
   uv run python3 experiments/phase7_scaling/phase7_hybrid.py \\
@@ -28,10 +33,12 @@ import psycopg2
 import psycopg2.extras
 
 MIRACL_QUERIES_PATH = "data/miracl/queries_dev.json"
-N_QUERIES = 213
-RRF_K = 60
-RRF_TOPK = 60   # fetch top-N from each component before fusion
-WARMUP = 5
+EZIS_QUERIES_PATH   = "data/ezis/queries.json"
+N_MIRACL = 213
+RRF_K    = 60
+TOPK     = 60   # candidates per component before fusion
+WARMUP   = 5
+BAYESIAN_ALPHA = 0.5   # weight for BM25; (1-alpha) for Dense
 
 
 # ---------------------------------------------------------------------------
@@ -56,7 +63,7 @@ def recall_at_k(relevant_ids: List[str], retrieved_ids: List[str], k: int = 10) 
     return hits / len(relevant_set) if relevant_set else 0.0
 
 
-def mrr(relevant_ids: List[str], retrieved_ids: List[str], k: int = 10) -> float:
+def mrr_at_k(relevant_ids: List[str], retrieved_ids: List[str], k: int = 10) -> float:
     relevant_set = set(relevant_ids)
     for rank, doc_id in enumerate(retrieved_ids[:k], start=1):
         if doc_id in relevant_set:
@@ -68,67 +75,76 @@ def mrr(relevant_ids: List[str], retrieved_ids: List[str], k: int = 10) -> float
 # Data loading
 # ---------------------------------------------------------------------------
 
-def load_miracl_queries() -> List[dict]:
-    with open(MIRACL_QUERIES_PATH, encoding="utf-8") as f:
-        return json.load(f)[:N_QUERIES]
+def load_queries(path: str, limit: Optional[int] = None) -> List[dict]:
+    with open(path, encoding="utf-8") as f:
+        qs = json.load(f)
+    return qs[:limit] if limit else qs
 
 
-def load_query_embeddings(conn) -> Dict[str, List[float]]:
-    """Load pre-computed query embeddings from p7_query_emb."""
+def load_query_embeddings(conn, dataset: str) -> Dict[str, List[float]]:
     with conn.cursor() as cur:
         cur.execute(
-            "SELECT query_id, emb FROM p7_query_emb WHERE dataset = 'miracl'"
+            "SELECT query_id, emb FROM p7_query_emb WHERE dataset = %s",
+            (dataset,)
         )
         rows = cur.fetchall()
     return {r[0]: r[1] for r in rows}
 
 
 # ---------------------------------------------------------------------------
-# Search functions
+# Search functions (table/index as parameters)
 # ---------------------------------------------------------------------------
 
-def search_bm25_and(conn, query_text: str, k: int = 10) -> List[str]:
+def search_bm25(conn, query_text: str, table: str, bm25_idx: str,
+                k: int = 10) -> List[str]:
     with conn.cursor() as cur:
         cur.execute(
-            "SELECT id FROM p7_hybrid_miracl ORDER BY text <@> %s LIMIT %s",
+            f"SELECT id FROM {table} ORDER BY text <@> %s LIMIT %s",
             (query_text, k)
         )
         return [r[0] for r in cur.fetchall()]
 
 
-def search_dense(conn, query_emb: List[float], k: int = 10) -> List[str]:
+def search_bm25_with_scores(conn, query_text: str, table: str, bm25_idx: str,
+                             k: int = TOPK) -> List[Tuple[str, float]]:
+    """Returns (id, bm25_dist) — dist is negative; more negative = more relevant."""
     with conn.cursor() as cur:
         cur.execute(
-            "SELECT id FROM p7_hybrid_miracl ORDER BY dense_vec <=> %s LIMIT %s",
+            f"""SELECT id, text <@> to_bm25query(%s, %s) as bm25_dist
+                FROM {table}
+                ORDER BY bm25_dist LIMIT %s""",
+            (query_text, bm25_idx, k)
+        )
+        return [(r[0], r[1]) for r in cur.fetchall()]
+
+
+def search_dense(conn, query_emb: List[float], table: str,
+                 k: int = 10) -> List[str]:
+    with conn.cursor() as cur:
+        cur.execute(
+            f"SELECT id FROM {table} ORDER BY dense_vec <=> %s LIMIT %s",
             (query_emb, k)
         )
         return [r[0] for r in cur.fetchall()]
 
 
-def search_bm25_or(conn, query_text: str, k: int = 10) -> List[str]:
+def search_dense_with_scores(conn, query_emb: List[float], table: str,
+                              k: int = TOPK) -> List[Tuple[str, float]]:
+    """Returns (id, cosine_dist) — dist in [0,2]; smaller = more relevant."""
     with conn.cursor() as cur:
         cur.execute(
-            "SELECT tsvector_to_array(to_tsvector('public.korean', %s))",
-            (query_text,)
+            f"""SELECT id, dense_vec <=> %s as cosine_dist
+                FROM {table}
+                ORDER BY cosine_dist LIMIT %s""",
+            (query_emb, k)
         )
-        tokens = cur.fetchone()[0]
-        if not tokens:
-            return []
-        or_query = " | ".join(tokens)
-        cur.execute("""
-            SELECT id, ts_rank_cd(tsv, to_tsquery('public.korean', %s)) AS score
-            FROM p7_hybrid_miracl
-            WHERE tsv @@ to_tsquery('public.korean', %s)
-            ORDER BY score DESC
-            LIMIT %s
-        """, (or_query, or_query, k))
-        return [r[0] for r in cur.fetchall()]
+        return [(r[0], r[1]) for r in cur.fetchall()]
 
 
-def search_rrf(conn, query_text: str, query_emb: List[float], k: int = 10) -> List[str]:
-    """RRF fusion: BM25 AND + Dense, each fetches top RRF_TOPK candidates."""
-    bm25_ids = search_bm25_and(conn, query_text, k=RRF_TOPK)
-    dense_ids = search_dense(conn, query_emb, k=RRF_TOPK)
+def search_rrf(conn, query_text: str, query_emb: List[float],
+               table: str, bm25_idx: str, k: int = 10) -> List[str]:
+    bm25_ids = search_bm25(conn, query_text, table, bm25_idx, k=TOPK)
+    dense_ids = search_dense(conn, query_emb, table, k=TOPK)
 
     scores: Dict[str, float] = {}
     for rank, doc_id in enumerate(bm25_ids, start=1):
@@ -136,121 +152,179 @@ def search_rrf(conn, query_text: str, query_emb: List[float], k: int = 10) -> Li
     for rank, doc_id in enumerate(dense_ids, start=1):
         scores[doc_id] = scores.get(doc_id, 0.0) + 1.0 / (RRF_K + rank)
 
-    ranked = sorted(scores.items(), key=lambda x: x[1], reverse=True)
-    return [doc_id for doc_id, _ in ranked[:k]]
+    return [d for d, _ in sorted(scores.items(), key=lambda x: x[1], reverse=True)[:k]]
+
+
+def search_bayesian(conn, query_text: str, query_emb: List[float],
+                    table: str, bm25_idx: str, k: int = 10,
+                    alpha: float = BAYESIAN_ALPHA) -> List[str]:
+    """
+    Score-based fusion using actual BM25 scores (via to_bm25query) and cosine similarity.
+    bm25_positive = -bm25_dist  (flip: higher = more relevant)
+    cosine_sim    = 1 - cosine_dist
+    Normalize each to [0,1], combine: alpha*bm25_norm + (1-alpha)*cosine_norm
+    """
+    bm25_rows  = search_bm25_with_scores(conn, query_text, table, bm25_idx, k=TOPK)
+    dense_rows = search_dense_with_scores(conn, query_emb, table, k=TOPK)
+
+    # Convert to higher-is-better
+    bm25_pos   = {id_: -dist for id_, dist in bm25_rows}
+    cosine_sim = {id_: 1.0 - dist for id_, dist in dense_rows}
+
+    all_ids = set(bm25_pos) | set(cosine_sim)
+
+    # Fallback for candidates missing in one component
+    worst_bm25   = min(bm25_pos.values())   if bm25_pos   else 0.0
+    worst_cosine = 0.0
+
+    for id_ in all_ids:
+        if id_ not in bm25_pos:
+            bm25_pos[id_] = worst_bm25
+        if id_ not in cosine_sim:
+            cosine_sim[id_] = worst_cosine
+
+    # Min-max normalization within candidate set
+    def minmax_norm(d: Dict[str, float]) -> Dict[str, float]:
+        lo, hi = min(d.values()), max(d.values())
+        if hi == lo:
+            return {k: 0.5 for k in d}
+        return {k: (v - lo) / (hi - lo) for k, v in d.items()}
+
+    bm25_norm   = minmax_norm(bm25_pos)
+    cosine_norm = minmax_norm(cosine_sim)
+
+    beta = 1.0 - alpha
+    combined = {
+        id_: alpha * bm25_norm[id_] + beta * cosine_norm[id_]
+        for id_ in all_ids
+    }
+
+    return [d for d, _ in sorted(combined.items(), key=lambda x: x[1], reverse=True)[:k]]
 
 
 # ---------------------------------------------------------------------------
 # Benchmark runner
 # ---------------------------------------------------------------------------
 
-def run_method(
-    name: str,
-    fn,
-    queries: List[dict],
-    query_embs: Dict[str, List[float]],
-) -> dict:
-    """Measure latency + quality for one search method."""
-    ndcg_scores, recall_scores, mrr_scores, latencies = [], [], [], []
+def bench_dataset(conn, dataset_name: str, queries: List[dict],
+                  query_embs: Dict[str, List[float]],
+                  table: str, bm25_idx: str) -> List[dict]:
+    print(f"\n  === {dataset_name} | table={table} | {len(queries)} queries ===")
 
-    # Warmup
-    for q in queries[:WARMUP]:
-        emb = query_embs.get(q["query_id"])
-        fn(q["text"], emb)
+    methods = [
+        ("BM25",     lambda t, e: search_bm25(conn, t, table, bm25_idx)),
+        ("Dense",    lambda t, e: search_dense(conn, e, table) if e else []),
+        ("RRF",      lambda t, e: search_rrf(conn, t, e, table, bm25_idx) if e else []),
+        ("Bayesian", lambda t, e: search_bayesian(conn, t, e, table, bm25_idx) if e else []),
+    ]
 
-    for q in queries:
-        emb = query_embs.get(q["query_id"])
-        t0 = time.perf_counter()
-        retrieved = fn(q["text"], emb)
-        latencies.append((time.perf_counter() - t0) * 1000)
+    results = []
+    for name, fn in methods:
+        ndcg_s, rec_s, mrr_s, lats = [], [], [], []
 
-        rel = q.get("relevant_ids", [])
-        if rel:
-            ndcg_scores.append(ndcg_at_k(rel, retrieved))
-            recall_scores.append(recall_at_k(rel, retrieved))
-            mrr_scores.append(mrr(rel, retrieved))
+        # Warmup
+        for q in queries[:WARMUP]:
+            fn(q["text"], query_embs.get(q["query_id"]))
 
-    latencies.sort()
-    n = len(latencies)
-    nq = len(ndcg_scores)
+        for q in queries:
+            emb = query_embs.get(q["query_id"])
+            t0 = time.perf_counter()
+            retrieved = fn(q["text"], emb)
+            lats.append((time.perf_counter() - t0) * 1000)
 
-    result = {
-        "method": name,
-        "n_queries": len(queries),
-        "ndcg_at_10": round(sum(ndcg_scores) / nq, 4) if nq else None,
-        "recall_at_10": round(sum(recall_scores) / nq, 4) if nq else None,
-        "mrr": round(sum(mrr_scores) / nq, 4) if nq else None,
-        "latency_p50": round(latencies[n // 2], 2),
-        "latency_p95": round(latencies[int(n * 0.95)], 2),
-        "latency_p99": round(latencies[int(n * 0.99)], 2),
-    }
+            rel = q.get("relevant_ids", [])
+            if rel:
+                ndcg_s.append(ndcg_at_k(rel, retrieved))
+                rec_s.append(recall_at_k(rel, retrieved))
+                mrr_s.append(mrr_at_k(rel, retrieved))
 
-    print(f"  [{name:12s}] NDCG@10={result['ndcg_at_10']}  "
-          f"p50={result['latency_p50']}ms  p95={result['latency_p95']}ms")
-    return result
+        lats.sort()
+        n = len(lats)
+        nq = len(ndcg_s)
+
+        r = {
+            "dataset": dataset_name,
+            "method": name,
+            "n_queries": len(queries),
+            "ndcg_at_10":   round(sum(ndcg_s) / nq, 4) if nq else None,
+            "recall_at_10": round(sum(rec_s) / nq, 4)  if nq else None,
+            "mrr":          round(sum(mrr_s) / nq, 4)  if nq else None,
+            "latency_p50":  round(lats[n // 2], 2),
+            "latency_p95":  round(lats[int(n * 0.95)], 2),
+            "latency_p99":  round(lats[int(n * 0.99)], 2),
+        }
+        print(f"  [{name:10s}] NDCG@10={r['ndcg_at_10']}  "
+              f"Recall={r['recall_at_10']}  MRR={r['mrr']}  "
+              f"p50={r['latency_p50']}ms  p95={r['latency_p95']}ms")
+        results.append(r)
+
+    return results
 
 
 # ---------------------------------------------------------------------------
 # Report
 # ---------------------------------------------------------------------------
 
-def generate_report(results: List[dict], output_dir: str) -> str:
+def generate_report(all_results: List[dict], output_dir: str) -> str:
     lines = [
         "# Phase 7 Section 2: Hybrid Search Benchmark",
         "",
         f"**Generated:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
-        "**Corpus:** p7_hybrid_miracl (10K docs, BGE-M3 1024-dim)",
-        "**Queries:** MIRACL-ko dev 213",
+        "**Infrastructure:** MeCab (textsearch_ko) + pg_textsearch BM25 + pgvector HNSW",
+        f"**Fusion:** RRF k={RRF_K}, Bayesian α={BAYESIAN_ALPHA} (BM25) / {1-BAYESIAN_ALPHA:.1f} (Dense)",
         "",
         "---",
         "",
-        "## Quality (NDCG@10 / Recall@10 / MRR)",
-        "",
-        "| Method | NDCG@10 | Recall@10 | MRR |",
-        "|--------|---------|-----------|-----|",
     ]
-    for r in results:
-        lines.append(
-            f"| {r['method']} "
-            f"| {r['ndcg_at_10']} "
-            f"| {r['recall_at_10']} "
-            f"| {r['mrr']} |"
-        )
+
+    for dataset in ["MIRACL", "EZIS"]:
+        rows = [r for r in all_results if r["dataset"] == dataset]
+        if not rows:
+            continue
+        corpus = "p7_hybrid_miracl (10K)" if dataset == "MIRACL" else "p7_hybrid_ezis (97)"
+        lines += [
+            f"## {dataset} — {corpus}",
+            "",
+            "### Quality",
+            "",
+            "| Method | NDCG@10 | Recall@10 | MRR |",
+            "|--------|---------|-----------|-----|",
+        ]
+        for r in rows:
+            lines.append(
+                f"| {r['method']} | {r['ndcg_at_10']} | {r['recall_at_10']} | {r['mrr']} |"
+            )
+        lines += [
+            "",
+            "### Latency",
+            "",
+            "| Method | p50 | p95 | p99 |",
+            "|--------|-----|-----|-----|",
+        ]
+        for r in rows:
+            lines.append(
+                f"| {r['method']} | {r['latency_p50']}ms | {r['latency_p95']}ms | {r['latency_p99']}ms |"
+            )
+        lines.append("")
 
     lines += [
-        "",
-        "## Latency (ms)",
-        "",
-        "| Method | p50 | p95 | p99 |",
-        "|--------|-----|-----|-----|",
-    ]
-    for r in results:
-        lines.append(
-            f"| {r['method']} "
-            f"| {r['latency_p50']}ms "
-            f"| {r['latency_p95']}ms "
-            f"| {r['latency_p99']}ms |"
-        )
-
-    lines += [
-        "",
         "---",
         "",
         "## 비고",
         "",
-        "- **BM25 AND**: pg_textsearch `<@>` 연산자 (AND matching)",
-        "- **Dense**: HNSW cosine (pgvector), 쿼리 임베딩 pre-computed",
-        f"- **RRF**: BM25_AND(top-{RRF_TOPK}) + Dense(top-{RRF_TOPK}), k={RRF_K}",
-        "- **BM25 OR**: GIN + ts_rank_cd (OR matching)",
+        "- **BM25**: pg_textsearch `<@>` AND matching, MeCab 토크나이저",
+        "- **Dense**: pgvector HNSW cosine (BGE-M3 1024-dim)",
+        f"- **RRF**: 각 컴포넌트 top-{TOPK} 후 `1/(k+rank)` 합산 (k={RRF_K})",
+        f"- **Bayesian**: `to_bm25query` 실제 BM25 스코어 + cosine sim 정규화 후 α={BAYESIAN_ALPHA}:{1-BAYESIAN_ALPHA:.1f} 결합",
         "",
     ]
 
     os.makedirs(output_dir, exist_ok=True)
-    report_path = os.path.join(output_dir, "phase7_hybrid_report.md")
-    with open(report_path, "w", encoding="utf-8") as f:
+    path = os.path.join(output_dir, "phase7_hybrid_report.md")
+    with open(path, "w", encoding="utf-8") as f:
         f.write("\n".join(lines))
-    print(f"\n  Report: {report_path}")
-    return report_path
+    print(f"\n  Report: {path}")
+    return path
 
 
 # ---------------------------------------------------------------------------
@@ -271,43 +345,41 @@ def main():
     conn = psycopg2.connect(args.db_url)
     conn.autocommit = True
 
-    queries = load_miracl_queries()
-    print(f"  Queries: {len(queries)}")
+    # MIRACL
+    miracl_queries = load_queries(MIRACL_QUERIES_PATH, limit=N_MIRACL)
+    miracl_embs    = load_query_embeddings(conn, "miracl")
+    print(f"  MIRACL: {len(miracl_queries)} queries, {len(miracl_embs)} embeddings")
 
-    print("  Loading query embeddings from p7_query_emb...")
-    query_embs = load_query_embeddings(conn)
-    print(f"  Loaded {len(query_embs)} query embeddings")
+    # EZIS
+    ezis_queries = load_queries(EZIS_QUERIES_PATH)
+    ezis_embs    = load_query_embeddings(conn, "ezis")
+    print(f"  EZIS:   {len(ezis_queries)} queries, {len(ezis_embs)} embeddings")
 
-    # Build search functions (emb arg passed but may be None for BM25-only)
-    methods = [
-        ("BM25 AND",  lambda t, e: search_bm25_and(conn, t)),
-        ("Dense",     lambda t, e: search_dense(conn, e) if e else []),
-        ("RRF",       lambda t, e: search_rrf(conn, t, e) if e else []),
-        ("BM25 OR",   lambda t, e: search_bm25_or(conn, t)),
-    ]
-
-    print("\n--- Benchmarking ---")
-    results = []
-    for name, fn in methods:
-        result = run_method(name, fn, queries, query_embs)
-        results.append(result)
+    all_results = []
+    all_results += bench_dataset(
+        conn, "MIRACL", miracl_queries, miracl_embs,
+        table="p7_hybrid_miracl", bm25_idx="idx_p7_miracl_bm25"
+    )
+    all_results += bench_dataset(
+        conn, "EZIS", ezis_queries, ezis_embs,
+        table="p7_hybrid_ezis", bm25_idx="idx_p7_ezis_bm25"
+    )
 
     conn.close()
 
-    # Save JSON
     os.makedirs(args.output_dir, exist_ok=True)
     json_path = os.path.join(args.output_dir, "phase7_hybrid.json")
-    output = {
-        "generated": datetime.now().isoformat(),
-        "corpus": "p7_hybrid_miracl",
-        "n_queries": len(queries),
-        "results": results,
-    }
     with open(json_path, "w", encoding="utf-8") as f:
-        json.dump(output, f, indent=2, ensure_ascii=False)
+        json.dump({
+            "generated": datetime.now().isoformat(),
+            "rrf_k": RRF_K,
+            "topk": TOPK,
+            "bayesian_alpha": BAYESIAN_ALPHA,
+            "results": all_results,
+        }, f, indent=2, ensure_ascii=False)
     print(f"  JSON: {json_path}")
 
-    generate_report(results, args.output_dir)
+    generate_report(all_results, args.output_dir)
     print("\nDone.")
 
 
