@@ -28,6 +28,7 @@ Thumbs.db
 
 # Large data files (keep structure, not binary)
 data/kiwi_models/
+data/phase8/doc_embs_*.json
 
 # Vendor (non-submodule, local reference only)
 vendor/pg_bigm_original/
