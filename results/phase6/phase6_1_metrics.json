@@ -1,0 +1,12 @@
+{
+  "corpus_size": 10000,
+  "vocab_size": 48915,
+  "ndcg_at_10": 0.5887792848939579,
+  "recall_at_10": 0.7236001869804686,
+  "mrr": 0.6034317013190252,
+  "latency_p50_ms": 1.620916000319994,
+  "latency_p95_ms": 5.274416000247584,
+  "queries_evaluated": 213,
+  "queries_skipped_no_vec": 0,
+  "queries_skipped_no_results": 0
+}
