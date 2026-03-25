@@ -33,13 +33,13 @@ QUERIES_PATH = "data/miracl/queries_dev.json"
 EZIS_DOCS_PATH = "data/ezis/chunks.json"
 EZIS_QUERIES_PATH = "data/ezis/queries.json"
 
-# Baselines (same tokenizer: textsearch_ko / MeCab)
-# Source: results/phase5/phase5_final_report.md
-PHASE2_PLPGSQL_MECAB_MIRACL = 0.6412   # pl/pgsql BM25 + MeCab (public.korean), MIRACL
-PHASE2_PLPGSQL_MECAB_EZIS   = 0.9290   # same, EZIS
-PHASE3_PGVECTOR_MECAB_MIRACL = 0.5323  # pgvector-sparse BM25 (MeCab), MIRACL
-PHASE3_PGVECTOR_MECAB_EZIS   = 0.9124  # same, EZIS
-PHASE2_PLPGSQL_P50_MS = 10.44          # pl/pgsql BM25 + MeCab latency p50
+# Baselines — Phase 5 production (source: results/phase5/phase5_production_pg.json)
+PHASE5_PGSEARCH_AND_MIRACL = 0.3437   # pg_textsearch AND (<@>), p50=0.62ms
+PHASE5_PGSEARCH_AND_EZIS   = 0.9238
+PHASE5_PGSEARCH_P50_MS     = 0.62
+PHASE5_PLPGSQL_V2_MIRACL   = 0.3355   # pl/pgsql BM25 v2 (stats optimized), p50=3.15ms
+PHASE5_PLPGSQL_V2_EZIS     = 0.8926
+PHASE5_PLPGSQL_V2_P50_MS   = 3.15
 
 
 # ---------------------------------------------------------------------------
@@ -340,15 +340,15 @@ def write_report(
         "",
         "---",
         "",
-        "## Phase Comparison — same tokenizer (textsearch_ko / MeCab)",
+        "## Phase 5 Comparison (same tokenizer: textsearch_ko / MeCab)",
         "",
         "### MIRACL-ko",
         "",
         "| Phase | Method | NDCG@10 | delta vs P6 | p50 latency |",
         "|-------|--------|---------|-------------|-------------|",
-        f"| 2 | pl/pgsql BM25 + MeCab | {PHASE2_PLPGSQL_MECAB_MIRACL:.4f} | {delta(m_ndcg, PHASE2_PLPGSQL_MECAB_MIRACL)} | {PHASE2_PLPGSQL_P50_MS}ms |",
-        f"| 3 | pgvector-sparse BM25 (MeCab) | {PHASE3_PGVECTOR_MECAB_MIRACL:.4f} | {delta(m_ndcg, PHASE3_PGVECTOR_MECAB_MIRACL)} | 18.05ms |",
-        f"| **6** | **VectorChord-BM25 + textsearch_ko** | **{m_ndcg:.4f}** | — | **{m_p50:.2f}ms** |",
+        f"| 5T | pg_textsearch AND (<@>) | {PHASE5_PGSEARCH_AND_MIRACL:.4f} | {delta(m_ndcg, PHASE5_PGSEARCH_AND_MIRACL)} | {PHASE5_PGSEARCH_P50_MS}ms |",
+        f"| 5B v2 | pl/pgsql BM25 v2 + MeCab | {PHASE5_PLPGSQL_V2_MIRACL:.4f} | {delta(m_ndcg, PHASE5_PLPGSQL_V2_MIRACL)} | {PHASE5_PLPGSQL_V2_P50_MS}ms |",
+        f"| **6-1** | **VectorChord-BM25 + textsearch_ko** | **{m_ndcg:.4f}** | — | **{m_p50:.2f}ms** |",
         "",
         "### EZIS",
         "",
@@ -357,22 +357,21 @@ def write_report(
     ]
     if e_ndcg is not None:
         lines += [
-            f"| 2 | pl/pgsql BM25 + MeCab | {PHASE2_PLPGSQL_MECAB_EZIS:.4f} | {delta(e_ndcg, PHASE2_PLPGSQL_MECAB_EZIS)} |",
-            f"| 3 | pgvector-sparse BM25 (MeCab) | {PHASE3_PGVECTOR_MECAB_EZIS:.4f} | {delta(e_ndcg, PHASE3_PGVECTOR_MECAB_EZIS)} |",
-            f"| **6** | **VectorChord-BM25 + textsearch_ko** | **{e_ndcg:.4f}** | — |",
+            f"| 5T | pg_textsearch AND (<@>) | {PHASE5_PGSEARCH_AND_EZIS:.4f} | {delta(e_ndcg, PHASE5_PGSEARCH_AND_EZIS)} |",
+            f"| 5B v2 | pl/pgsql BM25 v2 + MeCab | {PHASE5_PLPGSQL_V2_EZIS:.4f} | {delta(e_ndcg, PHASE5_PLPGSQL_V2_EZIS)} |",
+            f"| **6-1** | **VectorChord-BM25 + textsearch_ko** | **{e_ndcg:.4f}** | — |",
         ]
     else:
         lines += [
-            f"| 2 | pl/pgsql BM25 + MeCab | {PHASE2_PLPGSQL_MECAB_EZIS:.4f} | - |",
-            f"| 3 | pgvector-sparse BM25 (MeCab) | {PHASE3_PGVECTOR_MECAB_EZIS:.4f} | - |",
-            "| **6** | **VectorChord-BM25 + textsearch_ko** | error | — |",
+            f"| 5T | pg_textsearch AND | {PHASE5_PGSEARCH_AND_EZIS:.4f} | - |",
+            f"| 5B v2 | pl/pgsql BM25 v2 | {PHASE5_PLPGSQL_V2_EZIS:.4f} | - |",
+            "| **6-1** | **VectorChord-BM25 + textsearch_ko** | error | — |",
         ]
 
     lines += [
         "",
-        "**Root cause of Phase 6 gap vs Phase 2:** `tsvector_to_array` returns unique lexemes only",
-        "(TF=1 always). Phase 2 pl/pgsql used `mecabko_analyze()` for actual term frequencies.",
-        "Fix for Phase 6-2: replace `tsvector_to_array` with `mecabko_analyze()` in vectorizer.",
+        "**Note:** Phase 6-1 uses TF=1 (tsvector_to_array returns unique lexemes only).",
+        "Phase 6-2 will test real TF via `array_length(positions, 1)` from unnest(tsvector).",
         "",
         "---",
         "",
