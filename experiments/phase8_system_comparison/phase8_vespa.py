@@ -2,16 +2,14 @@
 Phase 8: Vespa Benchmark
 
 Infrastructure: Vespa (vespaengine/vespa:latest)
-  - BM25 text index (default Vespa tokenizer — ICU-based, NOT morphological for Korean)
+  - BM25 text index
   - HNSW dense vectors (BGE-M3 1024-dim, angular distance)
   - Hybrid: BM25 + nearestNeighbor with linear score combination
 
-Note on Korean tokenization:
-  Vespa's default tokenizer uses ICU word boundary segmentation.
-  For Korean, this is non-morphological (similar to Qdrant multilingual/charabia).
-  The `vespa-linguistics-ko` package (MeCab-based) requires a custom Vespa build
-  and is NOT available in the standard Docker image.
-  → Korean BM25 quality expected to be lower than nori (ES) or textsearch_ko (PG).
+Tokenizer modes:
+  --tokenizer icu   : Default ICU word boundary segmentation (non-morphological)
+  --tokenizer nori  : Lucene Linguistics + Nori analyzer (morphological, same as ES nori)
+                      Requires Vespa >= 8.315.19 (lucene-linguistics bundle built-in)
 
 Methods:
   1. BM25    : Vespa BM25 rank profile, userQuery()
@@ -27,8 +25,17 @@ Usage:
   # Start Vespa first:
   #   docker compose --profile phase8-vespa up -d
   #   # Wait ~60s for Vespa to initialize
+
+  # ICU tokenizer (default, non-morphological):
   uv run python3 experiments/phase8_system_comparison/phase8_vespa.py \\
-    --vespa-url http://localhost:8080 \\
+    --vespa-url http://localhost:8090 \\
+    --config-url http://localhost:19071 \\
+    --output-dir results/phase8
+
+  # Nori tokenizer (morphological, Lucene Linguistics):
+  uv run python3 experiments/phase8_system_comparison/phase8_vespa.py \\
+    --tokenizer nori \\
+    --vespa-url http://localhost:8090 \\
     --config-url http://localhost:19071 \\
     --output-dir results/phase8
 """
@@ -56,7 +63,7 @@ TOPK     = 60
 WARMUP   = 5
 
 
-SERVICES_XML = """\
+SERVICES_XML_ICU = """\
 <?xml version="1.0" encoding="utf-8" ?>
 <services version="1.0">
   <container id="default" version="1.0">
@@ -75,7 +82,82 @@ SERVICES_XML = """\
 </services>
 """
 
-DOC_SD = """\
+SERVICES_XML_NORI = """\
+<?xml version="1.0" encoding="utf-8" ?>
+<services version="1.0" minimum-required-vespa-version="8.315.19">
+  <container id="default" version="1.0">
+    <component id="linguistics"
+               class="com.yahoo.language.lucene.LuceneLinguistics"
+               bundle="lucene-linguistics">
+      <config name="com.yahoo.language.lucene.lucene-analysis"/>
+    </component>
+    <search />
+    <document-api />
+    <document-processing />
+  </container>
+  <content id="content" version="1.0">
+    <redundancy>1</redundancy>
+    <documents>
+      <document type="doc" mode="index" />
+    </documents>
+    <nodes>
+      <node distribution-key="0" hostalias="node1" />
+    </nodes>
+  </content>
+</services>
+"""
+
+DOC_SD_ICU = """\
+schema doc {
+  document doc {
+    field doc_id type string {
+      indexing: attribute | summary
+    }
+    field text type string {
+      indexing: index | summary
+      index: enable-bm25
+    }
+    field dense_vec type tensor<float>(x[1024]) {
+      indexing: attribute | index
+      attribute {
+        distance-metric: angular
+      }
+      index {
+        hnsw {
+          max-links-per-node: 16
+          neighbors-to-explore-at-insert: 200
+        }
+      }
+    }
+  }
+
+  rank-profile bm25_rank inherits default {
+    first-phase {
+      expression: bm25(text)
+    }
+  }
+
+  rank-profile dense_rank inherits default {
+    inputs {
+      query(q_dense) tensor<float>(x[1024])
+    }
+    first-phase {
+      expression: closeness(field, dense_vec)
+    }
+  }
+
+  rank-profile hybrid_rank inherits default {
+    inputs {
+      query(q_dense) tensor<float>(x[1024])
+    }
+    first-phase {
+      expression: 0.1 * bm25(text) + closeness(field, dense_vec)
+    }
+  }
+}
+"""
+
+DOC_SD_NORI = """\
 schema doc {
   document doc {
     field doc_id type string {
@@ -184,17 +266,19 @@ def load_embeddings(path: str) -> Dict[str, List[float]]:
 # Application package deployment
 # ---------------------------------------------------------------------------
 
-def build_app_zip() -> bytes:
+def build_app_zip(tokenizer: str = "icu") -> bytes:
+    services_xml = SERVICES_XML_NORI if tokenizer == "nori" else SERVICES_XML_ICU
+    doc_sd = DOC_SD_NORI if tokenizer == "nori" else DOC_SD_ICU
     buf = io.BytesIO()
     with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as zf:
-        zf.writestr("services.xml", SERVICES_XML)
+        zf.writestr("services.xml", services_xml)
         zf.writestr("hosts.xml", HOSTS_XML)
-        zf.writestr("schemas/doc.sd", DOC_SD)
+        zf.writestr("schemas/doc.sd", doc_sd)
     return buf.getvalue()
 
 
-def deploy_application(config_url: str) -> bool:
-    app_zip = build_app_zip()
+def deploy_application(config_url: str, tokenizer: str = "icu") -> bool:
+    app_zip = build_app_zip(tokenizer)
     resp = requests.post(
         f"{config_url}/application/v2/tenant/default/prepareandactivate",
         data=app_zip,
@@ -228,17 +312,19 @@ def wait_for_ready(vespa_url: str, timeout: int = 120) -> bool:
 # ---------------------------------------------------------------------------
 
 def feed_documents(vespa_url: str, docs: List[dict],
-                   embeddings: Dict[str, List[float]]) -> float:
+                   embeddings: Dict[str, List[float]],
+                   language: Optional[str] = None) -> float:
     t0 = time.perf_counter()
     for doc in docs:
         dense_emb = embeddings.get(doc["id"], [0.0] * 1024)
-        body = {
-            "fields": {
-                "doc_id": doc["id"],
-                "text": doc["text"],
-                "dense_vec": {"values": dense_emb},
-            }
+        fields = {
+            "doc_id": doc["id"],
+            "text": doc["text"],
+            "dense_vec": {"values": dense_emb},
         }
+        if language:
+            fields["language"] = language
+        body = {"fields": fields}
         doc_id_encoded = doc["id"].replace("/", "_").replace(":", "_")
         resp = requests.post(
             f"{vespa_url}/document/v1/doc/doc/docid/{doc_id_encoded}",
@@ -257,7 +343,8 @@ def feed_documents(vespa_url: str, docs: List[dict],
 # Search functions
 # ---------------------------------------------------------------------------
 
-def search_bm25(vespa_url: str, query_text: str, k: int = 10) -> List[str]:
+def search_bm25(vespa_url: str, query_text: str, k: int = 10,
+                language: Optional[str] = None) -> List[str]:
     body = {
         "yql": f"select doc_id from doc where userQuery() limit {k}",
         "query": query_text,
@@ -266,6 +353,8 @@ def search_bm25(vespa_url: str, query_text: str, k: int = 10) -> List[str]:
         "ranking": "bm25_rank",
         "hits": k,
     }
+    if language:
+        body["language"] = language
     resp = requests.post(f"{vespa_url}/search/", json=body, timeout=30)
     if resp.status_code != 200:
         return []
@@ -289,7 +378,8 @@ def search_dense(vespa_url: str, query_emb: List[float], k: int = 10) -> List[st
 
 
 def search_hybrid(vespa_url: str, query_text: str,
-                  query_emb: List[float], k: int = 10) -> List[str]:
+                  query_emb: List[float], k: int = 10,
+                  language: Optional[str] = None) -> List[str]:
     body = {
         "yql": (f"select doc_id from doc where "
                 f"{{targetHits:{TOPK}}}nearestNeighbor(dense_vec, q_dense) or "
@@ -301,6 +391,8 @@ def search_hybrid(vespa_url: str, query_text: str,
         "hits": k,
         "input.query(q_dense)": query_emb,
     }
+    if language:
+        body["language"] = language
     resp = requests.post(f"{vespa_url}/search/", json=body, timeout=30)
     if resp.status_code != 200:
         return []
@@ -313,13 +405,14 @@ def search_hybrid(vespa_url: str, query_text: str,
 # ---------------------------------------------------------------------------
 
 def bench_dataset(vespa_url: str, dataset_name: str,
-                  queries: List[dict], query_embs: Dict[str, List[float]]) -> List[dict]:
+                  queries: List[dict], query_embs: Dict[str, List[float]],
+                  language: Optional[str] = None) -> List[dict]:
     print(f"\n  === {dataset_name} | {len(queries)} queries ===")
 
     methods = [
-        ("BM25",   lambda t, e: search_bm25(vespa_url, t)),
+        ("BM25",   lambda t, e: search_bm25(vespa_url, t, language=language)),
         ("Dense",  lambda t, e: search_dense(vespa_url, e) if e else []),
-        ("Hybrid", lambda t, e: search_hybrid(vespa_url, t, e) if e else []),
+        ("Hybrid", lambda t, e: search_hybrid(vespa_url, t, e, language=language) if e else []),
     ]
 
     results = []
@@ -371,27 +464,36 @@ def bench_dataset(vespa_url: str, dataset_name: str,
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--vespa-url", default="http://localhost:8080")
+    parser.add_argument("--vespa-url", default="http://localhost:8090")
     parser.add_argument("--config-url", default="http://localhost:19071")
     parser.add_argument("--output-dir", default="results/phase8")
+    parser.add_argument("--tokenizer", choices=["icu", "nori"], default="icu",
+                        help="Tokenizer: icu (default, non-morphological) or nori (Lucene Linguistics, morphological)")
     parser.add_argument("--skip-deploy", action="store_true",
                         help="Skip application deployment (reuse existing)")
     args = parser.parse_args()
 
+    tokenizer = args.tokenizer
+    language = "ko" if tokenizer == "nori" else None
+
     print("=" * 60)
-    print("Phase 8: Vespa Benchmark")
+    print(f"Phase 8: Vespa Benchmark (tokenizer={tokenizer})")
     print("=" * 60)
-    print("  [NOTE] Korean tokenizer: ICU (non-morphological)")
-    print("  [NOTE] BM25 quality expected lower than nori/MeCab")
+    if tokenizer == "nori":
+        print("  [NOTE] Korean tokenizer: Lucene Nori (morphological)")
+        print("  [NOTE] Requires Vespa >= 8.315.19 (lucene-linguistics bundle)")
+    else:
+        print("  [NOTE] Korean tokenizer: ICU (non-morphological)")
+        print("  [NOTE] BM25 quality expected lower than nori/MeCab")
 
     # Deploy application
     if not args.skip_deploy:
-        print("\n--- Deploying Vespa application ---")
+        print(f"\n--- Deploying Vespa application (tokenizer={tokenizer}) ---")
         if not wait_for_ready(args.vespa_url, timeout=120):
             print("  [ERROR] Vespa not ready. Start with:")
             print("    docker compose --profile phase8-vespa up -d")
             return
-        if not deploy_application(args.config_url):
+        if not deploy_application(args.config_url, tokenizer):
             return
 
     # Load query embeddings
@@ -423,10 +525,11 @@ def main():
     # MIRACL
     if miracl_docs:
         print("\n--- Feeding MIRACL documents ---")
-        t_feed = feed_documents(args.vespa_url, miracl_docs, miracl_d_embs)
+        t_feed = feed_documents(args.vespa_url, miracl_docs, miracl_d_embs, language=language)
         print(f"  Fed {len(miracl_docs)} docs in {t_feed}s")
         all_results += bench_dataset(args.vespa_url, "MIRACL",
-                                     miracl_queries, miracl_q_embs)
+                                     miracl_queries, miracl_q_embs,
+                                     language=language)
 
     # EZIS — requires re-deploying or using separate schema namespace
     # For simplicity, reuse same schema and re-feed (small corpus)
@@ -439,18 +542,24 @@ def main():
             timeout=60,
         )
         time.sleep(2)
-        t_feed = feed_documents(args.vespa_url, ezis_docs, ezis_d_embs)
+        t_feed = feed_documents(args.vespa_url, ezis_docs, ezis_d_embs, language=language)
         print(f"  Fed {len(ezis_docs)} docs in {t_feed}s")
         all_results += bench_dataset(args.vespa_url, "EZIS",
-                                     ezis_queries, ezis_q_embs)
+                                     ezis_queries, ezis_q_embs,
+                                     language=language)
 
     os.makedirs(args.output_dir, exist_ok=True)
-    json_path = os.path.join(args.output_dir, "phase8_vespa.json")
+    suffix = f"_{'nori' if tokenizer == 'nori' else 'icu'}"
+    json_path = os.path.join(args.output_dir, f"phase8_vespa{suffix}.json")
+    tokenizer_desc = {
+        "icu": "icu_default (non-morphological)",
+        "nori": "lucene_nori (morphological, Lucene Linguistics)",
+    }
     with open(json_path, "w", encoding="utf-8") as f:
         json.dump({
             "generated": datetime.now().isoformat(),
             "system": "vespa",
-            "tokenizer": "icu_default (non-morphological)",
+            "tokenizer": tokenizer_desc[tokenizer],
             "results": all_results,
         }, f, indent=2, ensure_ascii=False)
     print(f"\n  JSON: {json_path}")

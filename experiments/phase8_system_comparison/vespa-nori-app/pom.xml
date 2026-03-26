@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>textsearch</groupId>
+    <artifactId>vespa-nori-linguistics</artifactId>
+    <version>1.0.0</version>
+    <packaging>container-plugin</packaging>
+
+    <properties>
+        <vespa.version>8.663.19</vespa.version>
+        <lucene.version>9.11.1</lucene.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.yahoo.vespa</groupId>
+            <artifactId>linguistics</artifactId>
+            <version>${vespa.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.yahoo.vespa</groupId>
+            <artifactId>component</artifactId>
+            <version>${vespa.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-analysis-nori</artifactId>
+            <version>${lucene.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.yahoo.vespa</groupId>
+                <artifactId>bundle-plugin</artifactId>
+                <version>${vespa.version}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <bundleSymbolicName>vespa-nori-linguistics</bundleSymbolicName>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

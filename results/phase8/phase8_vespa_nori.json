@@ -1,0 +1,79 @@
+{
+  "generated": "2026-03-26T11:11:32.639615",
+  "system": "vespa",
+  "tokenizer": "lucene_nori (morphological, Lucene Linguistics)",
+  "results": [
+    {
+      "system": "vespa",
+      "dataset": "MIRACL",
+      "method": "BM25",
+      "n_queries": 213,
+      "ndcg_at_10": 0.026,
+      "recall_at_10": 0.043,
+      "mrr": 0.0217,
+      "latency_p50": 3.76,
+      "latency_p95": 6.58,
+      "latency_p99": 7.39
+    },
+    {
+      "system": "vespa",
+      "dataset": "MIRACL",
+      "method": "Dense",
+      "n_queries": 213,
+      "ndcg_at_10": 0.7898,
+      "recall_at_10": 0.913,
+      "mrr": 0.7994,
+      "latency_p50": 4.14,
+      "latency_p95": 6.83,
+      "latency_p99": 8.17
+    },
+    {
+      "system": "vespa",
+      "dataset": "MIRACL",
+      "method": "Hybrid",
+      "n_queries": 213,
+      "ndcg_at_10": 0.6172,
+      "recall_at_10": 0.8031,
+      "mrr": 0.5829,
+      "latency_p50": 4.43,
+      "latency_p95": 6.22,
+      "latency_p99": 7.45
+    },
+    {
+      "system": "vespa",
+      "dataset": "EZIS",
+      "method": "BM25",
+      "n_queries": 131,
+      "ndcg_at_10": 0.5971,
+      "recall_at_10": 0.7481,
+      "mrr": 0.5485,
+      "latency_p50": 3.59,
+      "latency_p95": 5.82,
+      "latency_p99": 10.09
+    },
+    {
+      "system": "vespa",
+      "dataset": "EZIS",
+      "method": "Dense",
+      "n_queries": 131,
+      "ndcg_at_10": 0.7819,
+      "recall_at_10": 0.9122,
+      "mrr": 0.7404,
+      "latency_p50": 3.5,
+      "latency_p95": 4.18,
+      "latency_p99": 5.24
+    },
+    {
+      "system": "vespa",
+      "dataset": "EZIS",
+      "method": "Hybrid",
+      "n_queries": 131,
+      "ndcg_at_10": 0.748,
+      "recall_at_10": 0.9351,
+      "mrr": 0.6886,
+      "latency_p50": 4.17,
+      "latency_p95": 6.28,
+      "latency_p99": 7.13
+    }
+  ]
+}
