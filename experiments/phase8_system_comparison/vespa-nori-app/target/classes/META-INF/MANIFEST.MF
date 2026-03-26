@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+X-JDisc-Non-PublicApi-Import-Package: com.yahoo.language.simple
+Bundle-ManifestVersion: 2
+Bundle-SymbolicName: vespa-nori-linguistics
+Bundle-Version: 1.0.0
+Created-By: vespa container maven plugin
+Bundle-Name: vespa-nori-linguistics
+Bundle-Vendor: Yahoo!
+Bundle-ClassPath: .,dependencies/lucene-analysis-nori-9.11.1.jar,depende
+ ncies/lucene-core-9.11.1.jar,dependencies/lucene-analysis-common-9.11.1
+ .jar
+Import-Package: com.yahoo.language.detect;version="[1.0.0,2)",com.yahoo.
+ language.process;version="[1.0.0,2)",com.yahoo.language.simple;version=
+ "[1.0.0,2)",com.yahoo.language;version="[1.0.0,2)"
+

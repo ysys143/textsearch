@@ -12,7 +12,7 @@
 | **PostgreSQL** | textsearch_ko MeCab (형태소) | pgvector HNSW | DB-side RRF SQL CTE | Phase 7 확정 스택 |
 | **Elasticsearch 8.17** | nori (형태소, MeCab 계열) | dense_vector knn | `retriever.rrf` (서버사이드) 또는 Python-side RRF | 서버사이드 RRF만 Trial 라이선스, Python RRF로 대체 가능 |
 | **Qdrant 1.15** | 없음 (self-hosted native BM25 불가) | HNSW cosine | sparse IDF + dense prefetch RRF | 텍스트 토크나이저는 Meilisearch charabia 기반 (비형태소) |
-| **Vespa 8.663** | ICU (비형태소, Unicode 경계) | HNSW angular | 0.1×bm25 + closeness | 한국어 형태소 분석 미지원 |
+| **Vespa 8.663** | ICU (비형태소, Unicode 경계) | HNSW angular | 0.1×bm25 + closeness | 한국어 형태소 분석 미지원 (Nori 통합 3경로 시도 실패 — [상세](phase8_compare_vespa.md)) |
 
 ---
 
@@ -90,7 +90,8 @@
 |---------------|--------|-----------------|----------------|
 | 형태소 (MeCab/nori) | PG, ES | 0.61~0.64 | 0.92~0.93 |
 | 비형태소 (ICU) | Vespa | 0.41 | 0.81 |
-| 없음 (TF×IDF) | Qdrant sparse | 0.36 | 0.77 |
+| 비형태소 (charabia, Meilisearch 유래) | Qdrant builtin | ~0.001 | — |
+| 없음 (TF×IDF, 외부 MeCab) | Qdrant sparse | 0.36 | 0.77 |
 | 트랜스포머 (BM42) | Qdrant FastEmbed | — | 0.48 |
 
 형태소 분석기(MeCab, nori) 유무가 BM25 품질의 결정적 차이. 비형태소 시스템은 MIRACL에서 35~40% 낮음.

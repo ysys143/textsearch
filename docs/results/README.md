@@ -94,7 +94,7 @@ textsearch_ko (MeCab 형태소) + pg_textsearch BM25 (`<@>` AND)
 |--------|-------------------|-----------------|-----------|---------|
 | **PostgreSQL** | **0.7683** | 0.8641 | **1.79ms** | — |
 | ES 8.17 (nori) | 0.7501 | **0.8769** | 5.18ms | Trial 라이선스 필요 |
-| Qdrant 1.15 | 0.6924 | 0.8394 | 4.54ms | Self-hosted BM25 없음 |
-| Vespa 8.663 | 0.4463 | 0.8125 | 4.14ms | ICU 비형태소 |
+| Qdrant 1.15 | 0.6924 | 0.8394 | 4.54ms | Self-hosted BM25 없음, charabia(Meilisearch) 비형태소 |
+| Vespa 8.663 | 0.4463 | 0.8125 | 4.14ms | ICU 비형태소, Nori 통합 3경로 시도 실패 |
 
 상세: [phase8_system_comparison.md](phase8_system_comparison.md) | [ES](phase8_compare_es.md) | [Qdrant](phase8_compare_qdrant.md) | [Vespa](phase8_compare_vespa.md)

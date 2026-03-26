@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"source .venv/bin/activate && python3 -c \\\"\\nimport requests, time, zipfile, io\\n\\ndeploy_jar = 'experiments/phase8_system_comparison/vespa-nori-app/target/vespa-nori-linguistics-1.0.0-depl...",
+  "error": "Exit code 127\n(eval):source:1: no such file or directory: .venv/bin/activate",
+  "timestamp": "2026-03-26T02:46:19.002Z",
+  "retry_count": 1
+}
