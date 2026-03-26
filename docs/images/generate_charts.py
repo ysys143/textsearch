@@ -147,40 +147,41 @@ def chart_tokenizer_impact():
 # Chart 4: 도메인 역전 — BM25 vs Dense
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 def chart_domain_reversal():
-    methods = ['BM25', 'Dense', 'Hybrid\n(RRF)']
-    miracl = [0.6385, 0.7904, 0.7683]
-    ezis =   [0.9162, 0.8041, 0.8641]
+    datasets = ['MIRACL\n(일반 위키)', 'EZIS\n(기술 문서)']
+    bm25   = [0.6385, 0.9162]
+    dense  = [0.7904, 0.8041]
+    hybrid = [0.7683, 0.8641]
 
-    x = np.arange(len(methods))
-    w = 0.3
+    x = np.arange(len(datasets))
+    w = 0.25
 
     fig, ax = plt.subplots(figsize=(6.5, 4.5))
-    b1 = ax.bar(x - w/2, miracl, w, label='MIRACL (일반 위키)',
-                color=[C_BM25+'99', C_DENSE+'99', C_RRF+'99'],
-                edgecolor=[C_BM25, C_DENSE, C_RRF], linewidth=1.5)
-    b2 = ax.bar(x + w/2, ezis, w, label='EZIS (기술 문서)',
-                color=[C_BM25, C_DENSE, C_RRF],
-                edgecolor=[C_BM25, C_DENSE, C_RRF], linewidth=1.5)
+    b1 = ax.bar(x - w, bm25, w, label='BM25',
+                color=C_BM25+'99', edgecolor=C_BM25, linewidth=1.5)
+    b2 = ax.bar(x, dense, w, label='Dense',
+                color=C_DENSE+'99', edgecolor=C_DENSE, linewidth=1.5)
+    b3 = ax.bar(x + w, hybrid, w, label='Hybrid (RRF)',
+                color=C_RRF+'99', edgecolor=C_RRF, linewidth=1.5)
 
-    for bars in [b1, b2]:
+    for bars in [b1, b2, b3]:
         for bar in bars:
             h = bar.get_height()
             ax.text(bar.get_x() + bar.get_width()/2, h + 0.012, f'{h:.2f}',
                     ha='center', va='bottom', fontsize=9, fontweight='bold')
 
     # 화살표 주석
-    ax.annotate('Dense wins here', xy=(1 - w/2, 0.79), fontsize=8.5, ha='center',
+    ax.annotate('Dense wins', xy=(0, 0.79), fontsize=8.5, ha='center',
                 color=C_DENSE, fontweight='bold',
-                xytext=(0.4, 0.56), arrowprops=dict(arrowstyle='->', color=C_DENSE, lw=1.2))
-    ax.annotate('BM25 wins here', xy=(0 + w/2, 0.92), fontsize=8.5, ha='center',
+                xytext=(-0.35, 0.56), arrowprops=dict(arrowstyle='->', color=C_DENSE, lw=1.2))
+    ax.annotate('BM25 wins', xy=(1 - w, 0.92), fontsize=8.5, ha='center',
                 color=C_BM25, fontweight='bold',
-                xytext=(0.95, 0.98), arrowprops=dict(arrowstyle='->', color=C_BM25, lw=1.2))
+                xytext=(1.35, 0.98), arrowprops=dict(arrowstyle='->', color=C_BM25, lw=1.2))
 
     ax.set_ylabel('NDCG@10', fontsize=11)
     ax.set_xticks(x)
-    ax.set_xticklabels(methods, fontsize=10.5)
+    ax.set_xticklabels(datasets, fontsize=10.5)
     ax.set_ylim(0.5, 1.05)
-    ax.legend(loc='lower center', fontsize=9.5, framealpha=0.9, ncol=2)
+    ax.legend(loc='lower center', fontsize=9.5, framealpha=0.9, ncol=3)
     ax.set_title('Domain Reversal: BM25 vs Dense vs Hybrid', fontsize=13, fontweight='bold', pad=12)
 
     save(fig, 'domain_reversal.png')
