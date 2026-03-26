@@ -52,8 +52,8 @@ def chart_hybrid_ndcg():
     w = 0.35
 
     fig, ax = plt.subplots(figsize=(8, 4.5))
-    b1 = ax.bar(x - w/2, miracl, w, label='MIRACL (일반 위키)', color=[c + 'CC' for c in COLORS_SYS], edgecolor=COLORS_SYS, linewidth=1.5)
-    b2 = ax.bar(x + w/2, ezis, w, label='EZIS (기술 문서)', color=COLORS_SYS, edgecolor=COLORS_SYS, linewidth=1.5)
+    b1 = ax.bar(x - w/2, miracl, w, label='MIRACL (Wikipedia)', color=[c + 'CC' for c in COLORS_SYS], edgecolor=COLORS_SYS, linewidth=1.5)
+    b2 = ax.bar(x + w/2, ezis, w, label='EZIS (Technical Docs)', color=COLORS_SYS, edgecolor=COLORS_SYS, linewidth=1.5)
 
     for bars in [b1, b2]:
         for bar in bars:
@@ -147,7 +147,7 @@ def chart_tokenizer_impact():
 # Chart 4: 도메인 역전 — BM25 vs Dense
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 def chart_domain_reversal():
-    datasets = ['MIRACL\n(일반 위키)', 'EZIS\n(기술 문서)']
+    datasets = ['MIRACL\n(Wikipedia)', 'EZIS\n(Technical Docs)']
     bm25   = [0.6385, 0.9162]
     dense  = [0.7904, 0.8041]
     hybrid = [0.7683, 0.8641]
@@ -168,14 +168,6 @@ def chart_domain_reversal():
             h = bar.get_height()
             ax.text(bar.get_x() + bar.get_width()/2, h + 0.012, f'{h:.2f}',
                     ha='center', va='bottom', fontsize=9, fontweight='bold')
-
-    # 화살표 주석
-    ax.annotate('Dense wins', xy=(0, 0.79), fontsize=8.5, ha='center',
-                color=C_DENSE, fontweight='bold',
-                xytext=(-0.35, 0.56), arrowprops=dict(arrowstyle='->', color=C_DENSE, lw=1.2))
-    ax.annotate('BM25 wins', xy=(1 - w, 0.92), fontsize=8.5, ha='center',
-                color=C_BM25, fontweight='bold',
-                xytext=(1.35, 0.98), arrowprops=dict(arrowstyle='->', color=C_BM25, lw=1.2))
 
     ax.set_ylabel('NDCG@10', fontsize=11)
     ax.set_xticks(x)
