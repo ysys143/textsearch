@@ -169,10 +169,18 @@ def chart_domain_reversal():
             ax.text(bar.get_x() + bar.get_width()/2, h + 0.012, f'{h:.2f}',
                     ha='center', va='bottom', fontsize=9, fontweight='bold')
 
+    # 화살표 주석: MIRACL에서 Dense가 이기고, EZIS에서 BM25가 이긴다
+    ax.annotate('Dense wins', xy=(0, 0.75), fontsize=9, ha='center',
+                color=C_DENSE, fontweight='bold',
+                xytext=(-0.35, 1.03), arrowprops=dict(arrowstyle='->', color=C_DENSE, lw=1.5))
+    ax.annotate('BM25 wins', xy=(1 - w, 0.85), fontsize=9, ha='center',
+                color=C_BM25, fontweight='bold',
+                xytext=(1.35, 1.03), arrowprops=dict(arrowstyle='->', color=C_BM25, lw=1.5))
+
     ax.set_ylabel('NDCG@10', fontsize=11)
     ax.set_xticks(x)
     ax.set_xticklabels(datasets, fontsize=10.5)
-    ax.set_ylim(0.5, 1.05)
+    ax.set_ylim(0.5, 1.08)
     ax.legend(loc='lower center', fontsize=9.5, framealpha=0.9, ncol=3)
     ax.set_title('Domain Reversal: BM25 vs Dense vs Hybrid', fontsize=13, fontweight='bold', pad=12)
 
