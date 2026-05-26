@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "lastScanned": 1774416907123,
+  "lastScanned": 1779804323362,
   "projectRoot": "/Users/jaesolshin/Documents/GitHub/textsearch",
   "techStack": {
     "languages": [
@@ -53,7 +53,7 @@
       "path": "archive",
       "purpose": null,
       "fileCount": 5,
-      "lastAccessed": 1774416907080,
+      "lastAccessed": 1779804323349,
       "keyFiles": [
         "0521.ipynb",
         "docs.json",
@@ -66,7 +66,7 @@
       "path": "benchmark",
       "purpose": null,
       "fileCount": 5,
-      "lastAccessed": 1774416907080,
+      "lastAccessed": 1779804323349,
       "keyFiles": [
         "README.md",
         "__init__.py",
@@ -78,8 +78,8 @@
     "data": {
       "path": "data",
       "purpose": "Data files",
-      "fileCount": 1,
-      "lastAccessed": 1774416907081,
+      "fileCount": 2,
+      "lastAccessed": 1779804323349,
       "keyFiles": [
         "EZIS_Oracle_Manual.pdf"
       ]
@@ -88,14 +88,14 @@
       "path": "docs",
       "purpose": "Documentation",
       "fileCount": 1,
-      "lastAccessed": 1774416907081,
+      "lastAccessed": 1779804323350,
       "keyFiles": []
     },
     "experiments": {
       "path": "experiments",
       "purpose": null,
       "fileCount": 2,
-      "lastAccessed": 1774416907081,
+      "lastAccessed": 1779804323350,
       "keyFiles": [
         "__init__.py"
       ]
@@ -104,28 +104,28 @@
       "path": "extensions",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1774416907082,
+      "lastAccessed": 1779804323350,
       "keyFiles": []
     },
     "results": {
       "path": "results",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1774416907082,
+      "lastAccessed": 1779804323350,
       "keyFiles": []
     },
     "vendor": {
       "path": "vendor",
       "purpose": "Third-party code",
       "fileCount": 1,
-      "lastAccessed": 1774416907082,
+      "lastAccessed": 1779804323351,
       "keyFiles": []
     },
     "benchmark/data": {
       "path": "benchmark/data",
       "purpose": "Data files",
       "fileCount": 4,
-      "lastAccessed": 1774416907083,
+      "lastAccessed": 1779804323351,
       "keyFiles": [
         "__init__.py",
         "load_ezis.py",
@@ -133,307 +133,6 @@
       ]
     }
   },
-  "hotPaths": [
-    {
-      "path": "experiments/phase6_vectorchord/phase6_1_full_eval.py",
-      "accessCount": 45,
-      "lastAccessed": 1774436561393,
-      "type": "file"
-    },
-    {
-      "path": "docker-compose.yml",
-      "accessCount": 24,
-      "lastAccessed": 1774489756941,
-      "type": "file"
-    },
-    {
-      "path": "experiments/phase6_vectorchord/phase6_feasibility.py",
-      "accessCount": 21,
-      "lastAccessed": 1774418673184,
-      "type": "file"
-    },
-    {
-      "path": "experiments/phase5_production/phase5_production_bench.py",
-      "accessCount": 18,
-      "lastAccessed": 1774434434985,
-      "type": "file"
-    },
-    {
-      "path": "experiments/common/bm25_module.py",
-      "accessCount": 14,
-      "lastAccessed": 1774440454091,
-      "type": "file"
-    },
-    {
-      "path": "results/phase5/phase5_final_report.md",
-      "accessCount": 6,
-      "lastAccessed": 1774425605218,
-      "type": "file"
-    },
-    {
-      "path": "experiments/phase3_native_bm25/phase3_bm25_comparison.py",
-      "accessCount": 5,
-      "lastAccessed": 1774419899161,
-      "type": "file"
-    },
-    {
-      "path": "docs/plan/phase6_vectorchord_bm25.md",
-      "accessCount": 5,
-      "lastAccessed": 1774428632111,
-      "type": "file"
-    },
-    {
-      "path": "experiments",
-      "accessCount": 4,
-      "lastAccessed": 1774419916434,
-      "type": "directory"
-    },
-    {
-      "path": "docs/source-analysis/vectorchord_bm25_analysis.md",
-      "accessCount": 3,
-      "lastAccessed": 1774417858683,
-      "type": "file"
-    },
-    {
-      "path": "results/phase5/phase5_production_pg.json",
-      "accessCount": 3,
-      "lastAccessed": 1774425514878,
-      "type": "file"
-    },
-    {
-      "path": "results/phase6/phase6_2_full_eval_report.md",
-      "accessCount": 3,
-      "lastAccessed": 1774425614763,
-      "type": "file"
-    },
-    {
-      "path": "docs/plan/phase9_system_comparison.md",
-      "accessCount": 3,
-      "lastAccessed": 1774439559589,
-      "type": "file"
-    },
-    {
-      "path": "extensions/textsearch_ko",
-      "accessCount": 2,
-      "lastAccessed": 1774417130755,
-      "type": "directory"
-    },
-    {
-      "path": "vendor/pg_search_original/tokenizers/src/manager.rs",
-      "accessCount": 2,
-      "lastAccessed": 1774417133504,
-      "type": "file"
-    },
-    {
-      "path": "results/phase6/phase6_0_feasibility_report.md",
-      "accessCount": 2,
-      "lastAccessed": 1774418591356,
-      "type": "file"
-    },
-    {
-      "path": "extensions/textsearch_ko/textsearch_ko--1.0.sql",
-      "accessCount": 2,
-      "lastAccessed": 1774419903169,
-      "type": "file"
-    },
-    {
-      "path": "extensions/textsearch_ko/ts_mecab_ko.sql",
-      "accessCount": 2,
-      "lastAccessed": 1774419903349,
-      "type": "file"
-    },
-    {
-      "path": "experiments/phase2_tsvector/phase2_tsvector_comparison.py",
-      "accessCount": 2,
-      "lastAccessed": 1774419916103,
-      "type": "file"
-    },
-    {
-      "path": "experiments/common",
-      "accessCount": 2,
-      "lastAccessed": 1774421533587,
-      "type": "directory"
-    },
-    {
-      "path": "results/phase5/phase5_production_report.md",
-      "accessCount": 2,
-      "lastAccessed": 1774425406120,
-      "type": "file"
-    },
-    {
-      "path": "results/phase6/phase6_1_full_eval_report.md",
-      "accessCount": 2,
-      "lastAccessed": 1774425486365,
-      "type": "file"
-    },
-    {
-      "path": "vendor/pg_search_original/README.md",
-      "accessCount": 1,
-      "lastAccessed": 1774417113976,
-      "type": "file"
-    },
-    {
-      "path": "vendor/pg_search_original/pg_search/README.md",
-      "accessCount": 1,
-      "lastAccessed": 1774417114199,
-      "type": "file"
-    },
-    {
-      "path": "vendor/pg_search_original",
-      "accessCount": 1,
-      "lastAccessed": 1774417114736,
-      "type": "directory"
-    },
-    {
-      "path": "vendor/pg_search_original/tokenizers/src",
-      "accessCount": 1,
-      "lastAccessed": 1774417117322,
-      "type": "directory"
-    },
-    {
-      "path": "extensions/textsearch_ko/README.md",
-      "accessCount": 1,
-      "lastAccessed": 1774417118129,
-      "type": "file"
-    },
-    {
-      "path": "vendor/pg_search_original/pg_search",
-      "accessCount": 1,
-      "lastAccessed": 1774417118274,
-      "type": "directory"
-    },
-    {
-      "path": "extensions/textsearch_ko/ts_mecab_ko.h",
-      "accessCount": 1,
-      "lastAccessed": 1774417123234,
-      "type": "file"
-    },
-    {
-      "path": "vendor/pg_search_original/tokenizers/src/lib.rs",
-      "accessCount": 1,
-      "lastAccessed": 1774417123498,
-      "type": "file"
-    },
-    {
-      "path": "experiments/phase3_native_bm25",
-      "accessCount": 1,
-      "lastAccessed": 1774417127252,
-      "type": "directory"
-    },
-    {
-      "path": "extensions/textsearch_ko/ts_mecab_ko.c",
-      "accessCount": 1,
-      "lastAccessed": 1774417127561,
-      "type": "file"
-    },
-    {
-      "path": "vendor/pg_search_original/pg_search/src/api/tokenize.rs",
-      "accessCount": 1,
-      "lastAccessed": 1774417129254,
-      "type": "file"
-    },
-    {
-      "path": "vendor/pg_search_original/tests/tests/bm25_search.rs",
-      "accessCount": 1,
-      "lastAccessed": 1774417129671,
-      "type": "file"
-    },
-    {
-      "path": "vendor/pg_search_original/pg_search/sql/pg_search--0.22.1--0.22.2.sql",
-      "accessCount": 1,
-      "lastAccessed": 1774417136081,
-      "type": "file"
-    },
-    {
-      "path": "vendor/pg_search_original/tokenizers/src/lindera.rs",
-      "accessCount": 1,
-      "lastAccessed": 1774417136497,
-      "type": "file"
-    },
-    {
-      "path": "extensions/textsearch_ko/textsearch_ko.control",
-      "accessCount": 1,
-      "lastAccessed": 1774417137795,
-      "type": "file"
-    },
-    {
-      "path": "vendor/pg_search_original/macros/src/generate_tokenizer_sql.rs",
-      "accessCount": 1,
-      "lastAccessed": 1774417140261,
-      "type": "file"
-    },
-    {
-      "path": "vendor/pg_search_original/pg_search/src/api/operator.rs",
-      "accessCount": 1,
-      "lastAccessed": 1774417146101,
-      "type": "file"
-    },
-    {
-      "path": "vendor/pg_search_original/pg_search/src/api/operator/eqeqeq.rs",
-      "accessCount": 1,
-      "lastAccessed": 1774417149432,
-      "type": "file"
-    },
-    {
-      "path": "vendor/pg_tokenizer_original/docs/04-usage.md",
-      "accessCount": 1,
-      "lastAccessed": 1774417611389,
-      "type": "file"
-    },
-    {
-      "path": "vendor/pg_tokenizer_original/docs/05-text-analyzer.md",
-      "accessCount": 1,
-      "lastAccessed": 1774417611826,
-      "type": "file"
-    },
-    {
-      "path": "vendor/pg_tokenizer_original/docs/06-model.md",
-      "accessCount": 1,
-      "lastAccessed": 1774417637601,
-      "type": "file"
-    },
-    {
-      "path": "vendor/pg_tokenizer_original/docs/03-examples.md",
-      "accessCount": 1,
-      "lastAccessed": 1774417637842,
-      "type": "file"
-    },
-    {
-      "path": "experiments/phase6_vectorchord/__init__.py",
-      "accessCount": 1,
-      "lastAccessed": 1774417813165,
-      "type": "file"
-    },
-    {
-      "path": "experiments/phase2_tsvector",
-      "accessCount": 1,
-      "lastAccessed": 1774419913885,
-      "type": "directory"
-    },
-    {
-      "path": "experiments/phase5_system_comparison/phase5_system_comparison.py",
-      "accessCount": 1,
-      "lastAccessed": 1774421536571,
-      "type": "file"
-    },
-    {
-      "path": "experiments/phase6_vectorchord",
-      "accessCount": 1,
-      "lastAccessed": 1774421546742,
-      "type": "directory"
-    },
-    {
-      "path": "docs/plan/phase7_textsearch_fork.md",
-      "accessCount": 1,
-      "lastAccessed": 1774425746407,
-      "type": "file"
-    },
-    {
-      "path": "docs/plan/phase8_pgsearch_fork.md",
-      "accessCount": 1,
-      "lastAccessed": 1774425746529,
-      "type": "file"
-    }
-  ],
+  "hotPaths": [],
   "userDirectives": []
 }
